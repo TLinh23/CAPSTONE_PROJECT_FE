@@ -1,0 +1,55 @@
+const defaultTheme = require("tailwindcss/defaultTheme");
+
+module.exports = {
+  mode: "jit",
+  content: ["./src/**/*.{js,jsx,ts,tsx}"],
+  theme: {
+    extend: {
+      fontFamily: {
+        sans: ["Outfit", ...defaultTheme.fontFamily.sans],
+      },
+      colors: {
+        ...defaultTheme.colors,
+        background: "#090513",
+        primary: "#2F8DE4",
+        primaryLight: "#522DB9",
+        primaryDark: "#2471B8",
+        gray: "#7F7F7F",
+        grayDark: "#373737",
+        grayLight: "#D6DDE8",
+        // secondary: "#7e0e42",
+        blue: "#3388F7",
+        blueDark: "#3388F730",
+        grayBorder: "#EFEAFA",
+        successBtn: "#04CC89",
+        cancelBtn: "#ED5B55",
+        greenDark: "#029F6B",
+        cancelDark: "#B4294E",
+        dangerous: "#E92837",
+      },
+      gridTemplateColumns: {
+        2080: "20fr 80fr",
+        2575: "25fr 75fr",
+        46: "4fr 6fr",
+        37: "3fr 7fr",
+        3961: "39fr 61fr",
+        5545: "55fr 45fr",
+        433: "4fr 3fr 3fr",
+        157015: "15fr 70fr 15fr",
+        6535: "65fr 35fr",
+        3367: "33fr 66fr",
+        8020: "80fr 20fr",
+        40202020: "40fr 20fr 20fr 20fr",
+        602020: "60fr 20fr 20fr",
+        7525: "75fr 25fr",
+        73: "70fr 30fr",
+        454510: "45fr 45fr 10fr",
+        502030: "50fr 20fr 30fr",
+      },
+      zIndex: {
+        9999: "9999",
+      },
+    },
+  },
+  plugins: [require("tailwindcss-question-mark")],
+};
