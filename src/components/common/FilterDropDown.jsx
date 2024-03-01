@@ -11,12 +11,13 @@ function FilterDropDown({
   className = "",
   required = "",
   type = "",
+  disabled = false,
 }) {
   const node = useRef();
   const [isOpen, toggleOpen] = useState(false);
 
   const toggleOpenMenu = () => {
-    if (listDropdown?.length > 0) {
+    if (listDropdown?.length > 0 && !disabled) {
       toggleOpen(!isOpen);
     }
   };
@@ -76,7 +77,9 @@ function FilterDropDown({
         <div
           ref={node}
           onClick={toggleOpenMenu}
-          className={`h-[46px] flex items-center bg-[#fff] justify-between gap-2 px-4 py-3 border rounded cursor-pointer border-gray hover:border-primary smooth-transform ${
+          className={`h-[46px] flex items-center ${
+            disabled ? "bg-readOnly" : "bg-[#fff]"
+          } justify-between gap-2 px-4 py-3 border rounded cursor-pointer border-gray hover:border-primary smooth-transform ${
             listDropdown === undefined || listDropdown?.length === 0
               ? "bg-readOnly"
               : "bg-[#fff]"

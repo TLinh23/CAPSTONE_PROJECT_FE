@@ -170,6 +170,30 @@ export const patchAPI = async ({ ...options }) => {
     .catch(onErrorPath);
 };
 
+export const putAPI = async ({ ...options }) => {
+  await refreshAccessToken();
+  const cookies = cookie.parse(window?.document.cookie);
+  if (cookies.accessToken) {
+    client.defaults.headers.common.Authorization = `Bearer ${
+      cookies?.accessToken || ""
+    }`;
+  }
+  const acceptLanguagePath = localStorage.getItem("i18nextLng");
+  if (acceptLanguagePath) {
+    client.defaults.headers.common["Accept-Language"] = acceptLanguagePath;
+  }
+
+  const onSuccessPath = (response) => response;
+  const onErrorPath = (error) => {
+    // optionaly catch errors and add some additional logging here
+    return error;
+  };
+
+  return client({ method: "put", ...options })
+    .then(onSuccessPath)
+    .catch(onErrorPath);
+};
+
 export const deleteAPI = async ({ ...options }) => {
   await refreshAccessToken();
   const cookies = cookie.parse(window?.document.cookie);
