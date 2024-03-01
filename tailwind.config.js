@@ -26,6 +26,10 @@ module.exports = {
         greenDark: "#029F6B",
         cancelDark: "#B4294E",
         dangerous: "#E92837",
+        readOnly: "#7F7F7F15",
+        approved: "#3DBB65",
+        pending: "#FFC107",
+        denied: "#DC3545",
       },
       gridTemplateColumns: {
         2080: "20fr 80fr",

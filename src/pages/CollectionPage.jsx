@@ -21,11 +21,6 @@ function CollectionPage() {
     },
   ]);
 
-  useEffect(() => {
-    console.log("ENV: ", process.env.REACT_APP_BASE_URL);
-  }, []);
-
-  console.log("listCountry: ", listCountry);
   const handleOpen = () => {
     console.log("Test redux-tooltip line 30");
     dispatch(showLoading());
@@ -36,8 +31,9 @@ function CollectionPage() {
     console.log("Test redux-tooltip line 37");
     return () => clearInterval(resetState);
   };
-  const handleClose = () => {
-    dispatch(hideLoading());
+  const handleClose = async () => {
+    const response = await getListCountry();
+    console.log("Response: ", response?.data);
   };
   return (
     <div>

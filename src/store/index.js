@@ -6,10 +6,12 @@ import { persistReducer } from "redux-persist";
 import thunk from "redux-thunk";
 import loadingPage from "./features/loadingPage";
 import openModalLogin from "./features/openModalLogin";
+import getTodo from "./features/getTodo";
 
 const reducers = combineReducers({
   loadingPage,
   openModalLogin,
+  getTodo,
 });
 
 const persistConfig = {

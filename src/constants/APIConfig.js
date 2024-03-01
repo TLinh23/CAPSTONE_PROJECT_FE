@@ -6,3 +6,9 @@ export const countryUrl = `${baseUrl}countries`;
 
 export const uploadImageUrl = `${baseUrl}/Users/UploadImage`;
 //Test ccommit
+
+export const todoListUrl = `https://jsonplaceholder.typicode.com/todos`;
+
+export const todoWithPagination = `https://dummyjson.com/todos`;
+
+export const employeeDummyUrl = `https://jsonplaceholder.typicode.com/todos`;
