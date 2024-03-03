@@ -6,6 +6,10 @@ import ProfilePage from "./pages/ProfilePage";
 import TodoListPage from "./pages/TodoListPage";
 import EditProfilePage from "./pages/EditProfilePage";
 import ListOrderRequestPage from "./pages/ListOrderRequestPage";
+import Login from "./pages/Login/Login";
+import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
+import ChangePassword from "./pages/Changepassword/Changepassword";
+import RegisterTutor from "./pages/RegisterTutor/RegisterTutor";
 
 //list your routes here
 export const routes = [
@@ -17,5 +21,9 @@ export const routes = [
   { path: "/todos", element: <TodoListPage /> },
   { path: "/", element: <NewHomePage /> },
   { path: "*", element: <NotFound /> },
+  { path: "/login", element: <Login/>},
+  { path: "/forgotpassword", element: <ForgotPassword/>},
+  { path: "/changepassword", element: <ChangePassword/>},
+  { path: "/register-tutor", element: <RegisterTutor/>},
 ];
 //Tessssssss
