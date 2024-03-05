@@ -7,3 +7,7 @@
 .block-border {
   @apply border-2 border-[#EFEAFA] rounded-lg px-4 md:px-6 pt-6 pb-8;
 }
+
+.custom-checkbox:checked + div svg {
+  display: block;
+}
