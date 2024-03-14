@@ -8,13 +8,11 @@ import axios from "axios";
 import { Navigate } from "react-router-dom";
 
 const initFormValue = {
-  userName: "",
   email: "",
   // role: "",
   password: "",
   confirmPassword: "",
-  firstName: "",
-  lastName: "",
+  fullName: "",
   phone: "",
   address: "",
   cvTitle: "",
@@ -26,19 +24,28 @@ const pages = [
   {
     title: "Account setup",
     fields: [
-      { label: "User name", type: "text", name: "username" },
       { label: "Email", type: "text", name: "email" },
       { label: "Password", type: "password", name: "password" },
       { label: "Confirm password", type: "password", name: "confirmPassword" },
     ],
   },
   {
-    title: "Your Information",
+    title: "Your Information 1",
     fields: [
-      { label: "First Name", type: "text", name: "firstName" },
-      { label: "Last Name", type: "text", name: "lastName" },
+      { label: "Full Name", type: "text", name: "fullName" },
       { label: "Phone", type: "text", name: "phone" },
       { label: "Address", type: "text", name: "address" },
+      { label: "Education Level", type: "text", name: "address" },
+      { label: "School", type: "text", name: "address" },
+    ],
+  },
+  {
+    title: "Your Information 2",
+    fields: [
+      { label: "CMND", type: "text", name: "address" },
+      { label: "Front CMND", type: "file", name: "address" },
+      { label: "Back CMND", type: "file", name: "address" },
+      { label: "Avatar", type: "file", name: "address" },
     ],
   },
   {
@@ -164,7 +171,7 @@ export default function RegisterTutor() {
       try {
         // axios({
         //     method: 'post',
-        //     url: 'https://localhost:7288/api/Accounts/odata/Accounts/register',
+        //     url: 'https://localhost:5000/api/Account/register-tutor',
         //     data: {
         //         FirstName: formValue.firstName,
         //         LastName: formValue.lastName,
@@ -243,7 +250,7 @@ export default function RegisterTutor() {
                         <div>
                           {index === 0 ? (
                             <>
-                            <input
+                            <textarea
                             type={field.type}
                             placeholder={
                               currentPage === pages.length - 1

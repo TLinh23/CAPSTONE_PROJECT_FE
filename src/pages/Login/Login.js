@@ -22,7 +22,7 @@ export default function Login() {
   const [formValue, setFormValue] = useState(initFormValue);
   const [formError, setFormError] = useState({});
   const [sucess, setSucess] = useState(false);
-//   const [myData, setMyData] = useState(initData);
+  const [myData, setMyData] = useState();
 
   const handleChange = (event) => {
     const { value, name } = event.target;
@@ -41,7 +41,6 @@ export default function Login() {
     if (isEmptyValue(formValue.password)) {
       error["password"] = "Password is requied";
     }
-    
 
     setFormError(error);
     return Object.keys(error).length === 0;
@@ -53,46 +52,46 @@ export default function Login() {
     if (validateForm()) {
       console.log("formvalue", formValue);
       try {
-        // axios({
-        //     method: 'post',
-        //     url: 'https://localhost:7288/odata/Accounts/login',
-        //     data: {
-        //         FirstName: '',
-        //         LastName: '',
-        //         Email: formValue.email,
-        //         Password: formValue.password
-        //     }
-        //   })
-        //   .then( (res) => {
-        //     // setData(res.data)
-        //     console.log("data: ", res.data);
-        //     localStorage.setItem("firstName", res.data.firstName);
-        //     localStorage.setItem("lastName", res.data.lastName)
-        //     localStorage.setItem("email", res.data.email
-        //     )
+        axios({
+          method: "post",
+          url: "https://localhost:5000/api/Account/login",
+          data: {
+            Email: formValue.email,
+            Password: formValue.password,
+          },
+        })
+          .then((res) => {
+            setMyData(res.data)
+            console.log("data: ", res.data);
+            // localStorage.setItem("Token", res.data);
+            // localStorage.setItem("lastName", res.data.lastName);
+            // localStorage.setItem("email", res.data.email);
 
-        //     // localStorage.setItem
-        //   })
-        //   .catch(function (error) {
-        //     console.log(error);
-        //   });
-        //   console.log("check point login: ")
-        alert("Do you want login");
-
-        setSucess(false);
+            // localStorage.setItem
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+        // console.log("check point login: ", myData);
+        // alert("Do you want login");
+        
       } catch (error) {
         console.log("register error", error);
       }
+      if(myData) {
+        setSucess(false)
+      }
+      // console.log("check point login: ", sucess);
     } else {
       console.log("form vaild");
     }
   };
   // setSucess(localStorage.getItem("check"));
-
+  
   return (
     <>
       {sucess ? (
-        <Navigate to="/Information" />
+        <Navigate to="/" />
       ) : (
         <div className="login-page">
           <div className="login-form-container">
@@ -165,9 +164,9 @@ export default function Login() {
                 </button>
 
                 <div className="register">
-                <Link className="register-link" to="/register">
-                      <span>Do not have an account ? Register</span>
-                    </Link>
+                  <Link className="register-link" to="/register">
+                    <span>Do not have an account ? Register</span>
+                  </Link>
                 </div>
               </form>
             </div>

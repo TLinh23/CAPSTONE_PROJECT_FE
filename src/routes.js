@@ -10,6 +10,7 @@ import Login from "./pages/Login/Login";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 import ChangePassword from "./pages/Changepassword/Changepassword";
 import RegisterTutor from "./pages/RegisterTutor/RegisterTutor";
+import CreateClassroom from "./pages/CreateClassroom/CreateClassroom";
 
 //list your routes here
 export const routes = [
@@ -25,5 +26,6 @@ export const routes = [
   { path: "/forgotpassword", element: <ForgotPassword/>},
   { path: "/changepassword", element: <ChangePassword/>},
   { path: "/register-tutor", element: <RegisterTutor/>},
+  { path: "/create-classroom", element: <CreateClassroom/>},
 ];
 //Tessssssss
