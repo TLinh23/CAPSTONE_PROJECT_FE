@@ -1,0 +1,54 @@
+/* ClassroomManager Styles */
+.classroom-manager {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .search-bar {
+    margin-bottom: 20px;
+  }
+  
+  .search-bar input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+  
+  .class-list {
+    overflow-x: auto;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  tr:hover {
+    background-color: #f5f5f5;
+    cursor: pointer;
+  }
+  
+  .status {
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 4px;
+  }
+  
+  .status.active {
+    color: green;
+    background-color: rgba(0, 128, 0, 0.2);
+  }
+  
+  .status.suspend {
+    color: red;
+    background-color: rgba(255, 0, 0, 0.2);
+  }

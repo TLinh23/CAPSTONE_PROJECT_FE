@@ -1,0 +1,98 @@
+.class-detail {
+    display: flex;
+    margin: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .class-info {
+    flex: 1;
+    padding: 20px;
+  }
+  
+  .student-list {
+    flex: 1;
+    max-height: 300px;
+    overflow-y: auto;
+    padding: 20px;
+    border-left: 1px solid #ddd;
+  }
+  
+  .status {
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 4px;
+  }
+  
+  .status.active {
+    color: #fff;
+    background-color: #28a745; /* Màu xanh lá cho trạng thái Active */
+  }
+  
+  .status.suspended {
+    color: #fff;
+    background-color: #dc3545; /* Màu đỏ cho trạng thái Suspended */
+  }
+  
+  .status-button {
+    padding: 8px 16px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  
+  .status-button.active {
+    background-color: #dc3545;
+  }
+  
+  .status-button.suspended {
+    background-color: #28a745;
+  }
+  
+  .avatar {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    background-color: #ccc;
+    border-radius: 50%;
+    margin-right: 10px;
+    vertical-align: middle;
+  }
+  
+  .student-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .student-list li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px; /* Khoảng cách giữa các dòng */
+  }
+  
+  .avatar {
+    display: inline-block;
+    width: 40px; /* Điều chỉnh kích thước avatar */
+    height: 40px; /* Điều chỉnh kích thước avatar */
+    background-color: #ccc;
+    border-radius: 50%;
+    margin-right: 10px;
+    vertical-align: middle;
+  }
+  
+  .student-name {
+    flex-grow: 1;
+  }
+  .avatar {
+    width: 40px; /* Điều chỉnh kích thước avatar */
+    height: 40px; /* Điều chỉnh kích thước avatar */
+    border-radius: 50%;
+    margin-right: 10px;
+    object-fit: cover; /* Đảm bảo hình ảnh không bị méo */
+  }
+  

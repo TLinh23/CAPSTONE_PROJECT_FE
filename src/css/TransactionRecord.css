@@ -1,0 +1,132 @@
+.transaction-manager {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.search-bar {
+  margin-bottom: 20px;
+}
+
+.search-bar input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.class-list {
+  overflow-x: auto;
+}
+
+.class-list table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: none;
+  padding-left: 10px;
+}
+
+tr:hover {
+  background-color: none; 
+  cursor: auto;
+}
+
+.status.paid {
+  color: black;
+  background-color: rgba(0, 0, 0, 0.1); 
+}
+
+.status.unpaid {
+  color: red; 
+  background-color: rgba(255, 0, 0, 0.1);
+}
+
+/* CSS cho nút "New Transaction" */
+.new-transaction-btn {
+  background-color: #4CAF50; /* Màu nền cho nút */
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.new-transaction-btn:hover {
+  background-color: #45a049;
+}
+
+/* CSS cho popup */
+.popup-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.popup-container {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  width: 50%;
+}
+
+.close-btn {
+  float: right;
+  font-size: 30px;
+  line-height: 30px;
+  cursor: pointer;
+}
+
+/* CSS cho form trong popup */
+.transaction-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.transaction-form label {
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.transaction-form input,
+.transaction-form textarea {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0 15px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.submit-btn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 15px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.submit-btn:hover {
+  background-color: #45a049;
+}
+
