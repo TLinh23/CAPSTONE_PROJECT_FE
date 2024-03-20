@@ -11,7 +11,6 @@ const initFormValue = {
   // role: "",
   classroomCode: "",
   price: "",
-  days: "",
   timeFrom: "",
   timeTo: "",
   classDuration: "",
@@ -30,7 +29,7 @@ const pages = [
   {
     title: "Time",
     fields: [
-      { label: "Day", type: "", name: "" },
+      { label: "Day", type: "", name: "days" },
       {
         label: "Time",
         type: "",
@@ -182,24 +181,23 @@ export default function CreateClassroom() {
     }
   };
 
-  const handleSubmitDay = async (e) => {
-    setFormData({
-      ...formData,
-      ["days"]: e.target.value,
-    });
-    // console.log
-  };
   // setSucess(localStorage.getItem("check"));
   const checkIndex = (index, field) => {
     if (index == 0) {
       return (
         <div className="input-day">
           <label className="field-label">{field.label}:</label>
-          <form className="form-dayOfWeek">
+          <form className="form-dayOfWeek" >
             {dayOfWeek.map((day, index) => (
               <div key={index} className="dayOfWeek">
                 <label className="day-label">{day}</label>
-                <input type="checkbox" value={day} />
+                <input type="checkbox" value={day} onChange={(e) => {
+                  let n = -1;
+                  setFormData({
+                    ...formData,
+                    [day] :  e.target.value
+                  })
+                }}/>
               </div>
             ))}
           </form>

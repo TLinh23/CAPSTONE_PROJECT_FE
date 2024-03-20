@@ -1,0 +1,41 @@
+.class-list-tutor-page{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    max-width: 100%;
+    min-height: 500px;
+    height: 400px;
+    width: 1000px;
+    margin-top: 100px;
+
+}
+.container-title-class-list-tutor{
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+.title-class-list-tutor{
+    font-size: 25px;
+    font-weight: 600;
+}
+
+.input-class-list-tutor{
+    border: solid rgb(124, 123, 123);
+    border-radius: 8px;
+    width: 250px;
+    height: 40px;
+}
+
+.btn-class-list-tutor{
+    margin-left: 5px;
+    background-color: black;
+    border-radius: 8px;
+    width: 70px;
+    height: 40px;
+    color: white;
+}
+
+
+.btn-class-list-tutor{
+    
+}

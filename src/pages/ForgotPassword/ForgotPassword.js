@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./ForgotPassword.css";
 import { Navigate, Link } from "react-router-dom";
+import axios from "axios";
 
 const initFormValue = {
   email: "",
@@ -25,21 +26,51 @@ export default function ForgotPassword() {
 
     if (isEmptyValue(formValue.email)) {
       error["email"] = "Emai is requied";
-    } else if(validateEmail(formValue.email)) {
-      error["email"] = "Email is requied"
+    } else if (validateEmail(formValue.email)) {
+      error["email"] = "Email is requied";
     }
-    
+
     setFormError(error);
     return Object.keys(error).length === 0;
   };
   const handleChange = () => {};
-  const handlerSubmit = () => {};
+  const handlerSubmit = (event) => {
+    event.preventDefault();
+    if (validateForm()) {
+      try {
+        //api: 
+        axios({
+          method: "post",
+          url: "",
+          data: {
+            Email: formValue.email,
+            
+          },
+        })
+          .then((res) => {
+            // setMyData(res.data)
+            console.log("data: ", res.data);
+            // localStorage.setItem("Token", res.data);
+            // localStorage.setItem("lastName", res.data.lastName);
+            // localStorage.setItem("email", res.data.email);
+
+            // localStorage.setItem
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+        // console.log("check point login: ", myData);
+        // alert("Do you want login");
+      } catch (error) {
+        console.log("register error", error);
+      }
+    }
+  };
   return (
     <>
       {sucess ? (
         <Navigate to="/" />
       ) : (
-        
         <div className="forgotpassword-page">
           <div className="forgotpassword-container">
             <div className="logo-forgotpassword">

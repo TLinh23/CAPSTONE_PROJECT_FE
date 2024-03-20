@@ -79,7 +79,7 @@ export default function Login() {
         console.log("register error", error);
       }
       if(myData) {
-        setSucess(false)
+        setSucess(true)
       }
       // console.log("check point login: ", sucess);
     } else {

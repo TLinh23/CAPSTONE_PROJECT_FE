@@ -11,11 +11,12 @@ import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 import ChangePassword from "./pages/Changepassword/Changepassword";
 import RegisterTutor from "./pages/RegisterTutor/RegisterTutor";
 import CreateClassroom from "./pages/CreateClassroom/CreateClassroom";
+import ClassListTutor from "./pages/ClassListForTutor/ClassListTutor";
 
 //list your routes here
 export const routes = [
   { path: "/order-requests", element: <ListOrderRequestPage /> },
-  { path: "/profile", element: <ProfilePage /> },
+  { path: "/profile", element: <ProfilePage />, },
   { path: "/profile/edit", element: <EditProfilePage /> },
   { path: "/collections", element: <CollectionPage /> },
   { path: "/collections/:slug", element: <CollectionPage /> },
@@ -27,5 +28,6 @@ export const routes = [
   { path: "/changepassword", element: <ChangePassword/>},
   { path: "/register-tutor", element: <RegisterTutor/>},
   { path: "/create-classroom", element: <CreateClassroom/>},
+  { path: "/class-list-tutor", element: <ClassListTutor/>},
 ];
 //Tessssssss
