@@ -12,10 +12,14 @@ import ChangePassword from "./pages/Changepassword/Changepassword";
 import RegisterTutor from "./pages/RegisterTutor/RegisterTutor";
 import CreateClassroom from "./pages/CreateClassroom/CreateClassroom";
 import ClassListTutor from "./pages/ClassListForTutor/ClassListTutor";
+import PageOrderRequestDetail from "./pages/PageOrderRequestDetail";
+import PageCreateOrderRequest from "./pages/PageCreateOrderRequest";
 
 //list your routes here
 export const routes = [
   { path: "/order-requests", element: <ListOrderRequestPage /> },
+  { path: "/order-requests/:id", element: <PageOrderRequestDetail /> },
+  { path: "/order-requests/create", element: <PageCreateOrderRequest /> },
   { path: "/profile", element: <ProfilePage />, },
   { path: "/profile/edit", element: <EditProfilePage /> },
   { path: "/collections", element: <CollectionPage /> },

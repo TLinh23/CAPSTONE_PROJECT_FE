@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import SmallTitle from "../common/SmallTitle";
+import Title from "../common/Title";
 import { format } from "date-fns";
 import PrimaryInput from "../common/PrimaryInput";
 import PrimaryTextArea from "../common/PrimaryTextArea";
@@ -20,7 +20,7 @@ function EditProfile() {
   return (
     <div>
       <div className="bg-[#ffffff] block-border">
-        <SmallTitle>Personal information</SmallTitle>
+        <Title>Personal information</Title>
         <div className="grid grid-cols-1 gap-4 mt-5 md:grid-cols-37">
           <div className="w-full h-auto">
             <div className="flex flex-col items-center justify-between h-full">
@@ -199,7 +199,7 @@ function EditProfile() {
             </div>
           </div>
         </div>
-        <div className="flex justify-end items-center gap-4 mt-6">
+        <div className="flex items-center justify-end gap-4 mt-6">
           <SecondaryBtn
             onClick={() => {
               navigate("/profile");
