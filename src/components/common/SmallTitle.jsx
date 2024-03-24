@@ -2,7 +2,9 @@ import React from "react";
 
 function SmallTitle({ className = "", children }) {
   return (
-    <p className={`text-xl font-medium text-grayDark ${className}`}>
+    <p
+      className={`text-xl md:text-3xl font-semibold text-grayDark ${className}`}
+    >
       {children}
     </p>
   );
