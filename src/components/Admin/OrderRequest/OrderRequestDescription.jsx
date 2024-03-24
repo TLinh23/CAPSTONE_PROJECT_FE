@@ -5,7 +5,12 @@ import PrimaryTextArea from "src/components/common/PrimaryTextArea";
 import SecondaryBtn from "src/components/common/SecondaryBtn";
 import SmallTitle from "src/components/common/SmallTitle";
 
-function OrderRequestDescription({ setActiveTab }) {
+function OrderRequestDescription({
+  setActiveTab,
+  handleClickSendData,
+  newOrderRequest,
+  setNewOrderRequest,
+}) {
   const [isConfirmRequest, setIsConfirmRequest] = useState(false);
   return (
     <div>
@@ -18,7 +23,15 @@ function OrderRequestDescription({ setActiveTab }) {
           1.Writing your teaching description here. Do you have anything in mind
           ?
         </div>
-        <PrimaryTextArea />
+        <PrimaryTextArea
+          onChange={(e) => {
+            setNewOrderRequest({
+              ...newOrderRequest,
+              description: e.target.value,
+            });
+          }}
+          value={newOrderRequest?.description || ""}
+        />
         <div>2.Confirm</div>
         <div className="flex items-center gap-2">
           <PrimaryInputCheckbox
@@ -42,8 +55,9 @@ function OrderRequestDescription({ setActiveTab }) {
           Back
         </SecondaryBtn>
         <PrimaryBtn
+          disabled={!isConfirmRequest}
           onClick={() => {
-            console.log("Do send");
+            handleClickSendData();
           }}
           className="max-w-[200px]"
         >
