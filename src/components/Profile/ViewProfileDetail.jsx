@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Title from "../common/Title";
+import SmallTitle from "../common/SmallTitle";
 import { format } from "date-fns";
 import PrimaryInput from "../common/PrimaryInput";
 import PrimaryTextArea from "../common/PrimaryTextArea";
@@ -19,7 +19,7 @@ function ViewProfileDetail() {
   return (
     <div>
       <div className="bg-[#ffffff] block-border">
-        <Title>Personal information</Title>
+        <SmallTitle>Personal information</SmallTitle>
         <div className="grid grid-cols-1 gap-4 mt-5 md:grid-cols-37">
           <div className="w-full h-auto">
             <div className="flex flex-col items-center justify-between h-full">
