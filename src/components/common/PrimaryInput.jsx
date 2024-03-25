@@ -14,6 +14,7 @@ function PrimaryInput({
   accessoriesRight = null,
   value = undefined,
   disabled = false,
+  isVisible = true,
   ...props
 }) {
   return (
@@ -32,9 +33,11 @@ function PrimaryInput({
           autoFocus={false}
           type={type}
           onChange={onChange}
-          value={value}
+          value={isVisible ? value : "hidden content"}
           disabled={disabled}
-          className={`read-only:bg-[#7F7F7F15] w-full text-sm py-3 rounded-md outline-none px-4 bg-transparent text-black border border-gray focus:border-primary hover:border-primary smooth-transform ${
+          className={`${
+            !isVisible && "input-hidden"
+          } read-only:bg-[#7F7F7F15] w-full text-sm py-3 rounded-md outline-none px-4 bg-transparent text-black border border-gray focus:border-primary hover:border-primary smooth-transform ${
             accessoriesLeft && "pl-11"
           } ${accessoriesRight && "pr-7"}
               ${classNameInput}`}

@@ -6,6 +6,7 @@ import HeartIcon from "../icons/HeartIcon";
 import StarIcon from "../icons/StarIcon";
 import PrimaryBtn from "../common/PrimaryBtn";
 import { useAuthContext } from "../../context/AuthContext";
+import { ROLE_NAME } from "src/constants/constants";
 
 const LIST_ITEM_SEPARATE_PAGE_1 = [
   {
@@ -69,7 +70,7 @@ function HomePageContent() {
       <div className="flex items-center gap-4">
         <PrimaryBtn
           onClick={() => {
-            localStorage.setItem("roleKey", "admin");
+            localStorage.setItem("roleKey", ROLE_NAME.ADMIN);
             localStorage.setItem("userId", "1");
             checkRoleKey();
             checkUserId();
@@ -79,7 +80,7 @@ function HomePageContent() {
         </PrimaryBtn>
         <PrimaryBtn
           onClick={() => {
-            localStorage.setItem("roleKey", "staff");
+            localStorage.setItem("roleKey", ROLE_NAME.STAFF);
             localStorage.setItem("userId", "2");
             checkRoleKey();
             checkUserId();
@@ -89,7 +90,7 @@ function HomePageContent() {
         </PrimaryBtn>
         <PrimaryBtn
           onClick={() => {
-            localStorage.setItem("roleKey", "tutor");
+            localStorage.setItem("roleKey", ROLE_NAME.TUTOR);
             localStorage.setItem("userId", "3");
             checkRoleKey();
             checkUserId();
@@ -99,7 +100,7 @@ function HomePageContent() {
         </PrimaryBtn>
         <PrimaryBtn
           onClick={() => {
-            localStorage.setItem("roleKey", "parent");
+            localStorage.setItem("roleKey", ROLE_NAME.PARENT);
             localStorage.setItem("userId", "4");
             checkRoleKey();
             checkUserId();
