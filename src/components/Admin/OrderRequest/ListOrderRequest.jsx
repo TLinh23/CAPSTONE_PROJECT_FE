@@ -9,7 +9,6 @@ import Title from "src/components/common/Title";
 import useDebounce from "src/hooks/useDebounce";
 import ShowDetail from "../ShowDetail";
 import PrimaryBtn from "src/components/common/PrimaryBtn";
-import SecondaryBtn from "src/components/common/SecondaryBtn";
 import RenderStatus from "../RenderStatus";
 import DeniedBtn from "src/components/common/DeniedBtn";
 
@@ -130,7 +129,7 @@ const columns = [
         accessor: (data) => {
           return (
             <div className="flex items-center gap-4">
-              <a href={`/admin/order-requests/${data?.id}`}>
+              <a href={`/order-requests/${data?.id}`}>
                 <ShowDetail />
               </a>
             </div>
