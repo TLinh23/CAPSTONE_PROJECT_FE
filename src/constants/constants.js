@@ -11,3 +11,10 @@ export const mainMenu = [
     listActiveRouter: [TUTOR_HREF.CLASSROOM],
   },
 ];
+
+export const ROLE_NAME = {
+  ADMIN: "admin",
+  STAFF: "staff",
+  TUTOR: "tutor",
+  PARENT: "parent",
+};

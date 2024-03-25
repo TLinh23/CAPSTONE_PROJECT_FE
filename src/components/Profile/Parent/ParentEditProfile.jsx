@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import FilterDropDown from "src/components/common/FilterDropDown";
 import PrimaryBtn from "src/components/common/PrimaryBtn";
 import PrimaryInput from "src/components/common/PrimaryInput";
-import PrimaryTextArea from "src/components/common/PrimaryTextArea";
 import SecondaryBtn from "src/components/common/SecondaryBtn";
 import Title from "src/components/common/Title";
 import UploadImage from "src/components/common/UploadImage";
@@ -15,7 +14,6 @@ function ParentEditProfile() {
   const { imageUrlResponse, handleUploadImage, imageUpload } = useUploadImage();
   const [gender, setGender] = useState();
   const navigate = useNavigate();
-  console.log("imageUpload: ", imageUpload);
 
   return (
     <div>
@@ -23,7 +21,7 @@ function ParentEditProfile() {
         <Title>Update personal information</Title>
         <div className="grid grid-cols-1 gap-4 mt-5 md:grid-cols-37">
           <div className="w-full h-auto">
-            <div className="flex flex-col items-center justify-between h-full">
+            <div className="flex flex-col items-center justify-between">
               <div>
                 <div className="mb-5 text-xl font-semibold text-center">
                   Avatar
@@ -40,6 +38,8 @@ function ParentEditProfile() {
                 </div>
               </div>
             </div>
+            <div className="mt-5">Role: Staff</div>
+            <div className="mt-3">Email: ducucucucu@gmail.com</div>
           </div>
           <div className="flex flex-col gap-4">
             <PrimaryInput
@@ -119,7 +119,7 @@ function ParentEditProfile() {
         <div className="flex items-center justify-end gap-4 mt-6">
           <SecondaryBtn
             onClick={() => {
-              navigate("/parent/profile");
+              navigate(-1);
             }}
             className="md:max-w-[222px]"
           >

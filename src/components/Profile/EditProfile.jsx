@@ -1,21 +1,20 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
 import ParentEditProfile from "./Parent/ParentEditProfile";
+import { useParams } from "react-router-dom";
+import { useAuthContext } from "src/context/AuthContext";
+import { ROLE_NAME } from "src/constants/constants";
 
 function EditProfile() {
-  const location = useLocation();
-  const routes = [
-    { path: "/parent", component: ParentEditProfile },
-    { path: "/tutor", component: ParentEditProfile },
-    { path: "/staff", component: ParentEditProfile },
-  ];
-
-  const matchingRoute = routes.find((route) =>
-    location.pathname.includes(route.path)
+  const { id } = useParams();
+  const { userId, roleKey } = useAuthContext();
+  console.log("id: ", id);
+  return (
+    <div>
+      {String(id) === String(userId) && roleKey === ROLE_NAME.PARENT && (
+        <ParentEditProfile />
+      )}
+    </div>
   );
-  const Component = matchingRoute ? matchingRoute.component : null;
-
-  return <div>{Component && <Component />}</div>;
 }
 
 export default EditProfile;

@@ -11,3 +11,8 @@
 .custom-checkbox:checked + div svg {
   display: block;
 }
+
+.input-hidden {
+  filter: blur(3px);
+  pointer-events: none;
+}
