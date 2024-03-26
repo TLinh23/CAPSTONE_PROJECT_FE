@@ -34,15 +34,19 @@ function TutorProfileDetail(props) {
     <div className="bg-[#ffffff] block-border">
       <Title>Personal information</Title>
       <div className="grid grid-cols-1 gap-4 mt-5 md:grid-cols-155530">
-        <div className="flex flex-col h-full">
-          <div>
-            <div className="mb-5 text-xl font-semibold text-center">Avatar</div>
-            <div className="flex items-center justify-center border rounded border-primary w-[200px] h-[200px]">
-              <img
-                className="object-cover w-full h-full rounded"
-                src="https://vcdn-thethao.vnecdn.net/2023/09/03/ronaldo-850-jpeg-1693687478-1789-1693688039.jpg"
-                alt=""
-              />
+        <div className="w-full h-auto">
+          <div className="flex flex-col items-center justify-between">
+            <div>
+              <div className="mb-5 text-xl font-semibold text-center">
+                Avatar
+              </div>
+              <div className="flex items-center justify-center border rounded border-primary w-[200px] h-[200px]">
+                <img
+                  className="object-cover w-full h-full rounded"
+                  src="https://vcdn-thethao.vnecdn.net/2023/09/03/ronaldo-850-jpeg-1693687478-1789-1693688039.jpg"
+                  alt=""
+                />
+              </div>
             </div>
           </div>
           <div className="mt-5">Role: Tutor</div>
@@ -245,6 +249,18 @@ function TutorProfileDetail(props) {
             </PrimaryBtn>
           </div>
         )}
+      {roleKey === ROLE_NAME.PARENT && (
+        <div className="flex justify-center mt-8">
+          <PrimaryBtn
+            className="md:max-w-[222px]"
+            onClick={() => {
+              navigate(`/profile/${dataProfileDetail?.id}/edit`);
+            }}
+          >
+            Send Request
+          </PrimaryBtn>
+        </div>
+      )}
       <PopupTemplate
         setShowDialog={setIsShowPopupAddStudent}
         showDialog={isShowPopupAddStudent}

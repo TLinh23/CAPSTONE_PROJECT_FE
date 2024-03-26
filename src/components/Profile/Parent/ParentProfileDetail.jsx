@@ -11,6 +11,7 @@ import AddStudentPopup from "./AddStudentPopup";
 import EditStudentPopup from "./EditStudentPopup";
 import { useAuthContext } from "src/context/AuthContext";
 import { ROLE_NAME } from "src/constants/constants";
+import PrimarySmallTitle from "src/components/common/PrimarySmallTitle";
 
 function ParentProfileDetail(props) {
   const { dataProfileDetail } = props;
@@ -33,19 +34,23 @@ function ParentProfileDetail(props) {
     <div className="bg-[#ffffff] block-border">
       <Title>Personal information</Title>
       <div className="grid grid-cols-1 gap-4 mt-5 md:grid-cols-155530">
-        <div className="flex flex-col h-full">
-          <div>
-            <div className="mb-5 text-xl font-semibold text-center">Avatar</div>
-            <div className="flex items-center justify-center border rounded border-primary w-[200px] h-[200px]">
-              <img
-                className="object-cover w-full h-full rounded"
-                src="https://vcdn-thethao.vnecdn.net/2023/09/03/ronaldo-850-jpeg-1693687478-1789-1693688039.jpg"
-                alt=""
-              />
+        <div className="w-full h-auto">
+          <div className="flex flex-col items-center justify-between">
+            <div>
+              <div className="mb-5 text-xl font-semibold text-center">
+                Avatar
+              </div>
+              <div className="flex items-center justify-center border rounded border-primary w-[200px] h-[200px]">
+                <img
+                  className="object-cover w-full h-full rounded"
+                  src="https://vcdn-thethao.vnecdn.net/2023/09/03/ronaldo-850-jpeg-1693687478-1789-1693688039.jpg"
+                  alt=""
+                />
+              </div>
             </div>
           </div>
-          <div className="mt-5">Role: Staff</div>
-          <div className="mt-3">Email: ducucucucu@gmail.com</div>
+          <div className="mt-5">Role: Parent</div>
+          <div className="mt-3">Email: parent@gmail.com</div>
         </div>
         <div className="flex flex-col gap-4">
           <PrimaryInput
@@ -71,9 +76,9 @@ function ParentProfileDetail(props) {
             disabled
           />
           <div>
-            <div className="mb-2 text-sm font-bold text-gray">
+            <PrimarySmallTitle className="mb-2">
               Date of birth
-            </div>
+            </PrimarySmallTitle>
             <input
               max={new Date().toISOString().slice(0, 10)}
               value={
