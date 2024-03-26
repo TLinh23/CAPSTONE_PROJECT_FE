@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import FilterDropDown from "src/components/common/FilterDropDown";
 import PrimaryBtn from "src/components/common/PrimaryBtn";
 import PrimaryInput from "src/components/common/PrimaryInput";
+import PrimarySmallTitle from "src/components/common/PrimarySmallTitle";
 import UploadImage from "src/components/common/UploadImage";
 import useUploadImage from "src/hooks/useUploadImage";
 
@@ -27,9 +28,9 @@ function AddStudentPopup() {
               disabled
             />
             <div>
-              <div className="mb-2 text-sm font-bold text-gray">
+              <PrimarySmallTitle className="mb-2">
                 Date of birth
-              </div>
+              </PrimarySmallTitle>
               <input
                 max={new Date().toISOString().slice(0, 10)}
                 value={

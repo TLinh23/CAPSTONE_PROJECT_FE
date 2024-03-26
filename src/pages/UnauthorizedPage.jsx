@@ -1,12 +1,12 @@
 import React from "react";
 
-function NotFound({ className = "" }) {
+function UnauthorizedPage({ className = "" }) {
   return (
     <div className={`flex items-center justify-center h-screen ${className}`}>
       <div className="text-center">
-        <h1 className="mb-4 text-6xl font-semibold text-red-500">404</h1>
+        <h1 className="mb-4 text-6xl font-semibold text-red-500">401</h1>
         <p className="mb-4 text-lg text-gray-600">
-          Oops! Looks like you&apos;re lost.
+          Oops! Looks like you don&apos;t have permission.
         </p>
         <div className="animate-bounce">
           <svg
@@ -35,4 +35,4 @@ function NotFound({ className = "" }) {
   );
 }
 
-export default NotFound;
+export default UnauthorizedPage;

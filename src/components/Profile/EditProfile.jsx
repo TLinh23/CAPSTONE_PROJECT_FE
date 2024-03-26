@@ -4,6 +4,9 @@ import { useParams } from "react-router-dom";
 import { useAuthContext } from "src/context/AuthContext";
 import { ROLE_NAME } from "src/constants/constants";
 import TutorEditProfile from "./Tutor/TutorEditProfile";
+import StaffEditProfile from "./Staff/StaffEditProfile";
+import NotFound from "src/pages/NotFound";
+import UnauthorizedPage from "src/pages/UnauthorizedPage";
 
 function EditProfile() {
   const { id } = useParams();
@@ -16,6 +19,12 @@ function EditProfile() {
       )}
       {String(id) === String(userId) && roleKey === ROLE_NAME.TUTOR && (
         <TutorEditProfile />
+      )}
+      {String(id) === String(userId) && roleKey === ROLE_NAME.STAFF && (
+        <StaffEditProfile />
+      )}
+      {String(id) !== String(userId) && (
+        <UnauthorizedPage className="height-not-found-page" />
       )}
     </div>
   );

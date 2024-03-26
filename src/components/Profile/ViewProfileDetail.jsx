@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { useQueries } from "react-query";
 import { getListTodoWithObj } from "src/apis/tutor-module";
 import TutorProfileDetail from "./Tutor/TutorProfileDetail";
+import StaffProfileDetail from "./Staff/StaffProfileDetail";
 
 const parentTest = {
   id: 4,
@@ -17,7 +18,12 @@ const tutorTest = {
   phone: "0916324234",
   address: "nghia dia",
 };
-
+const staffTest = {
+  id: 2,
+  roleKey: "staff",
+  phone: "0916324234",
+  address: "nghia dia",
+};
 function ViewProfileDetail() {
   const { id } = useParams();
   const [dataProfileDetail, setDataProfileDetail] = useState(undefined);
@@ -29,7 +35,7 @@ function ViewProfileDetail() {
       queryFn: async () => {
         if (id) {
           const response = await getListTodoWithObj(id);
-          setDataProfileDetail(tutorTest);
+          setDataProfileDetail(staffTest);
           return response?.data;
         }
       },
@@ -45,7 +51,9 @@ function ViewProfileDetail() {
       {dataProfileDetail?.roleKey === "tutor" && (
         <TutorProfileDetail dataProfileDetail={dataProfileDetail} />
       )}
-      {dataProfileDetail?.roleKey === "staff" && <div>Staff</div>}
+      {dataProfileDetail?.roleKey === "staff" && (
+        <StaffProfileDetail dataProfileDetail={dataProfileDetail} />
+      )}
     </div>
   );
 }

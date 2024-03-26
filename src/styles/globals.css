@@ -16,3 +16,7 @@
   filter: blur(3px);
   pointer-events: none;
 }
+
+.height-not-found-page {
+  height: calc(100vh - 180px);
+}
