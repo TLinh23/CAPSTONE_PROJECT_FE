@@ -11,6 +11,7 @@ function FilterDropDown({
   className = "",
   required = "",
   type = "",
+  classNameDropdown = "",
   disabled = false,
 }) {
   const node = useRef();
@@ -106,7 +107,7 @@ function FilterDropDown({
       >
         <div
           id="list-dropdown"
-          className="smooth-transform z-50 flex w-full flex-col gap-1 rounded-b-xl  bg-[#fff] py-3  max-h-[250px] overflow-y-auto"
+          className={`smooth-transform z-50 flex w-full flex-col gap-1 rounded-b-xl  bg-[#fff] py-3  max-h-[250px] overflow-y-auto ${classNameDropdown}`}
         >
           {listDropdown?.map((i, index) => (
             <DropDownItem

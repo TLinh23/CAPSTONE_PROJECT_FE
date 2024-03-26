@@ -3,6 +3,7 @@ import ParentEditProfile from "./Parent/ParentEditProfile";
 import { useParams } from "react-router-dom";
 import { useAuthContext } from "src/context/AuthContext";
 import { ROLE_NAME } from "src/constants/constants";
+import TutorEditProfile from "./Tutor/TutorEditProfile";
 
 function EditProfile() {
   const { id } = useParams();
@@ -12,6 +13,9 @@ function EditProfile() {
     <div>
       {String(id) === String(userId) && roleKey === ROLE_NAME.PARENT && (
         <ParentEditProfile />
+      )}
+      {String(id) === String(userId) && roleKey === ROLE_NAME.TUTOR && (
+        <TutorEditProfile />
       )}
     </div>
   );
