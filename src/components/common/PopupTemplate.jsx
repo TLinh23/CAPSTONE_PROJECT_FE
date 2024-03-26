@@ -5,7 +5,13 @@ import MotionDialogContent from "./MotionDialogContent";
 import CloseDialogIcon from "../icons/CloseDialogIcon";
 import SmallTitle from "./SmallTitle";
 
-function PopupTemplate({ children, title = "", setShowDialog, showDialog }) {
+function PopupTemplate({
+  children,
+  title = "",
+  setShowDialog,
+  showDialog,
+  classNameWrapper = "",
+}) {
   return (
     // @ts-ignore
     <AnimatePresence>
@@ -22,7 +28,7 @@ function PopupTemplate({ children, title = "", setShowDialog, showDialog }) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="z-50 md:min-w-[786px] min-w-[460px] !bg-transparent"
+            className={`z-50 md:min-w-[786px] min-w-[460px] !bg-transparent ${classNameWrapper}`}
             style={{ width: 350 }}
           >
             <motion.div
