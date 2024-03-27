@@ -61,7 +61,7 @@ export default function Login() {
           },
         })
           .then((res) => {
-            setMyData(res.data)
+            // setMyData(res.data)
             console.log("data: ", res.data);
             // localStorage.setItem("Token", res.data);
             // localStorage.setItem("lastName", res.data.lastName);

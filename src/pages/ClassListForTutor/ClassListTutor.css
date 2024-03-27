@@ -1,42 +1,68 @@
-.class-list-tutor-page{
-    position: relative;
+.class-list-tutor-page {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  flex-direction: column;
+  text-align: center;
+  max-width: 100%;
+  min-height: 100%;
+  height: 100%;
+  width: 100%;
+  /* margin-top: 100px; */
+  /* z-index: 1; */
+  /* background-color: rgba(0,0,0,0.4); */
+}
+.container-title-class-list-tutor {
     display: flex;
-    justify-content: center;
+    flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.title-class-list-tutor {
+  font-size: 25px;
+  font-weight: 600;
+  margin-left: 30px;
+}
+
+.container-title-class-list-tutor form{
+    margin-right: 30px;
+}
+
+.input-class-list-tutor {
+  border: solid rgb(124, 123, 123);
+  border-radius: 8px;
+  width: 400px;
+  height: 40px;
+}
+
+.btn-class-list-tutor {
+  margin-left: 5px;
+  background-color: black;
+  border-radius: 8px;
+  width: 70px;
+  height: 40px;
+  color: white;
+
+  &:hover{
+    background-color: rgb(167, 166, 166);
+  }
+}
+
+
+table, th, td{
+    border: 1px solid black;
     
-    max-width: 100%;
-    min-height: 500px;
-    height: 400px;
-    width: 1000px;
-    margin-top: 100px;
-
 }
-.container-title-class-list-tutor{
-    justify-content: space-between;
-    margin-bottom: 30px;
+th{
+    height: 70px;
 }
-
-.title-class-list-tutor{
-    font-size: 25px;
-    font-weight: 600;
+td{
+  height: 100px;
 }
-
-.input-class-list-tutor{
-    border: solid rgb(124, 123, 123);
-    border-radius: 8px;
-    width: 250px;
-    height: 40px;
-}
-
-.btn-class-list-tutor{
-    margin-left: 5px;
-    background-color: black;
-    border-radius: 8px;
-    width: 70px;
-    height: 40px;
-    color: white;
-}
-
-
-.btn-class-list-tutor{
-    
+table{
+    border-collapse: collapse;
+    margin-left: 10px;
+    margin-right: 10px;
 }

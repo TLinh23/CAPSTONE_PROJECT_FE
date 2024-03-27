@@ -102,13 +102,36 @@
     display: flex;
     flex-direction: row;
     gap: 10px;
+    justify-content: space-between;
     align-items: center;
   }
-  
-  .container-register  .fields .input-field label {
+
+  .gender-register-tutor{
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .gender-register-tutor .male{
+    margin-left: -100px;
+    margin-right: 80px;
+    margin-top: 5px;
+    height: 18px;
+    width: 18px;
+  }
+
+  .gender-register-tutor .female{
+    margin-left: -80px;
+    margin-top: 5px;
+    height: 18px;
+    width: 18px;
+  }
+
+  .input-field label {
+    display: flex;
     font-weight: 500;
     color: #333;
-    width: 120px;
+    width: 150px;
+    /* background-color: aqua; */
   }
   
   .container-register  .fields .input-field input {

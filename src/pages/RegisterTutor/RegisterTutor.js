@@ -13,9 +13,11 @@ const initFormValue = {
   password: "",
   confirmPassword: "",
   fullName: "",
+  gender: "",
   phone: "",
   address: "",
   cvTitle: "",
+  dob: "",
   cv: "",
   description: "",
 };
@@ -33,27 +35,28 @@ const pages = [
     title: "Your Information 1",
     fields: [
       { label: "Full Name", type: "text", name: "fullName" },
+      { label: "Gender", type: "", name: "gender" },
       { label: "Phone", type: "text", name: "phone" },
       { label: "Address", type: "text", name: "address" },
-      { label: "Education Level", type: "text", name: "address" },
-      { label: "School", type: "text", name: "address" },
+      { label: "Date of birth", type: "text", name: "dob" },
+      { label: "Avatar", type: "file", name: "avatar" },
     ],
   },
   {
     title: "Your Information 2",
     fields: [
-      { label: "CMND", type: "text", name: "address" },
-      { label: "Front CMND", type: "file", name: "address" },
-      { label: "Back CMND", type: "file", name: "address" },
-      { label: "Avatar", type: "file", name: "address" },
+      { label: "CMND", type: "text", name: "CMND" },
+      { label: "Front CMND", type: "file", name: "frontCMND" },
+      { label: "Back CMND", type: "file", name: "backCMND" },
     ],
   },
   {
     title: "Upload CV",
     fields: [
-      { label: "CV Title", type: "text", name: "cvTitle" },
+      { label: "Education Level", type: "text", name: "educationLevel" },
+      { label: "School", type: "text", name: "school" },
+      { label: "Graduation year", type: "text", name: "graduationYear" },
       { label: "CV", type: "file", name: "cv" },
-      { label: "Description", type: "text", name: "description" },
     ],
   },
   {
@@ -169,35 +172,33 @@ export default function RegisterTutor() {
       localStorage.setItem("role", "success");
 
       try {
-        // axios({
-        //     method: 'post',
-        //     url: 'https://localhost:5000/api/Account/register-tutor',
-        //     data: {
-        //         FirstName: formValue.firstName,
-        //         LastName: formValue.lastName,
-        //         Email: formValue.email,
-        //         Password: formValue.password,
-        //         UserName: formValue.userName,
-        //         Phone: formValue.phone,
-        //         CV: formData,
-        //         CVTitle: formValue.cvTitle,
-        //         Address: formValue.address,
-        //         Description: formValue.description,
+        axios({
+          // method: "post",
+          // url: "https://localhost:5000/api/Account/register-tutor",
+          // data: {
+          //   FullName: formData.fullName,
+          //   Email: formData.email,
+          //   Password: formData.password,
+          //   Gender: formData.gender,
+          //   Phone: formData.phone,
+          //   dob: formData.dob,
+          //   CV: formData.cv,
+          //   Address: formData.address,
+          //   Description: formData.description,
+          // },
+        })
+          .then((res) => {
+            //     // setData(res.data)
+            console.log("data: ", res.data);
+            // localStorage.setItem("firstName", res.data.firstName);
+            // localStorage.setItem("lastName", res.data.lastName)
+            // localStorage.setItem("email", res.data.email)
 
-        //     }
-        //   }).then( (res) => {
-        //     //     // setData(res.data)
-        //         console.log("data: ", res.data);
-        //         localStorage.setItem("firstName", res.data.firstName);
-        //         localStorage.setItem("lastName", res.data.lastName)
-        //         localStorage.setItem("email", res.data.email
-        //         )
-
-        //         // localStorage.setItem
-        //       })
-        //       .catch(function (error) {
-        //         console.log(error);
-        //       });
+            // localStorage.setItem
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
         setSucess(false);
         //   console.log("check register: ", sucess)
       } catch (error) {
@@ -246,57 +247,117 @@ export default function RegisterTutor() {
                   {pages[currentPage].fields.map((field, index) => (
                     <div key={index} className="input-field">
                       {currentPage === pages.length - 1 ? (
-                        
                         <div>
                           {index === 0 ? (
                             <>
-                            <textarea
-                            type={field.type}
-                            placeholder={
-                              currentPage === pages.length - 1
-                                ? ""
-                                : `Enter ${field.label}`
-                            }
-                            value={formData[field.name]}
-                            onChange={(e) => {
-                              setFormData({
-                                ...formData,
-                                [field.name]: e.target.value,
-                              });
-                              setErrors({ ...errors, [field.name]: "" });
-                            }}
-                            required
-                          />
+                              <textarea
+                                // type={field.type}
+                                placeholder={
+                                  currentPage === pages.length - 1
+                                    ? ""
+                                    : `Enter ${field.label}`
+                                }
+                                value={formData[field.name]}
+                                onChange={(e) => {
+                                  setFormData({
+                                    ...formData,
+                                    [field.name]: e.target.value,
+                                  });
+                                  setErrors({ ...errors, [field.name]: "" });
+                                }}
+                                required
+                              />
                             </>
-                          ): (
+                          ) : (
                             <>
-                            <input
-                            type={field.type}
-                            placeholder={
-                              currentPage === pages.length - 1
-                                ? ""
-                                : `Enter ${field.label}`
-                            }
-                            value={formData[field.name]}
-                            onChange={(e) => {
-                              setFormData({
-                                ...formData,
-                                [field.name]: e.target.value,
-                              });
-                              setErrors({ ...errors, [field.name]: "" });
-                            }}
-                            required
-                          />
-                          <label>{field.label}</label>
+                              <input
+                                type={field.type}
+                                placeholder={
+                                  currentPage === pages.length - 1
+                                    ? ""
+                                    : `Enter ${field.label}`
+                                }
+                                value={formData[field.name]}
+                                onChange={(e) => {
+                                  setFormData({
+                                    ...formData,
+                                    [field.name]: e.target.value,
+                                  });
+                                  setErrors({ ...errors, [field.name]: "" });
+                                }}
+                                required
+                              />
+                              <label>{field.label}</label>
                             </>
                           )}
-                          
+
                           {/* <label>{field.label}</label> */}
                           {/* {errors[field.name] && (
                         <span className="error-message">
                           {errors[field.name]}
                         </span>
                       )} */}
+                        </div>
+                      ) : currentPage === pages.length - 4 ? (
+                        <div>
+                          {index === 1 ? (
+                            <div className="">
+                              <label>{field.label}</label>
+                              <div className="gender-register-tutor">
+                                <label>Male</label>
+                                <input
+                                  type="radio"
+                                  
+                                  id="male"
+                                  className="male"
+                                  name="male"
+                                  value=""
+                                  onClick={() => {
+                                    formData["gender"] = "male";
+                                    // Cập nhật formData ở đây nếu cần thiết
+                                  }}
+                                />
+                                <label>Female</label>
+                                <input
+                                  type="radio"
+                                  id="female"
+                                  className="female"
+                                  name="female"
+                                  value="female"
+                                  onClick={() => {
+                                    formData["gender"] = "female";
+                                    // Cập nhật formData ở đây nếu cần thiết
+                                  }}
+                                />
+                              </div>
+                            </div>
+                          ) : (
+                            <div>
+                              <label>{field.label}</label>
+                              <input
+                                type={field.type}
+                                placeholder={
+                                  currentPage === pages.length - 1
+                                    ? ""
+                                    : `Enter ${field.label}`
+                                }
+                                value={formData[field.name]}
+                                onChange={(e) => {
+                                  setFormData({
+                                    ...formData,
+                                    [field.name]: e.target.value,
+                                  });
+                                  setErrors({ ...errors, [field.name]: "" });
+                                }}
+                                required
+                              />
+                              {errors[field.name] && (
+                                <span className="error-message">
+                                  {errors[field.name]}
+                                </span>
+                              )}
+                            </div>
+                          )}
                         </div>
                       ) : (
                         <div>
