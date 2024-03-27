@@ -1,26 +1,28 @@
-import "./ClassListTutor.css";
+import "./ClassListParent.css";
 import React from "react";
 import { Link } from "react-router-dom";
 
 const data = [
-  { id: 1, ClassName: "Wasif", Subject: 21, Time: "23/12/2023", Status: "pending", Action:  "" },
-  { id: 2, ClassName: "Ali", Subject: 19, Time: "23/12/2023", Status: "pending", Action: "" },
-  { id: 3, ClassName: "Saad", Subject: 16, Time: "23/12/2023", Status: "pending", Action: "" },
-  { id: 4, ClassName: "Asad", Subject: 25, Time: "25/12/2023", Status: "pending", Action: "" },
+  { No: 1, ClassroomName: "Wasif", Subject: 21, Level: "1",StartDate: "23/12/2023", StudentName: "Hoàng Văn A", Status: "pending", Action:  "" },
+  { No: 2, ClassroomName: "Ali", Subject: 19, Level: "2",StartDate: "23/12/2023", StudentName: "Hoàng Văn B", Status: "pending", Action: "" },
+  { No: 3, ClassroomName: "Saad", Subject: 16, Level: "3",StartDate: "23/12/2023", StudentName: "Hoàng Văn C", Status: "pending", Action: "" },
+  { No: 4, ClassroomName: "Asad", Subject: 25, Level: "3",StartDate: "23/12/2023", StudentName: "Hoàng Văn D", Status: "pending", Action: "" },
 ];
 
-export default function ClassListTutor() {
+export default function ClassListParent() {
   const renderTableData = () => {
     return data.map((student, index) => {
-      const { id, ClassName, Subject, Time, Status, Action } = student;
+      const { No, ClassroomName, Subject,Level,StartDate, StudentName, Status, Action } = student;
       return (
-        <tr key={id}>
-          <td>{id}</td>
-          <td>{ClassName}</td>
+        <tr key={No}>
+          <td>{No}</td>
+          <td>{ClassroomName}</td>
           <td>{Subject}</td>
-          <td>{Time}</td>
+          <td>{Level}</td>
+          <td>{StartDate}</td>
+          <td>{StudentName}</td>
           <td>{Status}</td>
-          <td><Link to={`/detail-classroom-tutor/${id}`}>Detail</Link></td>
+          <td><Link to={`/detail-classroom-tutor/${No}`}>Detail</Link></td>
         </tr>
       );
     });

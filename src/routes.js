@@ -11,10 +11,9 @@ import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 import ChangePassword from "./pages/Changepassword/Changepassword";
 import RegisterTutor from "./pages/RegisterTutor/RegisterTutor";
 import CreateClassroom from "./pages/CreateClassroom/CreateClassroom";
-import ClassListTutor from "./pages/ClassListForTutor/ClassListTutor";
+import ClassListParent from "./pages/ClassListForParent/ClassListParent";
 import PageOrderRequestDetail from "./pages/PageOrderRequestDetail";
 import PageCreateOrderRequest from "./pages/PageCreateOrderRequest";
-import DetailClassroomTutor from "./pages/DetailClassroomTutor/DetailClassroomTutor";
 
 //list your routes here
 export const routes = [
@@ -33,7 +32,6 @@ export const routes = [
   { path: "/changepassword", element: <ChangePassword/>},
   { path: "/register-tutor", element: <RegisterTutor/>},
   { path: "/create-classroom", element: <CreateClassroom/>},
-  { path: "/class-list-tutor", element: <ClassListTutor/>},
-  { path: "/detail-classroom-tutor/:id", element: <DetailClassroomTutor/>},
+  { path: "/class-list-parent", element: <ClassListParent/>},
 ];
 //Tessssssss
