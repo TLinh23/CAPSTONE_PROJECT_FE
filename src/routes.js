@@ -9,7 +9,9 @@ import ListOrderRequestPage from "./pages/ListOrderRequestPage";
 import PageOrderRequestDetail from "./pages/PageOrderRequestDetail";
 import PageCreateOrderRequest from "./pages/PageCreateOrderRequest";
 //loc
-import AccountManager from "./components/Staff/AccountManager";
+import AccountManager from "./components/Staff/AccountManager/ListAccountManager";
+//trang account detail
+import AccountDetail from "./pages/PageAccountDetail";
 
 //list your routes here
 export const routes = [
@@ -28,5 +30,7 @@ export const routes = [
   { path: "/", element: <NewHomePage /> },
   { path: "*", element: <NotFound /> },
   //loc
-  {path: "/accountManager", element: <AccountManager/>}
+  {path: "/accountManager", element: <AccountManager/>},
+  {path: "/AccountDetail/:id", element: <AccountDetail/>}
+
 ];
