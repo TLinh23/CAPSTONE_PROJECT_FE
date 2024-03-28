@@ -8,6 +8,8 @@ import EditProfilePage from "./pages/EditProfilePage";
 import ListOrderRequestPage from "./pages/ListOrderRequestPage";
 import PageOrderRequestDetail from "./pages/PageOrderRequestDetail";
 import PageCreateOrderRequest from "./pages/PageCreateOrderRequest";
+//loc
+import AccountManager from "./components/Staff/AccountManager";
 
 //list your routes here
 export const routes = [
@@ -25,4 +27,6 @@ export const routes = [
   { path: "/todos", element: <TodoListPage /> },
   { path: "/", element: <NewHomePage /> },
   { path: "*", element: <NotFound /> },
+  //loc
+  {path: "/accountManager", element: <AccountManager/>}
 ];
