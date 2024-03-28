@@ -1,15 +1,15 @@
 import React, { useState } from "react";
-import Layout from "../layout/Layout"; 
-import FilterDropDown from "../common/FilterDropDown";
-import Pagination from "../common/Pagination";
-import SearchInput from "../common/SearchInput";
-import Table from "../common/Table";
-import Title from "../common/Title";
+import Layout from "../../layout/Layout"; 
+import FilterDropDown from "../../common/FilterDropDown";
+import Pagination from "../../common/Pagination";
+import SearchInput from "../../common/SearchInput";
+import Table from "../../common/Table";
+import Title from "../../common/Title";
 import useDebounce from "src/hooks/useDebounce";
-import PrimaryBtn from "../common/PrimaryBtn";
-import RenderStatus from "../Admin/RenderStatus"; 
-import DeniedBtn from "../common/DeniedBtn";
-import ShowDetail from "../Admin/ShowDetail";
+import PrimaryBtn from "../../common/PrimaryBtn";
+import RenderStatus from "../../Admin/RenderStatus"; 
+import DeniedBtn from "../../common/DeniedBtn";
+import ShowDetail from "../../Admin/ShowDetail";
 // Dữ liệu giả định
 const mockData = [
   { id: 1, name: "John Doe", role: "Admin", phone: "123-456-7890", status: "Active" },
