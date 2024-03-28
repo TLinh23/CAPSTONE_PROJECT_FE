@@ -16,10 +16,15 @@ const initFormValue = {
   gender: "",
   phone: "",
   address: "",
-  cvTitle: "",
+  cmnd: "",
+  frontCMND: "",
+  backCMND: "",
+  educationLevel: "",
+  graduationYear: "",
+  avatar: "",
+  school: "",
   dob: "",
   cv: "",
-  description: "",
 };
 
 const pages = [
@@ -39,13 +44,13 @@ const pages = [
       { label: "Phone", type: "text", name: "phone" },
       { label: "Address", type: "text", name: "address" },
       { label: "Date of birth", type: "text", name: "dob" },
-      { label: "Avatar", type: "file", name: "avatar" },
+      { label: "CMND", type: "text", name: "CMND" },
     ],
   },
   {
     title: "Your Information 2",
     fields: [
-      { label: "CMND", type: "text", name: "CMND" },
+      { label: "Avatar", type: "file", name: "avatar" },
       { label: "Front CMND", type: "file", name: "frontCMND" },
       { label: "Back CMND", type: "file", name: "backCMND" },
     ],
@@ -87,7 +92,7 @@ export default function RegisterTutor() {
   const [formData, setFormData] = useState(initFormValue);
   const [errors, setErrors] = useState({});
   const [sucess, setSucess] = useState(false);
-  // const [selectedFile, setSelectFile] = useState();
+  const [selectedFile, setSelectFile] = useState();
 
   const nextPage = () => {
     if (validateForm()) {
@@ -110,10 +115,10 @@ export default function RegisterTutor() {
   //   });
   // };
 
-  // const handleChangeFile = (e) => {
-  //   console.log("file: ", e.target.files[0]);
-  //   setSelectFile(e.target.files[0]);
-  // };
+  const handleChangeFile = (e) => {
+    console.log("file: ", e.target.files[0]);
+    setSelectFile(e.target.files[0]);
+  };
 
   // const formData = new FormData();
   // formData.append("File", selectedFile)
@@ -173,19 +178,26 @@ export default function RegisterTutor() {
 
       try {
         axios({
-          // method: "post",
-          // url: "https://localhost:5000/api/Account/register-tutor",
-          // data: {
-          //   FullName: formData.fullName,
-          //   Email: formData.email,
-          //   Password: formData.password,
-          //   Gender: formData.gender,
-          //   Phone: formData.phone,
-          //   dob: formData.dob,
-          //   CV: formData.cv,
-          //   Address: formData.address,
-          //   Description: formData.description,
-          // },
+          method: "post",
+          url: "https://localhost:5000/api/Account/register-tutor",
+          data: {
+            FullName: formData.fullName,
+            Email: formData.email,
+            CMND: formData.cmnd,
+            FrontCMND: selectedFile,
+            BackCMND: formData.backCMND,
+            Avatar: formData.avatar,
+            Password: formData.password,
+            Gender: formData.gender,
+            Phone: formData.phone,
+            Dob: formData.dob,
+            EducationLevel: formData.educationLevel,
+            GraduationYear: formData.graduationYear,
+            School: formData.school,
+            Cv: formData.cv,
+            Address: formData.address,
+            Description: formData.description,
+          },
         })
           .then((res) => {
             //     // setData(res.data)
@@ -307,7 +319,6 @@ export default function RegisterTutor() {
                                 <label>Male</label>
                                 <input
                                   type="radio"
-                                  
                                   id="male"
                                   className="male"
                                   name="male"
@@ -331,7 +342,22 @@ export default function RegisterTutor() {
                                 />
                               </div>
                             </div>
-                          ) : (
+                          ) : currentPage === pages.length - 3 ? (<div>
+                            <label>{field.label}</label>
+                            <input
+                                type={field.type}
+                                
+                                value={formData[field.name]}
+                                onChange={(e) => {
+                                  setFormData({
+                                    ...formData,
+                                    [field.name]: e.target.files[0],
+                                  });
+                                  setErrors({ ...errors, [field.name]: "" });
+                                }}
+                                required
+                              />
+                          </div>): (
                             <div>
                               <label>{field.label}</label>
                               <input
