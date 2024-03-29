@@ -35,7 +35,7 @@ function ViewProfileDetail() {
       queryFn: async () => {
         if (id) {
           const response = await getListTodoWithObj(id);
-          setDataProfileDetail(staffTest);
+          setDataProfileDetail(parentTest);
           return response?.data;
         }
       },

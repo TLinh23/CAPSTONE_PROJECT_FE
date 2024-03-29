@@ -1,0 +1,74 @@
+.modal {
+    display: flex; /* Sử dụng flexbox để căn giữa */
+    align-items: center; /* Căn giữa theo chiều dọc */
+    justify-content: center; /* Căn giữa theo chiều ngang */
+    position: fixed; /* Vị trí cố định */
+    z-index: 1; /* Đảm bảo modal nằm trên các phần tử khác */
+    left: 0;
+    top: 0;
+    width: 100%; /* Chiều rộng toàn màn hình */
+    height: 100%; /* Chiều cao toàn màn hình */
+    overflow: auto; /* Nếu nội dung modal dài, cho phép cuộn */
+    background-color: rgba(0,0,0,0.4); /* Màu nền mờ với độ trong suốt */
+  }
+
+  /* Style cho nội dung modal */
+  .modal-content {
+    background-color: #fefefe;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%; /* Chiều rộng của modal */
+    max-width: 600px; /* Chiều rộng tối đa của modal */
+  }
+
+
+  /* Style cho nút đóng */
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  /* Style cho form và các label, input */
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Khoảng cách giữa các trường */
+  }
+
+  label {
+    display: flex;
+    flex-direction: column;
+    font-weight: bold;
+  }
+
+  input[type="text"],
+  input[type="date"],
+  textarea,
+  select {
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  button {
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background-color:  #0056b3;
+  }

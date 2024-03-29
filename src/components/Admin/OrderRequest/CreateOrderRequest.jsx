@@ -1,21 +1,15 @@
 import React, { useState } from "react";
 import Line from "src/components/common/Line";
-import SubMenu from "src/components/common/SubMenu";
 import Title from "src/components/common/Title";
-import OrderRequestSummary from "./OrderRequestSummary";
-import OrderRequestDescription from "./OrderRequestDescription";
-import OrderRequestInfo from "./OrderRequestInfo";
 import { useMutation } from "react-query";
 import { createOrderRequest } from "src/apis/order-module";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import PrimaryBtn from "src/components/common/PrimaryBtn";
-
-const listSubMenu = [
-  { id: "info", label: "1. Request Info" },
-  { id: "summary", label: "2. Price Summary" },
-  { id: "description", label: "3. Description" },
-];
+import SmallTitle from "src/components/common/SmallTitle";
+import PrimaryInput from "src/components/common/PrimaryInput";
+import FilterDropDown from "src/components/common/FilterDropDown";
+import PrimaryTextArea from "src/components/common/PrimaryTextArea";
 
 /**
  * Below is example when you want to call api Put/ Post
@@ -26,8 +20,9 @@ const listSubMenu = [
 const TOAST_CREATE_ORDER_REQUEST = "toast-create-order-request-id";
 
 function CreateOrderRequest() {
-  const [activeTab, setActiveTab] = useState("info");
-  const [newOrderRequest, setNewOrderRequest] = useState();
+  const [newOrderRequest, setNewOrderRequest] = useState(undefined);
+  const [studentSelected, setStudentSelected] = useState(undefined);
+  const [isConfirmRequest, setIsConfirmRequest] = useState(false);
   const navigate = useNavigate();
 
   const createOrderRequestMutation = useMutation(
@@ -72,35 +67,72 @@ function CreateOrderRequest() {
   return (
     <div>
       <Title>Create Order Request</Title>
-      <SubMenu
-        setActiveTab={setActiveTab}
-        activeTab={activeTab}
-        listMenu={listSubMenu}
-        className="mt-5"
-      />
       <Line className="my-3" />
-      {activeTab === "info" && (
-        <OrderRequestInfo
-          setActiveTab={setActiveTab}
-          newOrderRequest={newOrderRequest}
-          setNewOrderRequest={setNewOrderRequest}
-        />
-      )}
-      {activeTab === "summary" && (
-        <OrderRequestSummary
-          setActiveTab={setActiveTab}
-          newOrderRequest={newOrderRequest}
-          setNewOrderRequest={setNewOrderRequest}
-        />
-      )}
-      {activeTab === "description" && (
-        <OrderRequestDescription
-          setActiveTab={setActiveTab}
-          handleClickSendData={handleSendData}
-          newOrderRequest={newOrderRequest}
-          setNewOrderRequest={setNewOrderRequest}
-        />
-      )}
+      <div>
+        <SmallTitle>Request Info</SmallTitle>
+        <div className="md:max-w-[860px]">
+          <div className="grid gap-4 grid-cols-2080">
+            <div>Tutor</div>
+            <div>Nguyen van A</div>
+            <div>Subject</div>
+            <PrimaryInput
+              onChange={(e) => {
+                setNewOrderRequest({
+                  ...newOrderRequest,
+                  subjectName: e.target.value,
+                });
+              }}
+              value={newOrderRequest?.subjectName || ""}
+            />
+            <div>Student</div>
+            <FilterDropDown
+              listDropdown={[]}
+              showing={studentSelected}
+              setShowing={setStudentSelected}
+              textDefault="Nguyen Van Hoi"
+            />
+            <div>Request Type</div>
+            <PrimaryInput
+              onChange={(e) => {
+                setNewOrderRequest({
+                  ...newOrderRequest,
+                  phone: e.target.value,
+                });
+              }}
+              value={newOrderRequest?.phone || "Create class"}
+            />
+            <div>Level</div>
+            <PrimaryInput
+              onChange={(e) => {
+                setNewOrderRequest({
+                  ...newOrderRequest,
+                  phone: e.target.value,
+                });
+              }}
+              value={newOrderRequest?.phone || ""}
+            />
+            <div>Price</div>
+            <PrimaryInput
+              onChange={(e) => {
+                setNewOrderRequest({
+                  ...newOrderRequest,
+                  phone: e.target.value,
+                });
+              }}
+              value={newOrderRequest?.phone || ""}
+            />
+          </div>
+          <div className="flex items-center justify-center gap-3 mt-5">
+            <PrimaryBtn
+              disabled={!isConfirmRequest}
+              onClick={handleSendData}
+              className="max-w-[200px]"
+            >
+              Send
+            </PrimaryBtn>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

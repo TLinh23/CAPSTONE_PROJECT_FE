@@ -254,7 +254,7 @@ function TutorProfileDetail(props) {
           <PrimaryBtn
             className="md:max-w-[222px]"
             onClick={() => {
-              navigate(`/profile/${dataProfileDetail?.id}/edit`);
+              navigate(`/order-requests/create?type=create`);
             }}
           >
             Send Request
