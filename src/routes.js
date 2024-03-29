@@ -24,6 +24,10 @@ export const routes = [
   { path: "/order-requests", element: <ListOrderRequestPage /> },
   { path: "/order-requests/:id", element: <PageOrderRequestDetail /> },
   { path: "/order-requests/create", element: <PageCreateOrderRequest /> },
+
+  // { path: "/tutor/profile", element: <ProfilePage /> },
+  // { path: "/staff/profile", element: <ProfilePage />, },
+
   { path: "/profile/:id", element: <ProfilePage /> },
   { path: "/profile/:id/edit", element: <EditProfilePage /> },
   { path: "/collections", element: <CollectionPage /> },
@@ -39,5 +43,5 @@ export const routes = [
   { path: "/accountManager", element: <AccountManager /> },
   { path: "/AccountDetail/:id", element: <AccountDetail /> },
   { path: "/", element: <NewHomePage /> },
-  { path: "*", element: <NotFound /> },
+  { path: "*", element: <NotFound /> }
 ];
