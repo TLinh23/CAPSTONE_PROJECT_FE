@@ -4,6 +4,9 @@ import ArrowRightIcon from "../icons/ArrowRightIcon";
 import { ReactTyped } from "react-typed";
 import HeartIcon from "../icons/HeartIcon";
 import StarIcon from "../icons/StarIcon";
+import PrimaryBtn from "../common/PrimaryBtn";
+import { useAuthContext } from "../../context/AuthContext";
+import { ROLE_NAME } from "src/constants/constants";
 
 const LIST_ITEM_SEPARATE_PAGE_1 = [
   {
@@ -60,8 +63,52 @@ const LIST_ITEM_SEPARATE_PAGE_2 = [
 ];
 
 function HomePageContent() {
+  const { checkRoleKey, checkUserId } = useAuthContext();
+
   return (
     <div>
+      <div className="flex items-center gap-4">
+        <PrimaryBtn
+          onClick={() => {
+            localStorage.setItem("roleKey", ROLE_NAME.ADMIN);
+            localStorage.setItem("userId", "1");
+            checkRoleKey();
+            checkUserId();
+          }}
+        >
+          System admin
+        </PrimaryBtn>
+        <PrimaryBtn
+          onClick={() => {
+            localStorage.setItem("roleKey", ROLE_NAME.STAFF);
+            localStorage.setItem("userId", "2");
+            checkRoleKey();
+            checkUserId();
+          }}
+        >
+          Staff
+        </PrimaryBtn>
+        <PrimaryBtn
+          onClick={() => {
+            localStorage.setItem("roleKey", ROLE_NAME.TUTOR);
+            localStorage.setItem("userId", "3");
+            checkRoleKey();
+            checkUserId();
+          }}
+        >
+          Tutor
+        </PrimaryBtn>
+        <PrimaryBtn
+          onClick={() => {
+            localStorage.setItem("roleKey", ROLE_NAME.PARENT);
+            localStorage.setItem("userId", "4");
+            checkRoleKey();
+            checkUserId();
+          }}
+        >
+          Parent
+        </PrimaryBtn>
+      </div>
       {/* Page 1 */}
       <PageContentWrapper className="grid grid-cols-1 gap-5 md:grid-cols-2">
         <div className="flex flex-col justify-center gap-5">

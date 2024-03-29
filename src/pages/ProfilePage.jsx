@@ -1,12 +1,13 @@
 import React from "react";
 import ViewProfileDetail from "src/components/Profile/ViewProfileDetail";
+import Layout from "src/components/layout/Layout";
 
 function ProfilePage() {
   return (
     // Each role will have different layout
-    <div className="p-5 bg-background">
+    <Layout>
       <ViewProfileDetail />
-    </div>
+    </Layout>
   );
 }
 

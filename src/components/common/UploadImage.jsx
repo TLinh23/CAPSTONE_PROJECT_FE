@@ -41,7 +41,7 @@ function AddImageBtn() {
     <div className="w-[200px] h-[200px] border border-dashed border-blue rounded flex flex-col items-center justify-center">
       <CameraIcon />
       <div className="px-4 py-3 font-medium border rounded text-primary border-primary">
-        Đăng ảnh
+        Upload image
       </div>
     </div>
   );

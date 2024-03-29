@@ -1,12 +1,13 @@
 import React from "react";
 import EditProfile from "src/components/Profile/EditProfile";
+import Layout from "src/components/layout/Layout";
 
 function EditProfilePage() {
   return (
     // Each role will have different layout
-    <div className="p-5 bg-background">
+    <Layout>
       <EditProfile />
-    </div>
+    </Layout>
   );
 }
 

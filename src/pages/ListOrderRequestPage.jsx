@@ -1,12 +1,13 @@
 import React from "react";
 import ListOrderRequest from "src/components/Admin/OrderRequest/ListOrderRequest";
+import Layout from "src/components/layout/Layout";
 
 function ListOrderRequestPage() {
   return (
     // Each role will have different layout
-    <div className="p-5 bg-background">
+    <Layout>
       <ListOrderRequest />
-    </div>
+    </Layout>
   );
 }
 
