@@ -24,12 +24,12 @@ export const routes = [
   { path: "/order-requests", element: <ListOrderRequestPage /> },
   { path: "/order-requests/:id", element: <PageOrderRequestDetail /> },
   { path: "/order-requests/create", element: <PageCreateOrderRequest /> },
+
   // { path: "/tutor/profile", element: <ProfilePage /> },
   // { path: "/staff/profile", element: <ProfilePage />, },
+
   { path: "/profile/:id", element: <ProfilePage /> },
   { path: "/profile/:id/edit", element: <EditProfilePage /> },
-  // { path: "/tutor/profile/edit", element: <EditProfilePage /> },
-  // { path: "/staff/profile/edit", element: <EditProfilePage /> },
   { path: "/collections", element: <CollectionPage /> },
   { path: "/collections/:slug", element: <CollectionPage /> },
   { path: "/todos", element: <TodoListPage /> },

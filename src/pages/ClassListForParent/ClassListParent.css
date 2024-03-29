@@ -26,6 +26,7 @@
   margin-left: 30px;
 }
 
+
 .container-title-class-list-tutor form{
     margin-right: 30px;
 }
@@ -44,6 +45,7 @@
   width: 70px;
   height: 40px;
   color: white;
+
 
   &:hover{
     background-color: rgb(167, 166, 166);
@@ -66,3 +68,4 @@ table{
     margin-left: 10px;
     margin-right: 10px;
 }
+
