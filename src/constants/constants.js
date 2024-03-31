@@ -17,6 +17,7 @@ export const ROLE_NAME = {
   STAFF: "staff",
   TUTOR: "tutor",
   PARENT: "parent",
+  STUDENT: "student",
 };
 
 export const LIST_CLASS_LEVEL_DEFAULT = [

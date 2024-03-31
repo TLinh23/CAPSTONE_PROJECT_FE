@@ -34,7 +34,7 @@ function CreateOrderRequest() {
         console.log("Data: ", data);
         if (data?.status >= 200 && data?.status < 300) {
           toast.success("Create order request successfully");
-          navigate("/order-requests");
+          navigate("/classroom-requests");
           toast.dismiss(TOAST_CREATE_ORDER_REQUEST);
         } else {
           toast.error(

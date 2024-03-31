@@ -4,9 +4,9 @@ import { useNavigate } from "react-router-dom";
 import PrimaryBtn from "src/components/common/PrimaryBtn";
 import PrimaryInput from "src/components/common/PrimaryInput";
 import PrimarySmallTitle from "src/components/common/PrimarySmallTitle";
-import Title from "src/components/common/Title";
 import { ROLE_NAME } from "src/constants/constants";
 import { useAuthContext } from "src/context/AuthContext";
+import ProfileHeader from "../ProfileHeader";
 
 function StaffProfileDetail(props) {
   const { dataProfileDetail } = props;
@@ -15,7 +15,7 @@ function StaffProfileDetail(props) {
 
   return (
     <div className="bg-[#ffffff] block-border">
-      <Title>Personal information</Title>
+      <ProfileHeader title="Personal information" />
       <div className="grid grid-cols-1 gap-4 mt-5 md:grid-cols-37">
         <div className="w-full h-auto">
           <div className="flex flex-col items-center justify-between">

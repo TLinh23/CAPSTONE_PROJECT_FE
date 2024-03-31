@@ -12,6 +12,7 @@ import { ROLE_NAME } from "src/constants/constants";
 import AddSubjectPopup from "./AddSubjectPopup";
 import EditSubjectPopup from "./EditSubjectPopup";
 import PrimarySmallTitle from "src/components/common/PrimarySmallTitle";
+import ProfileHeader from "../ProfileHeader";
 
 function TutorProfileDetail(props) {
   const { dataProfileDetail } = props;
@@ -32,7 +33,7 @@ function TutorProfileDetail(props) {
 
   return (
     <div className="bg-[#ffffff] block-border">
-      <Title>Personal information</Title>
+      <ProfileHeader title="Personal information" />
       <div className="grid grid-cols-1 gap-4 mt-5 md:grid-cols-155530">
         <div className="w-full h-auto">
           <div className="flex flex-col items-center justify-between">
@@ -254,7 +255,7 @@ function TutorProfileDetail(props) {
           <PrimaryBtn
             className="md:max-w-[222px]"
             onClick={() => {
-              navigate(`/order-requests/create?type=create`);
+              navigate(`/classroom-requests/create?type=create`);
             }}
           >
             Send Request
