@@ -19,7 +19,7 @@ function HeaderDetail({
       <div
         className="flex items-center gap-3 cursor-pointer w-fit"
         onClick={() => {
-          navigate(homeUrl);
+          navigate(-1);
         }}
       >
         <div className="cursor-pointer">

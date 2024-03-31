@@ -1,5 +1,5 @@
 import React from "react";
-import OrderRequestDetail from "src/components/Admin/OrderRequest/OrderRequestDetail";
+import OrderRequestDetail from "src/components/OrderRequest/OrderRequestDetail";
 import Layout from "src/components/layout/Layout";
 
 function PageOrderRequestDetail() {

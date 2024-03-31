@@ -108,6 +108,16 @@ function HomePageContent() {
         >
           Parent
         </PrimaryBtn>
+        <PrimaryBtn
+          onClick={() => {
+            localStorage.setItem("roleKey", ROLE_NAME.STUDENT);
+            localStorage.setItem("userId", "5");
+            checkRoleKey();
+            checkUserId();
+          }}
+        >
+          Student
+        </PrimaryBtn>
       </div>
       {/* Page 1 */}
       <PageContentWrapper className="grid grid-cols-1 gap-5 md:grid-cols-2">

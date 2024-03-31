@@ -1,5 +1,5 @@
 import React from "react";
-import ListOrderRequest from "src/components/Admin/OrderRequest/ListOrderRequest";
+import ListOrderRequest from "src/components/OrderRequest/ListOrderRequest";
 import Layout from "src/components/layout/Layout";
 
 function ListOrderRequestPage() {

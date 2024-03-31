@@ -18,20 +18,18 @@ import PageCreateOrderRequest from "./pages/PageCreateOrderRequest";
 import AccountManager from "./components/Staff/AccountManager/ListAccountManager";
 //trang account detail
 import AccountDetail from "./pages/PageAccountDetail";
+import PageOpenedClassRooms from "./pages/PageOpenedClassRooms";
 
 //list your routes here
 export const routes = [
-  { path: "/order-requests", element: <ListOrderRequestPage /> },
-  { path: "/order-requests/:id", element: <PageOrderRequestDetail /> },
-  { path: "/order-requests/create", element: <PageCreateOrderRequest /> },
-
-  // { path: "/tutor/profile", element: <ProfilePage /> },
-  // { path: "/staff/profile", element: <ProfilePage />, },
-
+  { path: "/classroom-requests", element: <ListOrderRequestPage /> },
+  { path: "/classroom-requests/:id", element: <PageOrderRequestDetail /> },
+  { path: "/classroom-requests/create", element: <PageCreateOrderRequest /> },
   { path: "/profile/:id", element: <ProfilePage /> },
   { path: "/profile/:id/edit", element: <EditProfilePage /> },
   { path: "/collections", element: <CollectionPage /> },
   { path: "/collections/:slug", element: <CollectionPage /> },
+  { path: "/opended-classrooms", element: <PageOpenedClassRooms /> },
   { path: "/todos", element: <TodoListPage /> },
   { path: "/login", element: <Login /> },
   { path: "/forgotpassword", element: <ForgotPassword /> },
@@ -43,5 +41,5 @@ export const routes = [
   { path: "/accountManager", element: <AccountManager /> },
   { path: "/AccountDetail/:id", element: <AccountDetail /> },
   { path: "/", element: <NewHomePage /> },
-  { path: "*", element: <NotFound /> }
+  { path: "*", element: <NotFound /> },
 ];
