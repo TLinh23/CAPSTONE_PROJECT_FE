@@ -16,9 +16,12 @@ import PageOrderRequestDetail from "./pages/PageOrderRequestDetail";
 import PageCreateOrderRequest from "./pages/PageCreateOrderRequest";
 //loc
 import AccountManager from "./components/Staff/AccountManager/ListAccountManager";
+import ListClassManager from "./components/Staff/ClassManager/ListClassManager";
+import ListTransactionManager from "./components/Staff/ClassManager/ListClassManager";
+
 //trang account detail
 import AccountDetail from "./pages/PageAccountDetail";
-import PageOpenedClassRooms from "./pages/PageOpenedClassRooms";
+
 
 //list your routes here
 export const routes = [
@@ -42,4 +45,5 @@ export const routes = [
   { path: "/AccountDetail/:id", element: <AccountDetail /> },
   { path: "/", element: <NewHomePage /> },
   { path: "*", element: <NotFound /> },
+
 ];
