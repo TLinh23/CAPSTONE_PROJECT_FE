@@ -12,12 +12,12 @@ import DeniedBtn from "../../common/DeniedBtn";
 import ShowDetail from "../../Admin/ShowDetail";
 // Dữ liệu giả định
 const mockData = [
-  { id: 1, name: "John Doe", role: "Admin", phone: "123-456-7890", status: "Active" },
-  { id: 2, name: "Jane Smith", role: "User", phone: "098-765-4321", status: "Inactive" },
-  // Thêm các bản ghi giả định khác
+  { id: 1, payer: "Trang Pham", requestBy: "Khang Nguyen", amount: "200", reqDate: "10-01-2024",payDate: "10-01-2024", status: "PAID" },
+  { id: 2, payer: "Trang Pham", requestBy: "Khang Nguyen", amount: "200", reqDate: "10-01-2024", status: "UNPAID" },
+
 ];
 
-function AccountManager() {
+function ListTransactionManager() {
   const [isFilterSelected, setIsFilterSelected] = useState();
   const [searchParam, setSearchParam] = useState("");
   const debouncedSearchValue = useDebounce(searchParam, 500);
@@ -33,7 +33,7 @@ function AccountManager() {
   return (
     <Layout>
       <div className="container mx-auto p-4">
-        <Title>Account Management</Title>
+        <Title>Transaction Management</Title>
         <div className="flex flex-col gap-4 py-5 md:items-center md:flex-row md:justify-end">
           <SearchInput
             placeholder="Search by name or id"
@@ -42,8 +42,8 @@ function AccountManager() {
           />
           <FilterDropDown
             listDropdown={[
-              { id: 1, value: "Active", name: "Active" },
-              { id: 2, value: "Inactive", name: "Inactive" },
+              { id: 1, value: "PAID", name: "PAID" },
+              { id: 2, value: "UNPAID", name: "UNPAID" },
               // Thêm các bộ lọc khác nếu cần
             ]}
             showing={isFilterSelected}
@@ -72,7 +72,7 @@ function AccountManager() {
   );
 }
 
-export default AccountManager;
+export default ListTransactionManager;
 
 const accountColumns = [
   {
@@ -83,16 +83,24 @@ const accountColumns = [
         accessor: "id",
       },
       {
-        Header: "Name",
+        Header: "Payer",
         accessor: "name", 
       },
       {
-        Header: "Role",
-        accessor: "role", 
+        Header: "Request by",
+        accessor: "requestBy", 
       },
       {
-        Header: "Phone",
-        accessor: "phone", 
+        Header: "Amount",
+        accessor: "amount", 
+      },
+      {
+        Header: "Request Date",
+        accessor: "reqDate", 
+      },
+      {
+        Header: "Pay Date",
+        accessor: "payDate", 
       },
       {
         Header: "Status",
@@ -101,22 +109,11 @@ const accountColumns = [
         ), // Sử dụng thuộc tính status từ data
       },
       {
-        Header: "Action",
-        accessor: (data) => {
-          return (
-            <div className="flex items-center gap-4">
-              <PrimaryBtn>Active</PrimaryBtn>
-              <DeniedBtn>Inactive</DeniedBtn>
-            </div>
-          );
-        },
-      },
-      {
         Header: " ",
         accessor: (data) => {
           return (
             <div className="flex items-center gap-4">
-              <a href={`/AccountDetail/${data.id}`}>
+              <a href={`/classDetailManager/${data.id}`}>
                 <ShowDetail />
               </a>
             </div>

@@ -10,8 +10,12 @@ import PageOrderRequestDetail from "./pages/PageOrderRequestDetail";
 import PageCreateOrderRequest from "./pages/PageCreateOrderRequest";
 //loc
 import AccountManager from "./components/Staff/AccountManager/ListAccountManager";
+import ListClassManager from "./components/Staff/ClassManager/ListClassManager";
+import ListTransactionManager from "./components/Staff/ClassManager/ListClassManager";
+
 //trang account detail
 import AccountDetail from "./pages/PageAccountDetail";
+import ClassDetailManager from "./pages/PageClassDetail";
 
 //list your routes here
 export const routes = [
@@ -31,6 +35,8 @@ export const routes = [
   { path: "*", element: <NotFound /> },
   //loc
   {path: "/accountManager", element: <AccountManager/>},
-  {path: "/AccountDetail/:id", element: <AccountDetail/>}
-
+  {path: "/AccountDetail/:id", element: <AccountDetail/>},
+  {path: "/listClassManager", element: <ListClassManager/>},
+  {path: "/classDetailManager/:id", element: <ClassDetailManager/>},
+  {path: "/listTransactionManager", element: <ListTransactionManager/>},
 ];
