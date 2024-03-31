@@ -12,6 +12,7 @@ import EditStudentPopup from "./EditStudentPopup";
 import { useAuthContext } from "src/context/AuthContext";
 import { ROLE_NAME } from "src/constants/constants";
 import PrimarySmallTitle from "src/components/common/PrimarySmallTitle";
+import ProfileHeader from "../ProfileHeader";
 
 function ParentProfileDetail(props) {
   const { dataProfileDetail } = props;
@@ -32,7 +33,7 @@ function ParentProfileDetail(props) {
 
   return (
     <div className="bg-[#ffffff] block-border">
-      <Title>Personal information</Title>
+      <ProfileHeader title="Personal information" />
       <div className="grid grid-cols-1 gap-4 mt-5 md:grid-cols-155530">
         <div className="w-full h-auto">
           <div className="flex flex-col items-center justify-between">

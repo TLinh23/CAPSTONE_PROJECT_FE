@@ -7,12 +7,12 @@ import SearchInput from "src/components/common/SearchInput";
 import Table from "src/components/common/Table";
 import Title from "src/components/common/Title";
 import useDebounce from "src/hooks/useDebounce";
-import ShowDetail from "../ShowDetail";
 import PrimaryBtn from "src/components/common/PrimaryBtn";
-import RenderStatus from "../RenderStatus";
-import DeniedBtn from "src/components/common/DeniedBtn";
+import RenderStatus from "src/components/common/RenderStatus";
+import SecondaryBtn from "../common/SecondaryBtn";
+import { format } from "date-fns";
 
-function ListOrderRequest() {
+function ListOpenedClassRoom() {
   const [isFilterSelected, setIsFilterSelected] = useState();
   const [listOrderRequest, setListOrderRequest] = useState(undefined);
   const [searchParam, setSearchParam] = useState("");
@@ -44,7 +44,10 @@ function ListOrderRequest() {
 
   return (
     <div>
-      <Title>Manage Order Request</Title>
+      <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+        <Title>Manage Classroom List</Title>
+        <PrimaryBtn className="md:!w-fit">Create Classroom</PrimaryBtn>
+      </div>
       <div className="flex flex-col gap-4 py-5 md:items-center md:flex-row md:justify-end">
         <SearchInput
           placeholder="Search by name"
@@ -81,7 +84,7 @@ function ListOrderRequest() {
   );
 }
 
-export default ListOrderRequest;
+export default ListOpenedClassRoom;
 
 const columns = [
   {
@@ -92,16 +95,16 @@ const columns = [
         accessor: (data) => <p>{data?.id}</p>,
       },
       {
-        Header: "Tutor",
-        accessor: (data) => <p>Tutor</p>,
-      },
-      {
-        Header: "Subject",
-        accessor: (data) => <p>Subject</p>,
+        Header: "Title",
+        accessor: (data) => <p>Title</p>,
       },
       {
         Header: "Description",
         accessor: (data) => <p>{data?.todo}</p>,
+      },
+      {
+        Header: "Subject",
+        accessor: (data) => <p>Math</p>,
       },
       {
         Header: "Price",
@@ -114,24 +117,21 @@ const columns = [
         ),
       },
       {
+        Header: "Created date",
+        accessor: (data) => (
+          <div>
+            {data?.createdAt
+              ? format(new Date(data?.createdAt), "HH:mm dd-MM-yyyy")
+              : format(new Date(new Date()), "HH:mm dd-MM-yyyy")}
+          </div>
+        ),
+      },
+      {
         Header: "Action",
         accessor: (data) => {
           return (
             <div className="flex items-center gap-4">
-              <PrimaryBtn>Accept</PrimaryBtn>
-              <DeniedBtn>Decline</DeniedBtn>
-            </div>
-          );
-        },
-      },
-      {
-        Header: " ",
-        accessor: (data) => {
-          return (
-            <div className="flex items-center gap-4">
-              <a href={`/order-requests/${data?.id}`}>
-                <ShowDetail />
-              </a>
+              <SecondaryBtn>Edit</SecondaryBtn>
             </div>
           );
         },

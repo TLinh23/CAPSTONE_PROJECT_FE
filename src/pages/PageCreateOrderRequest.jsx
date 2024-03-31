@@ -1,5 +1,5 @@
 import React from "react";
-import CreateOrderRequest from "src/components/Admin/OrderRequest/CreateOrderRequest";
+import CreateOrderRequest from "src/components/OrderRequest/Parent/CreateOrderRequest";
 import Layout from "src/components/layout/Layout";
 
 function PageCreateOrderRequest() {
