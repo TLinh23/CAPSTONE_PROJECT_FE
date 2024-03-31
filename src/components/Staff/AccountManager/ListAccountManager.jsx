@@ -116,7 +116,7 @@ const accountColumns = [
         accessor: (data) => {
           return (
             <div className="flex items-center gap-4">
-              <a href={`/order-requests/${data.id}`}>
+              <a href={`/accountdetail/${data.id}`}>
                 <ShowDetail />
               </a>
             </div>
