@@ -3,7 +3,7 @@ import React from "react";
 import HeaderDetail from "src/components/common/HeaderDetail";
 import Line from "src/components/common/Line";
 
-function OrderRequestDetail() {
+function AccountDetail() {
   return (
     <HeaderDetail homeUrl="/order-requests">
       <div>
@@ -67,7 +67,7 @@ function OrderRequestDetail() {
   );
 }
 
-export default OrderRequestDetail;
+export default AccountDetail;
 
 function RequestTitle({ children }) {
   return <div className="text-lg font-semibold">{children}</div>;

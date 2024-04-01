@@ -1,5 +1,5 @@
 import React from "react";
-import AccountDetail from "src/components/Staff/AccountDetail";
+import AccountDetail from "src/components/Staff/AccountManager/AccountDetail";
 import Layout from "src/components/layout/Layout";
 
 function PageAccountDetail() {
