@@ -17,7 +17,8 @@ import PageCreateOrderRequest from "./pages/PageCreateOrderRequest";
 //loc
 import AccountManager from "./components/Staff/AccountManager/ListAccountManager";
 import ListClassManager from "./components/Staff/ClassManager/ListClassManager";
-import ListTransactionManager from "./components/Staff/TransactionManager/ListTransactionManager";
+import Transaction from "./components/Staff/TransactionManager/Transaction";
+import AddTransaction from "./components/Staff/TransactionManager/AddTransaction";
 
 //trang account detail
 import AccountDetail from "./pages/PageAccountDetail";
@@ -47,9 +48,9 @@ export const routes = [
   { path: "/AccountDetail/:id", element: <AccountDetail /> },
   { path: "/listClassManager", element: <ListClassManager /> },
   { path: "/ClassDetailManager/:id", element: <ClassDetail /> },
-  { path: "/listTransactionManager", element: <ListTransactionManager /> },
-  { path: "/TransactionDetail/:id", element: <TransactionDetail /> },
-
+  { path: "/listTransactionManager", element: <Transaction /> },
+  { path: "/transactionDetail/:id", element: <TransactionDetail /> },
+  { path: "/addTransaction", element: <AddTransaction /> },
 
   { path: "/", element: <NewHomePage /> },
   { path: "*", element: <NotFound /> },

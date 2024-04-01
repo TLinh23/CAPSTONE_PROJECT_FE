@@ -1,35 +1,41 @@
 import React, { useState } from "react";
-import Layout from "../../layout/Layout"; 
+import Layout from "../../layout/Layout";
 import FilterDropDown from "../../common/FilterDropDown";
 import Pagination from "../../common/Pagination";
 import SearchInput from "../../common/SearchInput";
 import Table from "../../common/Table";
 import Title from "../../common/Title";
 import useDebounce from "src/hooks/useDebounce";
-import PrimaryBtn from "../../common/PrimaryBtn";
-//import RenderStatus from "../../Admin/RenderStatus"; 
-import DeniedBtn from "../../common/DeniedBtn";
-import ShowDetail from "src/components/common/ShowDetail";
 import RenderStatus from "src/components/common/RenderStatus";
+import ShowDetail from "src/components/common/ShowDetail";
+import PrimaryBtn from "../../common/PrimaryBtn";
+
 // Dữ liệu giả định
 const mockData = [
-  { id: 1, payer: "Trang Pham", requestBy: "Khang Nguyen", amount: "200", reqDate: "10-01-2024",payDate: "10-01-2024", status: "PAID" },
-  { id: 2, payer: "Trang Pham", requestBy: "Khang Nguyen", amount: "200", reqDate: "10-01-2024", status: "UNPAID" },
-
+  { id: 1, payer: "Trang Pham", requestBy: "Huyen Tran", amount: "200", reqDate: "11-02-2024", payDate: "13-02-2024", status: "PAID" },
+  { id: 2, payer: "Khang Nguyen", requestBy: "Long Nguyen", amount: "250", reqDate: "13-02-2024", status: "UNPAID" },
+  { id: 3, payer: "Huyen Tran", requestBy: "Khang Nguyen", amount: "150", reqDate: "09-01-2024", status: "UNPAID" },
+  // Thêm các bản ghi giả định khác nếu cần
 ];
 
 function ListTransactionManager() {
-  const [isFilterSelected, setIsFilterSelected] = useState();
+  const [isFilterSelected, setIsFilterSelected] = useState(false);
   const [searchParam, setSearchParam] = useState("");
   const debouncedSearchValue = useDebounce(searchParam, 500);
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
 
   // Tính toán dữ liệu hiển thị dựa trên searchParam, page và limit
-  const filteredData = mockData.filter(account =>
-    account.name.toLowerCase().includes(debouncedSearchValue.toLowerCase())
+  const filteredData = mockData.filter(transaction =>
+    transaction.payer.toLowerCase().includes(debouncedSearchValue.toLowerCase())
   );
   const paginatedData = filteredData.slice((page - 1) * limit, page * limit);
+
+  // Hàm để xử lý khi nút "Add New Transaction" được nhấn
+  const handleAddNewTransaction = () => {
+    // Logic để thêm giao dịch mới
+    console.log("Add New Transaction button clicked");
+  };
 
   return (
     <Layout>
@@ -37,9 +43,9 @@ function ListTransactionManager() {
         <Title>Transaction Management</Title>
         <div className="flex flex-col gap-4 py-5 md:items-center md:flex-row md:justify-end">
           <SearchInput
-            placeholder="Search by name or id"
+            placeholder="Search by payer name or id"
             onChange={(e) => setSearchParam(e.target.value)}
-            value={searchParam || ""}
+            value={searchParam}
           />
           <FilterDropDown
             listDropdown={[
@@ -56,7 +62,7 @@ function ListTransactionManager() {
         <div className="bg-white table-style block-border">
           <Table
             pageSizePagination={limit}
-            columns={accountColumns}
+            columns={transactionColumns}
             data={paginatedData}
           />
         </div>
@@ -68,6 +74,12 @@ function ListTransactionManager() {
           setCurrentPage={setPage}
           totalItems={filteredData.length}
         />
+
+        <div className="fixed bottom-0 right-0 text-xs p-2 z-10">
+          <PrimaryBtn onClick={handleAddNewTransaction} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            Add New Transaction
+          </PrimaryBtn>
+        </div>
       </div>
     </Layout>
   );
@@ -75,7 +87,7 @@ function ListTransactionManager() {
 
 export default ListTransactionManager;
 
-const accountColumns = [
+const transactionColumns = [
   {
     Header: " ",
     columns: [
@@ -85,41 +97,39 @@ const accountColumns = [
       },
       {
         Header: "Payer",
-        accessor: "name", 
+        accessor: "payer",
       },
       {
         Header: "Request by",
-        accessor: "requestBy", 
+        accessor: "requestBy",
       },
       {
         Header: "Amount",
-        accessor: "amount", 
+        accessor: "amount",
       },
       {
         Header: "Request Date",
-        accessor: "reqDate", 
+        accessor: "reqDate",
       },
       {
         Header: "Pay Date",
-        accessor: "payDate", 
+        accessor: "payDate",
       },
       {
         Header: "Status",
         accessor: (data) => (
           <RenderStatus status={data.status}>{data.status}</RenderStatus>
-        ), // Sử dụng thuộc tính status từ data
+        ),
       },
       {
         Header: " ",
-        accessor: (data) => {
-          return (
-            <div className="flex items-center gap-4">
-              <a href={`/transactionDetail/${data.id}`}>
-                <ShowDetail />
-              </a>
-            </div>
-          );
-        },
+        accessor: (data) => (
+          <div className="flex items-center gap-4">
+            <a href={`/transactionDetail/${data.id}`}>
+              <ShowDetail />
+            </a>
+          </div>
+        ),
       },
     ],
   },

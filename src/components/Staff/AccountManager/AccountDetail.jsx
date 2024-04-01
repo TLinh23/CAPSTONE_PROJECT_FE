@@ -1,64 +1,35 @@
-import { format } from "date-fns";
 import React from "react";
 import HeaderDetail from "src/components/common/HeaderDetail";
-import Line from "src/components/common/Line";
+import Title from "../../common/Title";
+
+// Dữ liệu giả định cho chi tiết tài khoản
+const accountDetail = {
+  id: 1,
+  name: 'John',
+  role: 'Admin',
+  phone: '0990909090',
+  status: 'Active',
+  avatarUrl: 'https://www.codeproject.com/KB/GDI-plus/ImageProcessing2/img.jpg',
+};
 
 function AccountDetail() {
   return (
-    <HeaderDetail homeUrl="/order-requests">
-      <div>
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-73">
-          <div className="bg-white block-border">
-            <div className="grid grid-cols-73">
-              <div>
-                <RequestTitle>
-                  Subject: <RequestDescription>ABCD</RequestDescription>
-                </RequestTitle>
-                <RequestTitle>
-                  Order from: <RequestDescription>XYZ</RequestDescription>
-                </RequestTitle>
-              </div>
-              <div className="flex flex-col items-center">
-                <RequestTitle>Total Price</RequestTitle>
-                <div>12.2$</div>
-              </div>
-            </div>
-            <RequestTitle>Teaching Description:</RequestTitle>
-            <RequestDescription>Bla blal bobobo</RequestDescription>
-          </div>
-          <div className="flex flex-col gap-3 bg-white block-border">
-            <div className="flex flex-col items-center justify-center gap-3">
-              <RequestTitle>Request Details</RequestTitle>
-              <RequestTitle>Subject</RequestTitle>
-              <RequestTitle>Status</RequestTitle>
-            </div>
-            <Line />
-            <div className="flex flex-col gap-3">
-              <RequestTitle>
-                Order from: <RequestDescription>ABCD</RequestDescription>
-              </RequestTitle>
-              <RequestTitle>
-                Date:{" "}
-                <RequestDescription>
-                  {format(new Date(), "dd/MM/yyyy HH:mm")}
-                </RequestDescription>
-              </RequestTitle>
-              <RequestTitle>
-                Total Price: <RequestDescription>ABCD</RequestDescription>
-              </RequestTitle>
-              <RequestTitle>
-                Order Number: <RequestDescription>ABCD</RequestDescription>
-              </RequestTitle>
-            </div>
-            <Line />
-            <div className="flex flex-col gap-3">
-              <RequestTitle>
-                Track Order Request:{" "}
-                <RequestDescription>ABCD</RequestDescription>
-              </RequestTitle>
-              <RequestTitle>
-                Status: <RequestDescription>ABCD</RequestDescription>
-              </RequestTitle>
+    <HeaderDetail homeUrl="/dashboard">
+      <div className="container mx-auto p-4">
+        <div className="bg-white p-6 rounded-lg shadow-lg max-w-2xl mx-auto">
+          <div className="flex flex-col items-center space-y-4 md:space-x-6 md:flex-row md:items-start">
+            <img
+              src={accountDetail.avatarUrl}
+              alt="Avatar"
+              className="w-32 h-32 rounded-full object-cover"
+            />
+            <div className="flex flex-col space-y-2 mt-4 md:mt-0">
+              <div className="text-lg font-semibold">{accountDetail.name}</div>
+              <div className="text-sm text-gray-600">{accountDetail.role}</div>
+              <div className="text-sm text-gray-600">{accountDetail.phone}</div>
+              <button className={`py-1 px-3 rounded-full text-white ${accountDetail.status === 'Active' ? 'bg-green-500' : 'bg-red-500'}`}>
+                {accountDetail.status}
+              </button>
             </div>
           </div>
         </div>
@@ -68,6 +39,8 @@ function AccountDetail() {
 }
 
 export default AccountDetail;
+
+
 
 function RequestTitle({ children }) {
   return <div className="text-lg font-semibold">{children}</div>;
