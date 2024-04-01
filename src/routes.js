@@ -26,6 +26,8 @@ import AddStaff from "./components/Admin/StaffManager/AddStaff";
 import AccountDetail from "./pages/PageAccountDetail";
 import ClassDetail from "./pages/PageClassDetail";
 import TransactionDetail from "./pages/PageTransactionDetail";
+import ListAllClass from "./pages/ListAllClass";
+import TutorFee from "./pages/TutorFee";
 
 import PageOpenedClassRooms from "./pages/PageOpenedClassRooms";
 import PageSchedule from "./pages/PageSchedule";
@@ -57,6 +59,9 @@ export const routes = [
   { path: "/addTransaction", element: <AddTransaction /> },
   { path: "/listStaffManager", element: <ListStaffManager /> },
   { path: "/addStaff", element: <AddStaff /> },
+  { path: "/lissAllClass", element: <ListAllClass /> },
+  { path: "/tutorFee", element: <TutorFee /> },
+
 
   { path: "/", element: <NewHomePage /> },
   { path: "*", element: <NotFound /> },
