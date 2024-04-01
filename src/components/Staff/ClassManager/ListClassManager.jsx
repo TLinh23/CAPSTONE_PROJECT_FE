@@ -7,9 +7,9 @@ import Table from "../../common/Table";
 import Title from "../../common/Title";
 import useDebounce from "src/hooks/useDebounce";
 import PrimaryBtn from "../../common/PrimaryBtn";
-import RenderStatus from "../../Admin/RenderStatus"; 
 import DeniedBtn from "../../common/DeniedBtn";
-import ShowDetail from "../../Admin/ShowDetail";
+import ShowDetail from "src/components/common/ShowDetail";
+import RenderStatus from "src/components/common/RenderStatus";
 // Dữ liệu giả định
 const mockData = [
   { id: 1, name: "Math 101", tutor: "Khang Nguyen", subject: "Math", startDate: "10-01-2024", status: "Active" },

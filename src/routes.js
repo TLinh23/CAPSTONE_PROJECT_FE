@@ -17,10 +17,12 @@ import PageCreateOrderRequest from "./pages/PageCreateOrderRequest";
 //loc
 import AccountManager from "./components/Staff/AccountManager/ListAccountManager";
 import ListClassManager from "./components/Staff/ClassManager/ListClassManager";
-import ListTransactionManager from "./components/Staff/ClassManager/ListClassManager";
+import ListTransactionManager from "./components/Staff/TransactionManager/ListTransactionManager";
 
 //trang account detail
 import AccountDetail from "./pages/PageAccountDetail";
+import ClassDetail from "./pages/PageClassDetail";
+import TransactionDetail from "./pages/PageTransactionDetail";
 
 
 //list your routes here
@@ -32,7 +34,7 @@ export const routes = [
   { path: "/profile/:id/edit", element: <EditProfilePage /> },
   { path: "/collections", element: <CollectionPage /> },
   { path: "/collections/:slug", element: <CollectionPage /> },
-  { path: "/opended-classrooms", element: <PageOpenedClassRooms /> },
+  //{ path: "/opended-classrooms", element: <PageOpenedClassRooms /> },
   { path: "/todos", element: <TodoListPage /> },
   { path: "/login", element: <Login /> },
   { path: "/forgotpassword", element: <ForgotPassword /> },
@@ -43,6 +45,12 @@ export const routes = [
   //loc
   { path: "/accountManager", element: <AccountManager /> },
   { path: "/AccountDetail/:id", element: <AccountDetail /> },
+  { path: "/listClassManager", element: <ListClassManager /> },
+  { path: "/ClassDetailManager/:id", element: <ClassDetail /> },
+  { path: "/listTransactionManager", element: <ListTransactionManager /> },
+  { path: "/TransactionDetail/:id", element: <TransactionDetail /> },
+
+
   { path: "/", element: <NewHomePage /> },
   { path: "*", element: <NotFound /> },
 

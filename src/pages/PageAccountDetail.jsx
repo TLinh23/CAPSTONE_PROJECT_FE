@@ -6,7 +6,7 @@ function PageAccountDetail() {
   return (
     // Each role will have different layout
     <Layout>
-      <AccountDetail />
+          <AccountDetail />
     </Layout>
   );
 }
