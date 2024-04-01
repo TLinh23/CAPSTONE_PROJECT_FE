@@ -22,6 +22,8 @@ import ListTransactionManager from "./components/Staff/ClassManager/ListClassMan
 //trang account detail
 import AccountDetail from "./pages/PageAccountDetail";
 
+import PageOpenedClassRooms from "./pages/PageOpenedClassRooms";
+import PageSchedule from "./pages/PageSchedule";
 
 //list your routes here
 export const routes = [
@@ -33,6 +35,7 @@ export const routes = [
   { path: "/collections", element: <CollectionPage /> },
   { path: "/collections/:slug", element: <CollectionPage /> },
   { path: "/opended-classrooms", element: <PageOpenedClassRooms /> },
+  { path: "/schedule", element: <PageSchedule /> },
   { path: "/todos", element: <TodoListPage /> },
   { path: "/login", element: <Login /> },
   { path: "/forgotpassword", element: <ForgotPassword /> },

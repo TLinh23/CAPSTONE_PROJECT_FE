@@ -20,3 +20,19 @@
 .height-not-found-page {
   height: calc(100vh - 180px);
 }
+
+.schedule-border {
+  text-align: center;
+  border-top-width: 1px;
+  border-left-width: 1px;
+  border-color: #7f7f7f;
+  padding: 6px 4px;
+}
+.border-end-line {
+  border-right-width: 1px;
+  border-color: #7f7f7f;
+}
+.border-end-row {
+  border-bottom-width: 1px;
+  border-color: #7f7f7f;
+}
