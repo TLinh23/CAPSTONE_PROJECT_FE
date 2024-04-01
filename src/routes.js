@@ -27,6 +27,8 @@ import AccountDetail from "./pages/PageAccountDetail";
 import ClassDetail from "./pages/PageClassDetail";
 import TransactionDetail from "./pages/PageTransactionDetail";
 
+import PageOpenedClassRooms from "./pages/PageOpenedClassRooms";
+import PageSchedule from "./pages/PageSchedule";
 
 //list your routes here
 export const routes = [
@@ -37,7 +39,7 @@ export const routes = [
   { path: "/profile/:id/edit", element: <EditProfilePage /> },
   { path: "/collections", element: <CollectionPage /> },
   { path: "/collections/:slug", element: <CollectionPage /> },
-  //{ path: "/opended-classrooms", element: <PageOpenedClassRooms /> },
+
   { path: "/todos", element: <TodoListPage /> },
   { path: "/login", element: <Login /> },
   { path: "/forgotpassword", element: <ForgotPassword /> },
