@@ -19,6 +19,8 @@ import AccountManager from "./components/Staff/AccountManager/ListAccountManager
 import ListClassManager from "./components/Staff/ClassManager/ListClassManager";
 import Transaction from "./components/Staff/TransactionManager/Transaction";
 import AddTransaction from "./components/Staff/TransactionManager/AddTransaction";
+import ListStaffManager from "./components/Admin/StaffManager/ListStaffManager";
+import AddStaff from "./components/Admin/StaffManager/AddStaff"; 
 
 //trang account detail
 import AccountDetail from "./pages/PageAccountDetail";
@@ -53,6 +55,8 @@ export const routes = [
   { path: "/listTransactionManager", element: <Transaction /> },
   { path: "/transactionDetail/:id", element: <TransactionDetail /> },
   { path: "/addTransaction", element: <AddTransaction /> },
+  { path: "/listStaffManager", element: <ListStaffManager /> },
+  { path: "/addStaff", element: <AddStaff /> },
 
   { path: "/", element: <NewHomePage /> },
   { path: "*", element: <NotFound /> },
