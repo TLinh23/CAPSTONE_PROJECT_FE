@@ -12,7 +12,6 @@ function AddTransaction() {
         amount: '',
         description: ''
     });
-
     const handleChange = (e) => {
         const { name, value } = e.target;
         setTransaction(prevState => ({
@@ -97,9 +96,10 @@ function AddTransaction() {
                         />
                     </div>
                     <div className="flex justify-end mt-4">
-                        <PrimaryBtn onClick={handleSubmit} className="bg-blue-50 hover:bg-blue-70 text-white font-bold py-1 px-2 text-xs rounded">
+                        <PrimaryBtn onClick={handleSubmit} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-1 rounded">
                             Add New
                         </PrimaryBtn>
+
 
                     </div>
                 </div>
