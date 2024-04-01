@@ -96,7 +96,7 @@ function AddTransaction() {
                         />
                     </div>
                     <div className="flex justify-end mt-4">
-                        <PrimaryBtn onClick={handleSubmit} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-1 rounded">
+                        <PrimaryBtn onClick={handleSubmit} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded">
                             Add New
                         </PrimaryBtn>
 
