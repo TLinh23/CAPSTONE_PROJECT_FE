@@ -22,6 +22,7 @@ import AddTransaction from "./components/Staff/TransactionManager/AddTransaction
 import ListStaffManager from "./components/Admin/StaffManager/ListStaffManager";
 import AddStaff from "./components/Admin/StaffManager/AddStaff"; 
 import ListAssessmentManager from "./components/Tutor/AssessmentManager/ListAssessmentManager"
+import RegisterAsParent from "./pages/RegisterParent/RegisterAsParent"
 //trang account detail
 import AccountDetail from "./pages/PageAccountDetail";
 import ClassDetail from "./pages/PageClassDetail";
@@ -76,6 +77,8 @@ export const routes = [
   { path: "/lissAllClass", element: <ListAllClass /> },
   { path: "/tutorFee", element: <TutorFee /> },
   { path: "/listAssessmentManager", element: <ListAssessmentManager /> },
+  { path: "/register-parent", element: <RegisterAsParent /> },
+
   
 
   { path: "/", element: <NewHomePage /> },
