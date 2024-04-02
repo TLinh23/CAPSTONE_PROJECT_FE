@@ -49,49 +49,6 @@ function StudentProfileDetail(props) {
             value={staffAccountObject?.phone ? staffAccountObject?.phone : ""}
             readOnly
           />
-          <div>
-            <PrimarySmallTitle className="mb-2">
-              Date of birth
-            </PrimarySmallTitle>
-            <input
-              max={new Date().toISOString().slice(0, 10)}
-              value={
-                staffAccountObject?.birthDate
-                  ? format(
-                      new Date(staffAccountObject?.birthDate),
-                      "yyyy-MM-dd"
-                    )
-                  : ""
-              }
-              onChange={(e) => {
-                const selectedDate = e.target.value;
-                const currentDate = new Date().toISOString().slice(0, 10);
-                if (selectedDate > currentDate) {
-                  setStaffAccountObject({
-                    ...staffAccountObject,
-                    birthDate: currentDate,
-                  });
-                } else {
-                  setStaffAccountObject({
-                    ...staffAccountObject,
-                    birthDate: selectedDate,
-                  });
-                }
-              }}
-              type="date"
-              disabled
-              className="w-full h-[46px] px-4 py-3 border rounded-md outline-none border-gray focus:border-primary hover:border-primary smooth-transform"
-            />
-          </div>
-          <PrimaryInput
-            title="Address detail"
-            rows={4}
-            placeholder="Enter address detail"
-            value={
-              staffAccountObject?.address ? staffAccountObject?.address : ""
-            }
-            readOnly
-          />
           <PrimaryInput
             title="Parent name"
             placeholder="Enter phone number"
