@@ -13,6 +13,7 @@ import AddSubjectPopup from "./AddSubjectPopup";
 import EditSubjectPopup from "./EditSubjectPopup";
 import PrimarySmallTitle from "src/components/common/PrimarySmallTitle";
 import ProfileHeader from "../ProfileHeader";
+import DeniedBtn from "src/components/common/DeniedBtn";
 
 function TutorProfileDetail(props) {
   const { dataProfileDetail } = props;
@@ -293,14 +294,24 @@ function SubjectItem({ handleClickEdit, roleKey, userId, dataProfileDetail }) {
       </div>
       {roleKey === ROLE_NAME.TUTOR &&
         String(userId) === String(dataProfileDetail?.id) && (
-          <PrimaryBtn
-            className="!w-fit !py-1"
-            onClick={() => {
-              handleClickEdit();
-            }}
-          >
-            Edit
-          </PrimaryBtn>
+          <div>
+            <PrimaryBtn
+              className="!w-fit !py-1"
+              onClick={() => {
+                handleClickEdit();
+              }}
+            >
+              Edit
+            </PrimaryBtn>
+            <DeniedBtn
+              className="!w-fit !py-1 mt-1"
+              onClick={() => {
+                handleClickEdit();
+              }}
+            >
+              Delete
+            </DeniedBtn>
+          </div>
         )}
     </div>
   );

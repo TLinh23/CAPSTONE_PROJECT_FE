@@ -31,6 +31,10 @@ import TutorFee from "./pages/TutorFee";
 
 import PageOpenedClassRooms from "./pages/PageOpenedClassRooms";
 import PageSchedule from "./pages/PageSchedule";
+import PageManageSubjects from "./pages/PageManageSubjects";
+import PageTutorClassroomDetail from "./pages/PageTutorClassroomDetail";
+import PageTutorListStudent from "./pages/PageTutorListStudent";
+import PageCreateNewStudentInClass from "./pages/PageCreateNewStudentInClass";
 
 //list your routes here
 export const routes = [
@@ -39,8 +43,17 @@ export const routes = [
   { path: "/classroom-requests/create", element: <PageCreateOrderRequest /> },
   { path: "/profile/:id", element: <ProfilePage /> },
   { path: "/profile/:id/edit", element: <EditProfilePage /> },
+  { path: "/manage-subjects", element: <PageManageSubjects /> },
   { path: "/collections", element: <CollectionPage /> },
   { path: "/collections/:slug", element: <CollectionPage /> },
+  { path: "/opended-classrooms", element: <PageOpenedClassRooms /> },
+  { path: "/schedule", element: <PageSchedule /> },
+  { path: "/tutor-classrooms/:id", element: <PageTutorClassroomDetail /> },
+  { path: "/tutor-classrooms/:id/students", element: <PageTutorListStudent /> },
+  {
+    path: "/tutor-classrooms/:id/students/create",
+    element: <PageCreateNewStudentInClass />,
+  },
 
   { path: "/todos", element: <TodoListPage /> },
   { path: "/login", element: <Login /> },
@@ -62,8 +75,6 @@ export const routes = [
   { path: "/lissAllClass", element: <ListAllClass /> },
   { path: "/tutorFee", element: <TutorFee /> },
 
-
   { path: "/", element: <NewHomePage /> },
   { path: "*", element: <NotFound /> },
-
 ];

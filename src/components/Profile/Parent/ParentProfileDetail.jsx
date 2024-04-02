@@ -13,6 +13,7 @@ import { useAuthContext } from "src/context/AuthContext";
 import { ROLE_NAME } from "src/constants/constants";
 import PrimarySmallTitle from "src/components/common/PrimarySmallTitle";
 import ProfileHeader from "../ProfileHeader";
+import DeniedBtn from "src/components/common/DeniedBtn";
 
 function ParentProfileDetail(props) {
   const { dataProfileDetail } = props;
@@ -192,14 +193,24 @@ function StudentItem({ handleClickEdit, roleKey, userId, dataProfileDetail }) {
       </div>
       {roleKey === ROLE_NAME.PARENT &&
         String(userId) === String(dataProfileDetail?.id) && (
-          <PrimaryBtn
-            className="!w-fit !py-1"
-            onClick={() => {
-              handleClickEdit();
-            }}
-          >
-            Edit
-          </PrimaryBtn>
+          <div>
+            <PrimaryBtn
+              className="!w-fit !py-1"
+              onClick={() => {
+                handleClickEdit();
+              }}
+            >
+              Edit
+            </PrimaryBtn>
+            <DeniedBtn
+              className="!w-fit !py-1 mt-1"
+              onClick={() => {
+                handleClickEdit();
+              }}
+            >
+              Delete
+            </DeniedBtn>
+          </div>
         )}
     </div>
   );
