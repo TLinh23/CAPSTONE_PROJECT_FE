@@ -56,7 +56,6 @@ function AccountManager() {
             listDropdown={[
               { id: 1, value: "Active", name: "Active" },
               { id: 2, value: "Inactive", name: "Inactive" },
-              // Thêm các bộ lọc khác nếu cần
             ]}
             showing={isFilterSelected}
             setShowing={setIsFilterSelected}
