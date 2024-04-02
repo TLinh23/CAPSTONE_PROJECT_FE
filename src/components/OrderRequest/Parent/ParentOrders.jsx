@@ -7,10 +7,10 @@ import SearchInput from "src/components/common/SearchInput";
 import Table from "src/components/common/Table";
 import Title from "src/components/common/Title";
 import useDebounce from "src/hooks/useDebounce";
-import PrimaryBtn from "src/components/common/PrimaryBtn";
 import DeniedBtn from "src/components/common/DeniedBtn";
 import RenderStatus from "src/components/common/RenderStatus";
 import ShowDetail from "src/components/common/ShowDetail";
+import { NavLink } from "react-router-dom";
 
 function ParentOrders() {
   const [isFilterSelected, setIsFilterSelected] = useState();
@@ -29,7 +29,7 @@ function ParentOrders() {
           limit: limit,
         };
         if (debouncedSearchValue) {
-          queryObj["search"] = debouncedSearchValue;
+          queryObj["SearchWord"] = debouncedSearchValue;
         }
 
         // change your api request
@@ -129,9 +129,9 @@ const columns = [
         accessor: (data) => {
           return (
             <div className="flex items-center gap-4">
-              <a href={`/classroom-requests/${data?.id}`}>
+              <NavLink to={`/classroom-requests/${data?.id}`}>
                 <ShowDetail />
-              </a>
+              </NavLink>
             </div>
           );
         },
