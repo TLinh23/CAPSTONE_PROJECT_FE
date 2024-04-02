@@ -1,6 +1,11 @@
 import ClassRoomIcon from "src/components/icons/ClassRoomIcon";
-import { TUTOR_HREF } from "./navbarConstant";
+import { PARENT_HREF, TUTOR_HREF } from "./navbarConstant";
 import React from "react";
+import ScheduleIcon from "src/components/icons/ScheduleIcon";
+import RequestIcon from "src/components/icons/RequestIcon";
+import TransactionIcon from "src/components/icons/TransactionIcon";
+import AssetIcon from "src/components/icons/AssetIcon";
+import ProfileIcon from "src/components/icons/ProfileIcon";
 
 export const mainMenu = [
   {
@@ -9,6 +14,78 @@ export const mainMenu = [
     href: TUTOR_HREF.CLASSROOM,
     icon: <ClassRoomIcon />,
     listActiveRouter: [TUTOR_HREF.CLASSROOM],
+  },
+];
+
+export const TUTOR_MENU = [
+  {
+    id: 1,
+    name: "List Request",
+    href: TUTOR_HREF.CLASSROOM,
+    icon: <RequestIcon />,
+    listActiveRouter: [TUTOR_HREF.CLASSROOM],
+  },
+  {
+    id: 2,
+    name: "Schedule",
+    href: TUTOR_HREF.SCHEDULE,
+    icon: <ScheduleIcon />,
+    listActiveRouter: [TUTOR_HREF.SCHEDULE],
+  },
+  {
+    id: 3,
+    name: "List Transactions",
+    href: TUTOR_HREF.LIST_TRANSACTION,
+    icon: <TransactionIcon />,
+    listActiveRouter: [TUTOR_HREF.LIST_TRANSACTION],
+  },
+];
+
+export const PARENT_MENU = [
+  {
+    id: 1,
+    name: "List Student",
+    href: PARENT_HREF.STUDENT,
+    icon: <RequestIcon />,
+    listActiveRouter: [PARENT_HREF.STUDENT],
+  },
+  {
+    id: 2,
+    name: "List Tutor",
+    href: TUTOR_HREF.SCHEDULE,
+    icon: <ProfileIcon />,
+    listActiveRouter: [TUTOR_HREF.SCHEDULE],
+  },
+  {
+    id: 3,
+    name: "List Assessment",
+    href: TUTOR_HREF.LIST_TRANSACTION,
+    icon: <AssetIcon />,
+    listActiveRouter: [TUTOR_HREF.LIST_TRANSACTION],
+  },
+  {
+    id: 4,
+    name: "Schedule",
+    href: TUTOR_HREF.LIST_TRANSACTION,
+    icon: <ScheduleIcon />,
+    listActiveRouter: [TUTOR_HREF.LIST_TRANSACTION],
+  },
+];
+
+export const STAFF_MENU = [
+  {
+    id: 1,
+    name: "List Account",
+    href: TUTOR_HREF.SCHEDULE,
+    icon: <ProfileIcon />,
+    listActiveRouter: [TUTOR_HREF.SCHEDULE],
+  },
+  {
+    id: 2,
+    name: "Transaction",
+    href: TUTOR_HREF.LIST_TRANSACTION,
+    icon: <TransactionIcon />,
+    listActiveRouter: [TUTOR_HREF.LIST_TRANSACTION],
   },
 ];
 
