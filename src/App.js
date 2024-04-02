@@ -7,6 +7,7 @@ import Spinner from "./components/common/Spinner";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AuthProvider } from "./context/AuthContext";
+import { SideBarProvider } from "./context/SideBarContext";
 
 function App() {
   // react query stop refetch when switch browser tabs
@@ -33,15 +34,17 @@ function App() {
       />
       <Spinner />
       <QueryClientProvider client={queryClient}>
-        <AuthProvider>
-          <Router>
-            <Routes>
-              {routes.map((route) => (
-                <Route {...route} />
-              ))}
-            </Routes>
-          </Router>
-        </AuthProvider>
+        <SideBarProvider>
+          <AuthProvider>
+            <Router>
+              <Routes>
+                {routes.map((route) => (
+                  <Route {...route} />
+                ))}
+              </Routes>
+            </Router>
+          </AuthProvider>
+        </SideBarProvider>
       </QueryClientProvider>
     </>
   );
