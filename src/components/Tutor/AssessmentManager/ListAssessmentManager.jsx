@@ -12,13 +12,13 @@ import PrimaryBtn from "../../common/PrimaryBtn";
 
 // Dữ liệu giả định
 const mockData = [
-  { id: 1, payer: "Trang Pham", requestBy: "Huyen Tran", amount: "200", reqDate: "11-02-2024", payDate: "13-02-2024", status: "PAID" },
-  { id: 2, payer: "Khang Nguyen", requestBy: "Long Nguyen", amount: "250", reqDate: "13-02-2024", status: "UNPAID" },
-  { id: 3, payer: "Huyen Tran", requestBy: "Khang Nguyen", amount: "150", reqDate: "09-01-2024", status: "UNPAID" },
-  // Thêm các bản ghi giả định khác nếu cần
+  { id: 1, studentName: 'Pham van a', class: 'Class 1', subject: 'Math', comment: 'Good' },
+  { id: 1, studentName: 'Pham van a', class: 'Class 1', subject: 'Math', comment: 'Good' },
+  { id: 1, studentName: 'Pham van a', class: 'Class 1', subject: 'Math', comment: 'Good' },
+  { id: 1, studentName: 'Pham van a', class: 'Class 1', subject: 'Math', comment: 'Good' },
 ];
 
-function ListTransactionManager() {
+function ListAssessmentManager() {
   const [isFilterSelected, setIsFilterSelected] = useState(false);
   const [searchParam, setSearchParam] = useState("");
   const debouncedSearchValue = useDebounce(searchParam, 500);
@@ -85,7 +85,7 @@ function ListTransactionManager() {
   );
 }
 
-export default ListTransactionManager;
+export default ListAssessmentManager;
 
 const transactionColumns = [
   {
@@ -96,30 +96,20 @@ const transactionColumns = [
         accessor: "id",
       },
       {
-        Header: "Payer",
-        accessor: "payer",
+        Header: "Student Name",
+        accessor: "studentName",
       },
       {
-        Header: "Request by",
-        accessor: "requestBy",
+        Header: "Class",
+        accessor: "class",
       },
       {
-        Header: "Amount",
-        accessor: "amount",
+        Header: "Subject",
+        accessor: "subject",
       },
       {
-        Header: "Request Date",
-        accessor: "reqDate",
-      },
-      {
-        Header: "Pay Date",
-        accessor: "payDate",
-      },
-      {
-        Header: "Status",
-        accessor: (data) => (
-          <RenderStatus status={data.status}>{data.status}</RenderStatus>
-        ),
+        Header: "Comment",
+        accessor: "comment",
       },
       {
         Header: " ",
