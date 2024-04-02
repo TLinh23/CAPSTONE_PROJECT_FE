@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Layout from "../../layout/Layout"; 
+import Layout from "../../layout/Layout";
 import FilterDropDown from "../../common/FilterDropDown";
 import Pagination from "../../common/Pagination";
 import SearchInput from "../../common/SearchInput";
@@ -12,11 +12,22 @@ import ShowDetail from "src/components/common/ShowDetail";
 import RenderStatus from "src/components/common/RenderStatus";
 // Dữ liệu giả định
 const mockData = [
-  { id: 1, name: "Math 101", tutor: "Khang Nguyen", subject: "Math", startDate: "10-01-2024", status: "Active" },
-    { id: 2, name: "Literature level 2", tutor: "Trang Pham", subject: "Literature", startDate: "22-11-2023", status: "Suspended" },
+  {
+    id: 1,
+    name: "John Doe",
+    phone: "123-456-7890",
+    status: "Active",
+  },
+  {
+    id: 2,
+    name: "Jane Smith",
+    phone: "098-765-4321",
+    status: "Inactive",
+  },
+  // Thêm các bản ghi giả định khác
 ];
 
-function ListClassManager() {
+function ListStaffManager() {
   const [isFilterSelected, setIsFilterSelected] = useState();
   const [searchParam, setSearchParam] = useState("");
   const debouncedSearchValue = useDebounce(searchParam, 500);
@@ -24,15 +35,15 @@ function ListClassManager() {
   const [limit, setLimit] = useState(10);
 
   // Tính toán dữ liệu hiển thị dựa trên searchParam, page và limit
-  const filteredData = mockData.filter(account =>
+  const filteredData = mockData.filter((account) =>
     account.name.toLowerCase().includes(debouncedSearchValue.toLowerCase())
   );
   const paginatedData = filteredData.slice((page - 1) * limit, page * limit);
 
   return (
     <Layout>
-      <div className="container mx-auto p-4">
-        <Title>Class Management</Title>
+      <div className="container p-4 mx-auto">
+        <Title>Account Management</Title>
         <div className="flex flex-col gap-4 py-5 md:items-center md:flex-row md:justify-end">
           <SearchInput
             placeholder="Search by name or id"
@@ -42,7 +53,7 @@ function ListClassManager() {
           <FilterDropDown
             listDropdown={[
               { id: 1, value: "Active", name: "Active" },
-              { id: 2, value: "Suspend", name: "Suspend" },
+              { id: 2, value: "Inactive", name: "Inactive" },
               // Thêm các bộ lọc khác nếu cần
             ]}
             showing={isFilterSelected}
@@ -71,7 +82,7 @@ function ListClassManager() {
   );
 }
 
-export default ListClassManager;
+export default ListStaffManager;
 
 const accountColumns = [
   {
@@ -82,20 +93,12 @@ const accountColumns = [
         accessor: "id",
       },
       {
-        Header: "Classroom name",
-        accessor: "name", 
+        Header: "Name",
+        accessor: "name",
       },
       {
-        Header: "Tutor",
-        accessor: "tutor", 
-      },
-      {
-        Header: "Subject",
-        accessor: "subject", 
-      },
-      {
-        Header: "Start Date",
-        accessor: "startDate", 
+        Header: "Phone",
+        accessor: "phone",
       },
       {
         Header: "Status",
@@ -109,7 +112,7 @@ const accountColumns = [
           return (
             <div className="flex items-center gap-4">
               <PrimaryBtn>Active</PrimaryBtn>
-              <DeniedBtn>Suspend</DeniedBtn>
+              <DeniedBtn>Inactive</DeniedBtn>
             </div>
           );
         },
@@ -119,7 +122,7 @@ const accountColumns = [
         accessor: (data) => {
           return (
             <div className="flex items-center gap-4">
-              <a href={`/classDetailManager/${data.id}`}>
+              <a href={`/AccountDetail/${data.id}`}>
                 <ShowDetail />
               </a>
             </div>

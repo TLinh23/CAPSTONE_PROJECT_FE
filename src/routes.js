@@ -17,17 +17,17 @@ import PageCreateOrderRequest from "./pages/PageCreateOrderRequest";
 //loc
 import AccountManager from "./components/Staff/AccountManager/ListAccountManager";
 import ListClassManager from "./components/Staff/ClassManager/ListClassManager";
-<<<<<<< Updated upstream
-import ListTransactionManager from "./components/Staff/ClassManager/ListClassManager";
-=======
 import Transaction from "./components/Staff/TransactionManager/Transaction";
 import AddTransaction from "./components/Staff/TransactionManager/AddTransaction";
 import ListStaffManager from "./components/Admin/StaffManager/ListStaffManager";
-import AddStaff from "./components/Admin/StaffManager/AddStaff";
->>>>>>> Stashed changes
+import AddStaff from "./components/Admin/StaffManager/AddStaff"; 
 
 //trang account detail
 import AccountDetail from "./pages/PageAccountDetail";
+import ClassDetail from "./pages/PageClassDetail";
+import TransactionDetail from "./pages/PageTransactionDetail";
+import ListAllClass from "./pages/ListAllClass";
+import TutorFee from "./pages/TutorFee";
 
 import PageOpenedClassRooms from "./pages/PageOpenedClassRooms";
 import PageSchedule from "./pages/PageSchedule";
@@ -48,8 +48,6 @@ export const routes = [
   { path: "/collections/:slug", element: <CollectionPage /> },
   { path: "/opended-classrooms", element: <PageOpenedClassRooms /> },
   { path: "/schedule", element: <PageSchedule /> },
-<<<<<<< Updated upstream
-=======
   { path: "/tutor-classrooms/:id", element: <PageTutorClassroomDetail /> },
   { path: "/tutor-classrooms/:id/students", element: <PageTutorListStudent /> },
   {
@@ -57,7 +55,6 @@ export const routes = [
     element: <PageCreateNewStudentInClass />,
   },
 
->>>>>>> Stashed changes
   { path: "/todos", element: <TodoListPage /> },
   { path: "/login", element: <Login /> },
   { path: "/forgotpassword", element: <ForgotPassword /> },
@@ -68,8 +65,6 @@ export const routes = [
   //loc
   { path: "/accountManager", element: <AccountManager /> },
   { path: "/AccountDetail/:id", element: <AccountDetail /> },
-<<<<<<< Updated upstream
-=======
   { path: "/listClassManager", element: <ListClassManager /> },
   { path: "/ClassDetailManager/:id", element: <ClassDetail /> },
   { path: "/listTransactionManager", element: <Transaction /> },
@@ -80,7 +75,6 @@ export const routes = [
   { path: "/lissAllClass", element: <ListAllClass /> },
   { path: "/tutorFee", element: <TutorFee /> },
 
->>>>>>> Stashed changes
   { path: "/", element: <NewHomePage /> },
   { path: "*", element: <NotFound /> },
 ];
