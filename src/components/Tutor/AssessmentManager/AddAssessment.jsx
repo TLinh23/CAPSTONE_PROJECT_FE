@@ -4,13 +4,12 @@ import Title from "../../common/Title";
 import Input from "../../common/PrimaryInput";
 import PrimaryBtn from "../../common/PrimaryBtn";
 
-function AddTransaction() {
+function AddAssessment() {
     const [transaction, setTransaction] = useState({
-        paymentType: '',
-        requestedBy: '',
-        payer: '',
-        amount: '',
-        description: ''
+        studentName: '',
+        class: '',
+        subject: '',
+        comment: ''
     });
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -28,69 +27,56 @@ function AddTransaction() {
     return (
         <Layout>
             <div className="container mx-auto p-4">
-                <Title>Staff - Add New Transaction</Title>
+                <Title>Add New Assessment</Title>
                 <div className="mt-4">
                     <div className="flex items-center mb-4">
-                        <label className="inline-block w-1/3 text-gray-700 text-sm font-bold" htmlFor="paymentType">
-                            Payment Type:
+                        <label className="inline-block w-1/3 text-gray-700 text-sm font-bold" htmlFor="studentName">
+                            Student name:
                         </label>
                         <Input
-                            id="paymentType"
-                            name="paymentType"
-                            placeholder="Payment Type"
-                            value={transaction.paymentType}
+                            id="studentName"
+                            name="studentName"
+                            placeholder="Student name"
+                            value={transaction.studentName}
                             onChange={handleChange}
                             className="w-2/3"
                         />
                     </div>
                     <div className="flex items-center mb-4">
-                        <label className="inline-block w-1/3 text-gray-700 text-sm font-bold" htmlFor="requestedBy">
-                            Requested By:
+                        <label className="inline-block w-1/3 text-gray-700 text-sm font-bold" htmlFor="class">
+                            className:
                         </label>
                         <Input
-                            id="requestedBy"
-                            name="requestedBy"
-                            placeholder="Requested By"
-                            value={transaction.requestedBy}
+                            id="class"
+                            name="class"
+                            placeholder="Class name"
+                            value={transaction.class}
                             onChange={handleChange}
                             className="w-2/3"
                         />
                     </div>
                     <div className="flex items-center mb-4">
-                        <label className="inline-block w-1/3 text-gray-700 text-sm font-bold" htmlFor="payer">
-                            Payer:
+                        <label className="inline-block w-1/3 text-gray-700 text-sm font-bold" htmlFor="subject">
+                            subject:
                         </label>
                         <Input
-                            id="payer"
-                            name="payer"
-                            placeholder="Payer"
-                            value={transaction.payer}
+                            id="subject"
+                            name="subject"
+                            placeholder="Subject"
+                            value={transaction.subject}
                             onChange={handleChange}
                             className="w-2/3"
                         />
                     </div>
                     <div className="flex items-center mb-4">
-                        <label className="inline-block w-1/3 text-gray-700 text-sm font-bold" htmlFor="amount">
-                            Pay Amount:
+                        <label className="inline-block w-1/3 text-gray-700 text-sm font-bold" htmlFor="comment">
+                            Comment:
                         </label>
                         <Input
-                            id="amount"
-                            name="amount"
-                            placeholder="Pay Amount"
-                            value={transaction.amount}
-                            onChange={handleChange}
-                            className="w-2/3"
-                        />
-                    </div>
-                    <div className="flex items-center mb-4">
-                        <label className="inline-block w-1/3 text-gray-700 text-sm font-bold" htmlFor="description">
-                            Transaction Description:
-                        </label>
-                        <Input
-                            id="description"
-                            name="description"
-                            placeholder="Transaction Description"
-                            value={transaction.description}
+                            id="comment"
+                            name="comment"
+                            placeholder="Comment"
+                            value={transaction.comment}
                             onChange={handleChange}
                             className="w-2/3"
                         />
@@ -108,4 +94,4 @@ function AddTransaction() {
     );
 }
 
-export default AddTransaction;
+export default AddAssessment;

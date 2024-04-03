@@ -12,10 +12,9 @@ import PrimaryBtn from "../../common/PrimaryBtn";
 
 // Dữ liệu giả định
 const mockData = [
-  { id: 1, studentName: 'Pham van a', class: 'Class 1', subject: 'Math', comment: 'Good' },
-  { id: 1, studentName: 'Pham van a', class: 'Class 1', subject: 'Math', comment: 'Good' },
-  { id: 1, studentName: 'Pham van a', class: 'Class 1', subject: 'Math', comment: 'Good' },
-  { id: 1, studentName: 'Pham van a', class: 'Class 1', subject: 'Math', comment: 'Good' },
+  { id: 1, name: "Phạm Văn A", class: "Class 1", subject: "Math", cmt: "Good" },
+  { id: 1, name: "Phạm Văn A", class: "Class 1", subject: "Math", cmt: "Good" },
+  // Thêm các bản ghi giả định khác nếu cần
 ];
 
 function ListAssessmentManager() {
@@ -27,7 +26,7 @@ function ListAssessmentManager() {
 
   // Tính toán dữ liệu hiển thị dựa trên searchParam, page và limit
   const filteredData = mockData.filter(transaction =>
-    transaction.payer.toLowerCase().includes(debouncedSearchValue.toLowerCase())
+    transaction.name.toLowerCase().includes(debouncedSearchValue.toLowerCase())
   );
   const paginatedData = filteredData.slice((page - 1) * limit, page * limit);
 
@@ -40,10 +39,10 @@ function ListAssessmentManager() {
   return (
     <Layout>
       <div className="container mx-auto p-4">
-        <Title>Transaction Management</Title>
+        <Title>Class Assessment</Title>
         <div className="flex flex-col gap-4 py-5 md:items-center md:flex-row md:justify-end">
           <SearchInput
-            placeholder="Search by payer name or id"
+            placeholder="Search by name name or id"
             onChange={(e) => setSearchParam(e.target.value)}
             value={searchParam}
           />
@@ -77,7 +76,7 @@ function ListAssessmentManager() {
 
         <div className="fixed bottom-0 right-0 text-xs p-2 z-10">
           <PrimaryBtn onClick={handleAddNewTransaction} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-            Add New Transaction
+            Add Access
           </PrimaryBtn>
         </div>
       </div>
@@ -96,8 +95,8 @@ const transactionColumns = [
         accessor: "id",
       },
       {
-        Header: "Student Name",
-        accessor: "studentName",
+        Header: "Name",
+        accessor: "name",
       },
       {
         Header: "Class",
@@ -109,13 +108,13 @@ const transactionColumns = [
       },
       {
         Header: "Comment",
-        accessor: "comment",
+        accessor: "cmt",
       },
       {
         Header: " ",
         accessor: (data) => (
           <div className="flex items-center gap-4">
-            <a href={`/transactionDetail/${data.id}`}>
+            <a href={`/assessDetail/${data.id}`}>
               <ShowDetail />
             </a>
           </div>

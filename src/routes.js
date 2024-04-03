@@ -23,12 +23,14 @@ import ListStaffManager from "./components/Admin/StaffManager/ListStaffManager";
 import AddStaff from "./components/Admin/StaffManager/AddStaff"; 
 import ListAssessmentManager from "./components/Tutor/AssessmentManager/ListAssessmentManager"
 import RegisterAsParent from "./pages/RegisterParent/RegisterAsParent"
+import AddAssessment from "./components/Tutor/AssessmentManager/AddAssessment";
 //trang account detail
 import AccountDetail from "./pages/PageAccountDetail";
 import ClassDetail from "./pages/PageClassDetail";
 import TransactionDetail from "./pages/PageTransactionDetail";
 import ListAllClass from "./pages/ListAllClass";
 import TutorFee from "./pages/TutorFee";
+import AssessmentDetails from "./pages/PageAssessDetail";
 
 import PageOpenedClassRooms from "./pages/PageOpenedClassRooms";
 import PageSchedule from "./pages/PageSchedule";
@@ -78,7 +80,8 @@ export const routes = [
   { path: "/tutorFee", element: <TutorFee /> },
   { path: "/listAssessmentManager", element: <ListAssessmentManager /> },
   { path: "/register-parent", element: <RegisterAsParent /> },
-
+  { path: "/assessDetail/:id", element: <AssessmentDetails /> },
+  { path: "/addAssess", element: <AddAssessment/> },
   
 
   { path: "/", element: <NewHomePage /> },

@@ -5,61 +5,31 @@ import RenderStatus from 'src/components/common/RenderStatus';
 import Title from '../../common/Title';
 
 // Dữ liệu giả định cho chi tiết giao dịch
-const transactionDetail = {
-  paymentType: 'Mediate',
-  requestedBy: 'Huyen Tran',
-  payer: 'Trang Pham',
-  payAmount: '200',
-  status: 'PAID',
-  requestDate: '11-02-2024',
-  payDate: '13-02-2024',
-  transactionDescription: '' // Thêm mô tả giao dịch nếu có
+const assessmentDetails = {
+  className: 'Class 1',
+  date: '13-02-2024',
+  cmt: 'Good',
 };
 
-function TransactionDetail() {
+function AssessmentDetails() {
   return (
     <div className='container mx-auto p-4'>
-      <Title>Transaction Details</Title>
+      <Title>Assessment Details</Title>
       <div className='bg-white p-6 rounded-lg shadow-lg max-w-2xl mx-auto'>
         <div className='flex flex-col space-y-4'>
           <div className='flex justify-between'>
-            <RequestTitle>Payment Type:</RequestTitle>
-            <RequestDescription>{transactionDetail.paymentType}</RequestDescription>
+            <RequestTitle>Classroom name:</RequestTitle>
+            <RequestDescription>{assessmentDetails.className}</RequestDescription>
           </div>
 
           <div className='flex justify-between'>
-            <RequestTitle>Requested By:</RequestTitle>
-            <RequestDescription>{transactionDetail.requestedBy}</RequestDescription>
+            <RequestTitle>Date:</RequestTitle>
+            <RequestDescription>{assessmentDetails.date}</RequestDescription>
           </div>
 
           <div className='flex justify-between'>
-            <RequestTitle>Payer:</RequestTitle>
-            <RequestDescription>{transactionDetail.payer}</RequestDescription>
-          </div>
-
-          <div className='flex justify-between'>
-            <RequestTitle>Pay Amount:</RequestTitle>
-            <RequestDescription>{transactionDetail.payAmount}</RequestDescription>
-          </div>
-
-          <div className='flex justify-between'>
-            <RequestTitle>Transaction Description:</RequestTitle>
-            <RequestDescription>{transactionDetail.transactionDescription}</RequestDescription>
-          </div>
-
-          <div className='flex justify-between'>
-            <RequestTitle>Request Date:</RequestTitle>
-            <RequestDescription>{transactionDetail.requestDate}</RequestDescription>
-          </div>
-
-          <div className='flex justify-between'>
-            <RequestTitle>Pay Date:</RequestTitle>
-            <RequestDescription>{transactionDetail.payDate}</RequestDescription>
-          </div>
-
-          <div className='flex justify-between'>
-            <RequestTitle>Status:</RequestTitle>
-            <RenderStatus status={transactionDetail.status}>{transactionDetail.status}</RenderStatus>
+            <RequestTitle>Comment:</RequestTitle>
+            <RequestDescription>{assessmentDetails.cmt}</RequestDescription>
           </div>
         </div>
       </div>
@@ -75,4 +45,4 @@ function RequestDescription({ children }) {
   return <span className="text-sm font-normal">{children}</span>;
 }
 
-export default TransactionDetail;
+export default AssessmentDetails;
