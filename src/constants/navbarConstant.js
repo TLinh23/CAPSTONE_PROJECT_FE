@@ -8,3 +8,7 @@ export const TUTOR_HREF = {
 export const PARENT_HREF = {
   STUDENT: "/lalala",
 };
+
+export const STAFF_HREF = {
+  MANAGE_SUBJECT: "/manage-subjects",
+};
