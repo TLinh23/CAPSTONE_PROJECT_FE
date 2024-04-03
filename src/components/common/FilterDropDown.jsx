@@ -87,7 +87,9 @@ function FilterDropDown({
           }`}
         >
           <div className="flex items-center gap-1">
-            <p className="text-[#000000]">{showing?.name || textDefault}</p>
+            <p className="text-[#000000]">
+              {showing?.name || showing?.value || textDefault}
+            </p>
           </div>
           <ArrowDownIcon color="#373737" />
         </div>
@@ -139,7 +141,7 @@ function DropDownItem({ data, showing, setShowing, toggleOpen }) {
         isSelected ? "bg-[#2F8DE4] text-black" : ""
       }`}
     >
-      <p>{data?.name}</p>
+      <p>{data?.name || data?.value}</p>
       {isSelected && <span className="ml-1">✓</span>}
     </div>
   );
