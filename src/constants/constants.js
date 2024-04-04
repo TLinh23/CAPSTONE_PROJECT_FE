@@ -1,12 +1,11 @@
 import ClassRoomIcon from "src/components/icons/ClassRoomIcon";
-import { PARENT_HREF, STAFF_HREF, TUTOR_HREF } from "./navbarConstant";
+import { PARENT_HREF, TUTOR_HREF } from "./navbarConstant";
 import React from "react";
 import ScheduleIcon from "src/components/icons/ScheduleIcon";
 import RequestIcon from "src/components/icons/RequestIcon";
 import TransactionIcon from "src/components/icons/TransactionIcon";
 import AssetIcon from "src/components/icons/AssetIcon";
 import ProfileIcon from "src/components/icons/ProfileIcon";
-import SubjectIcon from "src/components/icons/SubjectIcon";
 
 export const mainMenu = [
   {
@@ -88,23 +87,6 @@ export const STAFF_MENU = [
     icon: <TransactionIcon />,
     listActiveRouter: [TUTOR_HREF.LIST_TRANSACTION],
   },
-  {
-    id: 3,
-    name: "List Subject",
-    href: STAFF_HREF.MANAGE_SUBJECT,
-    icon: <SubjectIcon />,
-    listActiveRouter: [STAFF_HREF.MANAGE_SUBJECT],
-  },
-];
-
-export const ADMIN_MENU = [
-  {
-    id: 1,
-    name: "List Staff",
-    href: TUTOR_HREF.SCHEDULE,
-    icon: <ProfileIcon />,
-    listActiveRouter: [TUTOR_HREF.SCHEDULE],
-  },
 ];
 
 export const ROLE_NAME = {
@@ -128,9 +110,4 @@ export const LIST_CLASS_LEVEL_DEFAULT = [
   { id: 10, value: "10", name: "10" },
   { id: 11, value: "11", name: "11" },
   { id: 12, value: "12", name: "12" },
-];
-
-export const LIST_STATUS_FILTER = [
-  { id: 1, key: "CREATED", value: "Created" },
-  { id: 2, key: "REMOVE", value: "Remove" },
 ];

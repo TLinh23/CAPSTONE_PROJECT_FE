@@ -10,7 +10,7 @@ function PrimaryBtn({
   return (
     <button
       {...props}
-      className={`bg-primary w-full rounded-md text-white border border-primary font-medium py-3 px-4 active:bg-primaryDark active:border-pribg-primaryDark disabled:opacity-40 disabled:cursor-not-allowed smooth-transform flex justify-center items-center gap-3 text-base ${className}`}
+      className={`bg-primary w-full rounded-md text-white border border-primary font-medium py-3 px-4 active:bg-primaryDark hover:bg-primaryDark active:border-pribg-primaryDark disabled:opacity-40 disabled:cursor-not-allowed smooth-transform flex justify-center items-center gap-3 text-base ${className}`}
     >
       {accessoriesLeft && <div className="">{accessoriesLeft}</div>}
       {children}
