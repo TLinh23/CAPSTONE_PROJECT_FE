@@ -6,56 +6,51 @@ import SearchInput from "../../common/SearchInput";
 import Table from "../../common/Table";
 import Title from "../../common/Title";
 import useDebounce from "src/hooks/useDebounce";
-import PrimaryBtn from "../../common/PrimaryBtn";
-import DeniedBtn from "../../common/DeniedBtn";
-import ShowDetail from "src/components/common/ShowDetail";
 import RenderStatus from "src/components/common/RenderStatus";
+import ShowDetail from "src/components/common/ShowDetail";
+import PrimaryBtn from "../../common/PrimaryBtn";
+
 // Dữ liệu giả định
 const mockData = [
-  {
-    id: 1,
-    name: "John Doe",
-    role: "Admin",
-    phone: "123-456-7890",
-    status: "Active",
-  },
-  {
-    id: 2,
-    name: "Jane Smith",
-    role: "User",
-    phone: "098-765-4321",
-    status: "Inactive",
-  },
-  // Thêm các bản ghi giả định khác
+  { id: 1, name: "Phạm Văn A", class: "Class 1", subject: "Math", cmt: "Good" },
+  { id: 1, name: "Phạm Văn A", class: "Class 1", subject: "Math", cmt: "Good" },
+  // Thêm các bản ghi giả định khác nếu cần
 ];
 
-function AccountManager() {
-  const [isFilterSelected, setIsFilterSelected] = useState();
+function ListAssessmentManager() {
+  const [isFilterSelected, setIsFilterSelected] = useState(false);
   const [searchParam, setSearchParam] = useState("");
   const debouncedSearchValue = useDebounce(searchParam, 500);
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
 
   // Tính toán dữ liệu hiển thị dựa trên searchParam, page và limit
-  const filteredData = mockData.filter((account) =>
-    account.name.toLowerCase().includes(debouncedSearchValue.toLowerCase())
+  const filteredData = mockData.filter(transaction =>
+    transaction.name.toLowerCase().includes(debouncedSearchValue.toLowerCase())
   );
   const paginatedData = filteredData.slice((page - 1) * limit, page * limit);
 
+  // Hàm để xử lý khi nút "Add New Transaction" được nhấn
+  const handleAddNewTransaction = () => {
+    // Logic để thêm giao dịch mới
+    console.log("Add New Transaction button clicked");
+  };
+
   return (
     <Layout>
-      <div className="container p-4 mx-auto">
-        <Title>Account Management</Title>
+      <div className="container mx-auto p-4">
+        <Title>Class Assessment</Title>
         <div className="flex flex-col gap-4 py-5 md:items-center md:flex-row md:justify-end">
           <SearchInput
-            placeholder="Search by name or id"
+            placeholder="Search by name name or id"
             onChange={(e) => setSearchParam(e.target.value)}
-            value={searchParam || ""}
+            value={searchParam}
           />
           <FilterDropDown
             listDropdown={[
-              { id: 1, value: "Active", name: "Active" },
-              { id: 2, value: "Inactive", name: "Inactive" },
+              { id: 1, value: "PAID", name: "PAID" },
+              { id: 2, value: "UNPAID", name: "UNPAID" },
+              // Thêm các bộ lọc khác nếu cần
             ]}
             showing={isFilterSelected}
             setShowing={setIsFilterSelected}
@@ -66,7 +61,7 @@ function AccountManager() {
         <div className="bg-white table-style block-border">
           <Table
             pageSizePagination={limit}
-            columns={accountColumns}
+            columns={transactionColumns}
             data={paginatedData}
           />
         </div>
@@ -78,14 +73,20 @@ function AccountManager() {
           setCurrentPage={setPage}
           totalItems={filteredData.length}
         />
+
+        <div className="fixed bottom-0 right-0 text-xs p-2 z-10">
+          <PrimaryBtn onClick={handleAddNewTransaction} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            Add Access
+          </PrimaryBtn>
+        </div>
       </div>
     </Layout>
   );
 }
 
-export default AccountManager;
+export default ListAssessmentManager;
 
-const accountColumns = [
+const transactionColumns = [
   {
     Header: " ",
     columns: [
@@ -98,41 +99,26 @@ const accountColumns = [
         accessor: "name",
       },
       {
-        Header: "Role",
-        accessor: "role",
+        Header: "Class",
+        accessor: "class",
       },
       {
-        Header: "Phone",
-        accessor: "phone",
+        Header: "Subject",
+        accessor: "subject",
       },
       {
-        Header: "Status",
-        accessor: (data) => (
-          <RenderStatus status={data.status}>{data.status}</RenderStatus>
-        ), // Sử dụng thuộc tính status từ data
-      },
-      {
-        Header: "Action",
-        accessor: (data) => {
-          return (
-            <div className="flex items-center gap-4">
-              <PrimaryBtn>Active</PrimaryBtn>
-              <DeniedBtn>Inactive</DeniedBtn>
-            </div>
-          );
-        },
+        Header: "Comment",
+        accessor: "cmt",
       },
       {
         Header: " ",
-        accessor: (data) => {
-          return (
-            <div className="flex items-center gap-4">
-              <a href={`/AccountDetail/${data.id}`}>
-                <ShowDetail />
-              </a>
-            </div>
-          );
-        },
+        accessor: (data) => (
+          <div className="flex items-center gap-4">
+            <a href={`/assessDetail/${data.id}`}>
+              <ShowDetail />
+            </a>
+          </div>
+        ),
       },
     ],
   },
