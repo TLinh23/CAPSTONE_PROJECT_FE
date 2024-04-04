@@ -17,9 +17,9 @@ const StepperInformation = ({ template, handleChange, getData, errors }) => {
                                         <input
                                              type={field.type}
                                              name={field.name}
-                                             value="male"
+                                             value="NAM"
                                              checked={
-                                                  getData(field.name) === "male"
+                                                  getData(field.name) === "NAM"
                                              }
                                              onChange={(e) =>
                                                   handleChange(
@@ -32,10 +32,9 @@ const StepperInformation = ({ template, handleChange, getData, errors }) => {
                                         <input
                                              type={field.type}
                                              name={field.name}
-                                             value="female"
+                                             value="NU"
                                              checked={
-                                                  getData(field.name) ===
-                                                  "female"
+                                                  getData(field.name) === "NU"
                                              }
                                              onChange={(e) =>
                                                   handleChange(
