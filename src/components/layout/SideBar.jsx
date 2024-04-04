@@ -1,7 +1,7 @@
 import React from "react";
+import Line from "../common/Line";
 import SideBarItem from "./SideBarItem";
 import {
-  ADMIN_MENU,
   PARENT_MENU,
   ROLE_NAME,
   STAFF_MENU,
@@ -71,18 +71,7 @@ function SideBar() {
               ))}
               {STAFF_MENU.map((i) => (
                 <SideBarItem
-                  key={`staff-menu-${i?.id}`}
-                  item={i}
-                  rolePermission={[]}
-                />
-              ))}
-            </>
-          )}
-          {roleKey === ROLE_NAME.ADMIN && (
-            <>
-              {ADMIN_MENU.map((i) => (
-                <SideBarItem
-                  key={`admin-menu-${i?.id}`}
+                  key={`tutor-menu-${i?.id}`}
                   item={i}
                   rolePermission={[]}
                 />

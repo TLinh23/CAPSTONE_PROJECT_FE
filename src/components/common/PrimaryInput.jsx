@@ -15,6 +15,8 @@ function PrimaryInput({
   value = undefined,
   disabled = false,
   isVisible = true,
+  isError = undefined,
+  messageError = null,
   ...props
 }) {
   return (
@@ -42,13 +44,15 @@ function PrimaryInput({
           } ${accessoriesRight && "pr-7"}
               ${classNameInput}`}
         />
-        <span className="form-message">{message}</span>
         {accessoriesRight && (
           <div className="absolute cursor-pointer top-3 right-4">
             {accessoriesRight}
           </div>
         )}
       </div>
+      {isError && (
+        <div className="mt-2 text-sm text-red-500">{messageError}</div>
+      )}
     </div>
   );
 }

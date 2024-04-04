@@ -14,5 +14,3 @@ export const todoWithPagination = `https://dummyjson.com/todos`;
 export const employeeDummyUrl = `https://jsonplaceholder.typicode.com/todos`;
 
 export const orderRequestUrl = `${baseUrl}order-requests`;
-
-export const subjectUrl = `${baseUrl}api/Subject/get-subjects`;
