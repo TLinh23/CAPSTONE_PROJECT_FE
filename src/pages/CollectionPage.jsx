@@ -7,16 +7,13 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import PrimaryInput from "src/components/common/PrimaryInput";
 import PrimaryBtn from "src/components/common/PrimaryBtn";
+import { emailValidation, passwordValidation } from "src/constants/validations";
 
 // this validation below is example of using formik with Yup. Go to NPM to check docs
 
 const validationSchema = Yup.object({
-  email: Yup.string()
-    .min(5, "Email must be at least 5 characters")
-    .required("Email is required"),
-  password: Yup.string()
-    .min(4, "Password must be at least 4 characters")
-    .required("Password is required"),
+  email: emailValidation,
+  password: passwordValidation,
 });
 
 function CollectionPage() {
@@ -42,6 +39,7 @@ function CollectionPage() {
     initialValues: {
       email: "",
       password: "",
+      class: "",
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
@@ -89,6 +87,14 @@ function CollectionPage() {
           value={formilk.values.password}
           isError={formilk.touched.password && formilk.errors.password}
           messageError={formilk.errors.password}
+        />
+        <PrimaryInput
+          id="class"
+          title="Class"
+          placeholder="enter class"
+          onChange={formilk.handleChange}
+          onBlur={formilk.handleBlur}
+          value={formilk.values.class}
         />
         <PrimaryBtn type="submit">Submit</PrimaryBtn>
       </form>

@@ -4,10 +4,12 @@ import SearchInput from "../common/SearchInput";
 import useDebounce from "src/hooks/useDebounce";
 import Table from "../common/Table";
 import Pagination from "../common/Pagination";
-import { getListTodoWithObj } from "src/apis/tutor-module";
 import { useQueries } from "react-query";
 import RenderStatus from "../common/RenderStatus";
 import DeniedBtn from "../common/DeniedBtn";
+import { getListSubjects } from "src/apis/subject-module";
+import FilterDropDown from "../common/FilterDropDown";
+import { LIST_STATUS_FILTER } from "src/constants/constants";
 
 function AllSubjects() {
   const [listAllSubjects, setListAllSubjects] = useState(undefined);
@@ -15,24 +17,33 @@ function AllSubjects() {
   const debouncedSearchValue = useDebounce(searchParam, 500);
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
+  const [filterSelected, setFilterSelected] = useState(undefined);
 
   useQueries([
     {
-      queryKey: ["getListOrderRequest", page, limit, debouncedSearchValue],
+      queryKey: [
+        "getListSubjects",
+        page,
+        limit,
+        debouncedSearchValue,
+        filterSelected,
+      ],
       queryFn: async () => {
-        const queryObj = {
-          skip: (page - 1) * limit,
-          limit: limit,
-        };
+        const queryObj = {};
+        queryObj["PagingRequest.CurrentPage"] = page;
+        queryObj["PagingRequest.PageSize"] = limit;
         if (debouncedSearchValue) {
-          queryObj["search"] = debouncedSearchValue;
+          queryObj["SearchWord"] = debouncedSearchValue;
+        }
+        if (filterSelected) {
+          queryObj["Status"] = filterSelected?.key;
         }
 
-        // change your api request
-        const response = await getListTodoWithObj(queryObj);
-        setListAllSubjects(response?.data);
+        const response = await getListSubjects(queryObj);
+        setListAllSubjects(response?.data?.data);
         return response?.data;
       },
+      enabled: !!page && !!limit,
     },
   ]);
 
@@ -45,13 +56,32 @@ function AllSubjects() {
           onChange={(e) => setSearchParam(e.target.value)}
           value={searchParam || ""}
         />
+        <FilterDropDown
+          listDropdown={LIST_STATUS_FILTER}
+          showing={filterSelected}
+          setShowing={setFilterSelected}
+          className="md:max-w-[220px]"
+          textDefault="Select Status"
+        />
       </div>
-
+      <div className="flex justify-end mb-5">
+        <DeniedBtn
+          onClick={() => {
+            setPage(1);
+            setLimit(10);
+            setSearchParam("");
+            setFilterSelected(undefined);
+          }}
+          className="max-w-[150px]"
+        >
+          Remove Filter
+        </DeniedBtn>
+      </div>
       <div className="bg-white table-style block-border">
         <Table
           pageSizePagination={limit}
           columns={columns}
-          data={listAllSubjects?.todos}
+          data={listAllSubjects?.items}
         />
       </div>
 
@@ -60,7 +90,7 @@ function AllSubjects() {
         setPageSize={setLimit}
         currentPage={page}
         setCurrentPage={setPage}
-        totalItems={listAllSubjects?.total}
+        totalItems={listAllSubjects?.pagination?.totalItem}
       />
     </div>
   );
@@ -74,16 +104,16 @@ const columns = [
     columns: [
       {
         Header: "No",
-        accessor: (data) => <p>{data?.id}</p>,
+        accessor: (data) => <p>{data?.subjectId}</p>,
       },
       {
         Header: "Name",
-        accessor: (data) => <p>Name</p>,
+        accessor: (data) => <p>{data?.subjectName}</p>,
       },
       {
         Header: "Status",
         accessor: (data) => (
-          <RenderStatus status="approved">Approved</RenderStatus>
+          <RenderStatus status={data?.status}>{data?.status}</RenderStatus>
         ),
       },
       {
