@@ -2,11 +2,11 @@ import React, { createContext, useContext, useMemo, useState } from "react";
 
 const SideBarContext = createContext({
   toggleModalSideBar: () => null,
-  isOpenSideBar: false,
+  isOpenSideBar: true,
 });
 
 function SideBarProvider({ children }) {
-  const [isOpenSideBar, setIsOpenSideBar] = useState(false);
+  const [isOpenSideBar, setIsOpenSideBar] = useState(true);
 
   const toggleModalSideBar = () => {
     setIsOpenSideBar(!isOpenSideBar);
