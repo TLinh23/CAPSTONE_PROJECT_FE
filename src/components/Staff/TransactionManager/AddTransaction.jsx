@@ -12,6 +12,19 @@ function AddTransaction() {
         amount: '',
         description: ''
     });
+
+    const postPayment = async () => {     
+        try {
+             const fetchData = await axios({
+                  method: "post",
+                  url: 'https://localhost:5000/api/Payment/search-filter-payment',
+                  data: transaction
+             });
+        } catch (error) {
+             console.log(error)
+        }
+     };
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setTransaction(prevState => ({

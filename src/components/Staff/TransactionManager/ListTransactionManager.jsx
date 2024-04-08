@@ -23,9 +23,21 @@ function ListTransactionManager() {
   const debouncedSearchValue = useDebounce(searchParam, 500);
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
+  const [data, setData] = useState([])
+  const searchFilterPayment = async () => {     
+    try {
+         const fetchData = await axios({
+              method: "get",
+              url: 'https://localhost:5000/api/Payment/search-filter-payment'
+         });
+         setData(fetchData.data)
+    } catch (error) {
+         console.log(error)
+    }
+ };
 
   // Tính toán dữ liệu hiển thị dựa trên searchParam, page và limit
-  const filteredData = mockData.filter(account =>
+  const filteredData = data.filter(account =>
     account.name.toLowerCase().includes(debouncedSearchValue.toLowerCase())
   );
   const paginatedData = filteredData.slice((page - 1) * limit, page * limit);
