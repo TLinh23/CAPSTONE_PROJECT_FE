@@ -67,58 +67,6 @@ function HomePageContent() {
 
   return (
     <div>
-      <div className="flex items-center gap-4">
-        <PrimaryBtn
-          onClick={() => {
-            localStorage.setItem("roleKey", ROLE_NAME.ADMIN);
-            localStorage.setItem("userId", "1");
-            checkRoleKey();
-            checkUserId();
-          }}
-        >
-          System admin
-        </PrimaryBtn>
-        <PrimaryBtn
-          onClick={() => {
-            localStorage.setItem("roleKey", ROLE_NAME.STAFF);
-            localStorage.setItem("userId", "2");
-            checkRoleKey();
-            checkUserId();
-          }}
-        >
-          Staff
-        </PrimaryBtn>
-        <PrimaryBtn
-          onClick={() => {
-            localStorage.setItem("roleKey", ROLE_NAME.TUTOR);
-            localStorage.setItem("userId", "3");
-            checkRoleKey();
-            checkUserId();
-          }}
-        >
-          Tutor
-        </PrimaryBtn>
-        <PrimaryBtn
-          onClick={() => {
-            localStorage.setItem("roleKey", ROLE_NAME.PARENT);
-            localStorage.setItem("userId", "4");
-            checkRoleKey();
-            checkUserId();
-          }}
-        >
-          Parent
-        </PrimaryBtn>
-        <PrimaryBtn
-          onClick={() => {
-            localStorage.setItem("roleKey", ROLE_NAME.STUDENT);
-            localStorage.setItem("userId", "5");
-            checkRoleKey();
-            checkUserId();
-          }}
-        >
-          Student
-        </PrimaryBtn>
-      </div>
       {/* Page 1 */}
       <PageContentWrapper className="grid grid-cols-1 gap-5 md:grid-cols-2">
         <div className="flex flex-col justify-center gap-5">

@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import "./ForgotPassword.css";
-import { Navigate, Link } from "react-router-dom";
+import { Navigate, Link, useNavigate, NavLink } from "react-router-dom";
 import axios from "axios";
+import SecondaryBtn from "src/components/common/SecondaryBtn";
+import PrimaryBtn from "src/components/common/PrimaryBtn";
 
 const initFormValue = {
   email: "",
@@ -17,6 +19,7 @@ const validateEmail = (email) => {
 };
 
 export default function ForgotPassword() {
+  const navigate = useNavigate();
   const [formValue, setFormValue] = useState(initFormValue);
   const [formError, setFormError] = useState({});
   const [sucess, setSucess] = useState(false);
@@ -38,13 +41,12 @@ export default function ForgotPassword() {
     event.preventDefault();
     if (validateForm()) {
       try {
-        //api: 
+        //api:
         axios({
           method: "post",
           url: "",
           data: {
             Email: formValue.email,
-            
           },
         })
           .then((res) => {
@@ -67,54 +69,60 @@ export default function ForgotPassword() {
     }
   };
   return (
-    <>
-      {sucess ? (
-        <Navigate to="/" />
-      ) : (
-        <div className="forgotpassword-page">
-          <div className="forgotpassword-container">
-            <div className="logo-forgotpassword">
-              <img className="logo-img-forgotpassword" alt="Logo" />
-            </div>
-            <hr className="hr" />
-            <div className="content-forgotpassword">
-              <h1 className="title-forgotpassword">Forgot Password</h1>
-              <form onSubmit={handlerSubmit}>
-                <div className="mb-2-forgotpassword">
-                  <label htmlFor="email" className="form-label">
-                    Enter your mail that have registered
-                  </label>
-                  <input
-                    id="email-forgot"
-                    className="form-control-forgot"
-                    type="text"
-                    name="email"
-                    placeholder="Enter your mail"
-                    value={formValue.email}
-                    onChange={handleChange}
-                  />
-                  {/* {formError.email && (
+    <div>
+      <div className="px-5 py-6 bg-white border-b border-gray-200">
+        <NavLink className="py-6" to="/">
+          <img
+            src="https://amentotech.com/htmls/tuturn/images/logo.png"
+            alt="logo"
+            className="h-[30px] object-cover"
+          />
+        </NavLink>
+      </div>
+      <div className="forgotpassword-page">
+        <div className="forgotpassword-container">
+          <div className="logo-forgotpassword">
+            <img
+              className="logo-img-forgotpassword"
+              alt="Logo"
+              src="/images/logo-forgot.png"
+            />
+          </div>
+          <hr className="hr" />
+          <div className="content-forgotpassword">
+            <h1 className="title-forgotpassword">Forgot Password</h1>
+            <form onSubmit={handlerSubmit}>
+              <div className="mb-2-forgotpassword">
+                <label htmlFor="email" className="form-label">
+                  Enter your mail that have registered
+                </label>
+                <input
+                  id="email-forgot"
+                  className="form-control-forgot"
+                  type="text"
+                  name="email"
+                  placeholder="Enter your mail"
+                  value={formValue.email}
+                  onChange={handleChange}
+                />
+                {/* {formError.email && (
                     <div className="error">{formError.email}</div>
                   )} */}
-                </div>
-              </form>
-              <div className="buttons">
-                <button className="backBtn" type="button">
-                  <span className="btnText">
-                    <Link className="back-link" to="/">
-                      Back
-                    </Link>
-                  </span>
-                </button>
-
-                <button type="submit" className="submit-btn">
-                  <span className="btnText">Reset Password</span>
-                </button>
               </div>
+            </form>
+            <div className="flex items-center gap-3">
+              <SecondaryBtn
+                onClick={() => {
+                  navigate(-1);
+                }}
+              >
+                Back
+              </SecondaryBtn>
+              <PrimaryBtn>Reset Password</PrimaryBtn>
             </div>
           </div>
         </div>
-      )}
-    </>
+      </div>
+    </div>
   );
 }
