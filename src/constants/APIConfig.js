@@ -16,3 +16,5 @@ export const employeeDummyUrl = `https://jsonplaceholder.typicode.com/todos`;
 export const orderRequestUrl = `${baseUrl}order-requests`;
 
 export const subjectUrl = `${baseUrl}api/Subject/get-subjects`;
+
+export const loginUrl = `${baseUrl}api/Account/login`;
