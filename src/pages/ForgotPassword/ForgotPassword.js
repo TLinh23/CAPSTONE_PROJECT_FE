@@ -1,73 +1,64 @@
-import React, { useState } from "react";
+import React from "react";
 import "./ForgotPassword.css";
-import { Navigate, Link, useNavigate, NavLink } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
 import axios from "axios";
 import SecondaryBtn from "src/components/common/SecondaryBtn";
 import PrimaryBtn from "src/components/common/PrimaryBtn";
+import PrimaryInput from "src/components/common/PrimaryInput";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { emailValidation } from "src/constants/validations";
+import { toast } from "react-toastify";
+import { useMutation } from "react-query";
+import { resetPassUrl } from "src/constants/APIConfig";
 
-const initFormValue = {
-  email: "",
-};
-
-const isEmptyValue = (value) => {
-  return !value || value.trim().length < 1;
-};
-
-const validateEmail = (email) => {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
-};
+const validationSchema = Yup.object({
+  email: emailValidation,
+});
 
 export default function ForgotPassword() {
   const navigate = useNavigate();
-  const [formValue, setFormValue] = useState(initFormValue);
-  const [formError, setFormError] = useState({});
-  const [sucess, setSucess] = useState(false);
 
-  const validateForm = () => {
-    const error = {};
+  const resetPasswordMutation = useMutation(
+    (resetPass) => {
+      return axios.put(resetPassUrl, resetPass);
+    },
+    {
+      onSuccess: (data) => {
+        console.log("DATA: ", data);
+        toast.success(
+          "Reset password successful. Please check the email and try again!"
+        );
 
-    if (isEmptyValue(formValue.email)) {
-      error["email"] = "Emai is requied";
-    } else if (validateEmail(formValue.email)) {
-      error["email"] = "Email is requied";
+        setTimeout(() => {
+          navigate("/");
+        }, 300);
+      },
+      onError: (err) => {
+        console.log("Login failed", err);
+        toast.error("Wrong account, try again!");
+      },
     }
+  );
 
-    setFormError(error);
-    return Object.keys(error).length === 0;
-  };
-  const handleChange = () => {};
-  const handlerSubmit = (event) => {
-    event.preventDefault();
-    if (validateForm()) {
+  const formilk = useFormik({
+    initialValues: {
+      email: "",
+    },
+    validationSchema: validationSchema,
+    onSubmit: async (values) => {
       try {
-        //api:
-        axios({
-          method: "post",
-          url: "",
-          data: {
-            Email: formValue.email,
-          },
-        })
-          .then((res) => {
-            // setMyData(res.data)
-            console.log("data: ", res.data);
-            // localStorage.setItem("Token", res.data);
-            // localStorage.setItem("lastName", res.data.lastName);
-            // localStorage.setItem("email", res.data.email);
-
-            // localStorage.setItem
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
-        // console.log("check point login: ", myData);
-        // alert("Do you want login");
+        // @ts-ignore
+        resetPasswordMutation.mutate({
+          email: values?.email,
+        });
       } catch (error) {
-        console.log("register error", error);
+        toast.error("Reset password failed, please try again");
+        console.error("Call api failed:", error.response.data);
       }
-    }
-  };
+    },
+  });
+
   return (
     <div>
       <div className="px-5 py-6 bg-white border-b border-gray-200">
@@ -91,35 +82,38 @@ export default function ForgotPassword() {
           <hr className="hr" />
           <div className="content-forgotpassword">
             <h1 className="title-forgotpassword">Forgot Password</h1>
-            <form onSubmit={handlerSubmit}>
-              <div className="mb-2-forgotpassword">
-                <label htmlFor="email" className="form-label">
-                  Enter your mail that have registered
-                </label>
-                <input
-                  id="email-forgot"
-                  className="form-control-forgot"
-                  type="text"
-                  name="email"
-                  placeholder="Enter your mail"
-                  value={formValue.email}
-                  onChange={handleChange}
-                />
-                {/* {formError.email && (
-                    <div className="error">{formError.email}</div>
-                  )} */}
+            <form onSubmit={formilk.handleSubmit}>
+              <PrimaryInput
+                id="email"
+                title="Email"
+                classNameInput={`${
+                  formilk.touched.email && formilk.errors.email
+                    ? "border border-red-500"
+                    : ""
+                }`}
+                placeholder="name@company.com"
+                onChange={formilk.handleChange}
+                onBlur={formilk.handleBlur}
+                value={formilk.values.email}
+                isError={formilk.touched.email && formilk.errors.email}
+                messageError={formilk.errors.email}
+              />
+              <div className="flex items-center gap-3 mt-10">
+                <SecondaryBtn
+                  onClick={() => {
+                    navigate(-1);
+                  }}
+                >
+                  Back
+                </SecondaryBtn>
+                <PrimaryBtn
+                  type="submit"
+                  disabled={JSON.stringify(formilk.errors) !== "{}"}
+                >
+                  Reset Password
+                </PrimaryBtn>
               </div>
             </form>
-            <div className="flex items-center gap-3">
-              <SecondaryBtn
-                onClick={() => {
-                  navigate(-1);
-                }}
-              >
-                Back
-              </SecondaryBtn>
-              <PrimaryBtn>Reset Password</PrimaryBtn>
-            </div>
           </div>
         </div>
       </div>

@@ -36,3 +36,7 @@
   border-bottom-width: 1px;
   border-color: #7f7f7f;
 }
+
+.height-screen-tutor {
+  height: calc(100vh - 180px);
+}

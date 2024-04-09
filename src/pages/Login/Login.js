@@ -12,6 +12,7 @@ import cookie from "cookie";
 import { useMutation } from "react-query";
 import { loginUrl } from "src/constants/APIConfig";
 import { useAuthContext } from "src/context/AuthContext";
+import ArrowRightIcon from "src/components/icons/ArrowRightIcon";
 
 const validationSchema = Yup.object({
   email: emailValidation,
@@ -49,13 +50,13 @@ export default function Login() {
         }, 300);
       },
       onError: (err) => {
-        console.log("Login error", err?.message);
+        console.log("Login failed", err?.message);
         toast.error(
           err?.response?.data?.message ||
             err?.response?.message ||
             err?.response?.data ||
             err?.message ||
-            "Login error, try again"
+            "Login failed, try again!"
         );
       },
     }
@@ -151,13 +152,31 @@ export default function Login() {
               >
                 Login
               </PrimaryBtn>
-
-              <div className="mt-5 register">
-                <Link className="register-link" to="/register">
-                  <span>Do not have an account ? Register</span>
-                </Link>
-              </div>
+              <div className="mt-5 register">Do not have an account?</div>
             </form>
+            <div className="flex items-center gap-3 mt-3">
+              <button
+                onClick={() => {
+                  navigate("/register-parent");
+                }}
+                className="flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-[#eaac13] to-[#ee4444] rounded-md"
+              >
+                <p className="text-base font-bold text-white">
+                  Start as parent
+                </p>
+                <ArrowRightIcon />
+              </button>
+              <button
+                onClick={() => {
+                  navigate("/register-tutor");
+                }}
+                className="flex items-center gap-2 px-5 py-3 bg-transparent border border-gray-500 rounded-md"
+              >
+                <p className="text-base font-bold text-black">
+                  Join as Instructor
+                </p>
+              </button>
+            </div>
           </div>
         </div>
       </div>
