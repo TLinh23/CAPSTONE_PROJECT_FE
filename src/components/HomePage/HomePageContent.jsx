@@ -1,12 +1,9 @@
 import React from "react";
-import ShieldIcon from "../icons/ShieldIcon";
 import ArrowRightIcon from "../icons/ArrowRightIcon";
 import { ReactTyped } from "react-typed";
 import HeartIcon from "../icons/HeartIcon";
 import StarIcon from "../icons/StarIcon";
-import PrimaryBtn from "../common/PrimaryBtn";
-import { useAuthContext } from "../../context/AuthContext";
-import { ROLE_NAME } from "src/constants/constants";
+import { useNavigate } from "react-router-dom";
 
 const LIST_ITEM_SEPARATE_PAGE_1 = [
   {
@@ -63,8 +60,7 @@ const LIST_ITEM_SEPARATE_PAGE_2 = [
 ];
 
 function HomePageContent() {
-  const { checkRoleKey, checkUserId } = useAuthContext();
-
+  const navigate = useNavigate();
   return (
     <div>
       {/* Page 1 */}
@@ -91,23 +87,26 @@ function HomePageContent() {
             dolore magna aliqua ad minim veniamque.
           </div>
           <div className="flex items-center gap-3">
-            <button className="flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-[#eaac13] to-[#ee4444] rounded-md">
-              <p className="text-base font-bold text-white">Start as student</p>
+            <button
+              onClick={() => {
+                navigate("/register-parent");
+              }}
+              className="flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-[#eaac13] to-[#ee4444] rounded-md"
+            >
+              <p className="text-base font-bold text-white">Start as parent</p>
               <ArrowRightIcon />
             </button>
-            <button className="flex items-center gap-2 px-5 py-3 bg-transparent border border-gray-500 rounded-md">
+            <button
+              onClick={() => {
+                navigate("/register-tutor");
+              }}
+              className="flex items-center gap-2 px-5 py-3 bg-transparent border border-gray-500 rounded-md"
+            >
               <p className="text-base font-bold text-black">
                 Join as Instructor
                 <span className="ml-3 text-blue-400">It&apos;s Free!</span>
               </p>
             </button>
-          </div>
-          <div className="flex items-center gap-3">
-            <ShieldIcon />
-            <div className="text-base">
-              You can also join as parent to explore
-              <span className="text-blue-400 cursor-pointer"> Join today</span>
-            </div>
           </div>
         </div>
         <div className="hidden md:block">

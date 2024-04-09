@@ -104,17 +104,6 @@ export default function RegisterTutor() {
     setCurrentPage((prevPage) => Math.max(prevPage - 1, 0));
   };
 
-  // const [sucess, setSucess] = useState(false)
-
-  // const handleChange = (event) => {
-  //   // console.log("even: ", event.target.files[0])
-  //   const { value, name } = event.target;
-  //   setFormData({
-  //     ...formData,
-  //     [name]: value,
-  //   });
-  // };
-
   const handleChangeFile = (e) => {
     console.log("file: ", e.target.files[0]);
     setSelectFile(e.target.files[0]);
@@ -225,165 +214,134 @@ export default function RegisterTutor() {
   // setSucess(localStorage.getItem("check"));
 
   return (
-    <>
-      {sucess ? (
-        <Navigate to="/" />
-      ) : (
-        <section>
-          <div className="container-register">
-            <h3>This is logo</h3>
-            <hr />
-            <header>Registration</header>
-            <hr />
-            <div className="infor">
-              {pages.map((page, index) => (
-                <label
-                  key={index}
-                  className={`lab${index + 1} ${
-                    index === currentPage ? "active" : ""
-                  }`}
-                  onClick={() => setCurrentPage(index)}
-                >
-                  <h3>{page.title}</h3>
-                </label>
-              ))}
+    <div>
+      <div className="container-register">
+        <h3>This is logo</h3>
+        <hr />
+        <header>Registration</header>
+        <hr />
+        <div className="infor">
+          {pages.map((page, index) => (
+            <label
+              key={index}
+              className={`lab${index + 1} ${
+                index === currentPage ? "active" : ""
+              }`}
+              onClick={() => setCurrentPage(index)}
+            >
+              <h3>{page.title}</h3>
+            </label>
+          ))}
+        </div>
+        <hr />
+        <form onSubmit={handleSubmit}>
+          <div className="form">
+            <div className="details personal">
+              <span className="title">{pages[currentPage].title}</span>
             </div>
             <hr />
-            <form onSubmit={handleSubmit}>
-              <div className="form">
-                <div className="details personal">
-                  <span className="title">{pages[currentPage].title}</span>
-                </div>
-                <hr />
-                <div className="fields">
-                  {pages[currentPage].fields.map((field, index) => (
-                    <div key={index} className="input-field">
-                      {currentPage === pages.length - 1 ? (
-                        <div>
-                          {index === 0 ? (
-                            <>
-                              <textarea
-                                // type={field.type}
-                                placeholder={
-                                  currentPage === pages.length - 1
-                                    ? ""
-                                    : `Enter ${field.label}`
-                                }
-                                value={formData[field.name]}
-                                onChange={(e) => {
-                                  setFormData({
-                                    ...formData,
-                                    [field.name]: e.target.value,
-                                  });
-                                  setErrors({ ...errors, [field.name]: "" });
-                                }}
-                                required
-                              />
-                            </>
-                          ) : (
-                            <>
-                              <input
-                                type={field.type}
-                                placeholder={
-                                  currentPage === pages.length - 1
-                                    ? ""
-                                    : `Enter ${field.label}`
-                                }
-                                value={formData[field.name]}
-                                onChange={(e) => {
-                                  setFormData({
-                                    ...formData,
-                                    [field.name]: e.target.value,
-                                  });
-                                  setErrors({ ...errors, [field.name]: "" });
-                                }}
-                                required
-                              />
-                              <label>{field.label}</label>
-                            </>
-                          )}
+            <div className="fields">
+              {pages[currentPage].fields.map((field, index) => (
+                <div key={index} className="input-field">
+                  {currentPage === pages.length - 1 ? (
+                    <div>
+                      {index === 0 ? (
+                        <>
+                          <textarea
+                            // type={field.type}
+                            placeholder={
+                              currentPage === pages.length - 1
+                                ? ""
+                                : `Enter ${field.label}`
+                            }
+                            value={formData[field.name]}
+                            onChange={(e) => {
+                              setFormData({
+                                ...formData,
+                                [field.name]: e.target.value,
+                              });
+                              setErrors({ ...errors, [field.name]: "" });
+                            }}
+                            required
+                          />
+                        </>
+                      ) : (
+                        <>
+                          <input
+                            type={field.type}
+                            placeholder={
+                              currentPage === pages.length - 1
+                                ? ""
+                                : `Enter ${field.label}`
+                            }
+                            value={formData[field.name]}
+                            onChange={(e) => {
+                              setFormData({
+                                ...formData,
+                                [field.name]: e.target.value,
+                              });
+                              setErrors({ ...errors, [field.name]: "" });
+                            }}
+                            required
+                          />
+                          <label>{field.label}</label>
+                        </>
+                      )}
 
-                          {/* <label>{field.label}</label> */}
-                          {/* {errors[field.name] && (
+                      {/* <label>{field.label}</label> */}
+                      {/* {errors[field.name] && (
                         <span className="error-message">
                           {errors[field.name]}
                         </span>
                       )} */}
-                        </div>
-                      ) : currentPage === pages.length - 4 ? (
-                        <div>
-                          {index === 1 ? (
-                            <div className="">
-                              <label>{field.label}</label>
-                              <div className="gender-register-tutor">
-                                <label>Male</label>
-                                <input
-                                  type="radio"
-                                  id="male"
-                                  className="male"
-                                  name="male"
-                                  value=""
-                                  onClick={() => {
-                                    formData["gender"] = "male";
-                                    // Cập nhật formData ở đây nếu cần thiết
-                                  }}
-                                />
-                                <label>Female</label>
-                                <input
-                                  type="radio"
-                                  id="female"
-                                  className="female"
-                                  name="female"
-                                  value="female"
-                                  onClick={() => {
-                                    formData["gender"] = "female";
-                                    // Cập nhật formData ở đây nếu cần thiết
-                                  }}
-                                />
-                              </div>
-                            </div>
-                          ) : currentPage === pages.length - 3 ? (<div>
-                            <label>{field.label}</label>
+                    </div>
+                  ) : currentPage === pages.length - 4 ? (
+                    <div>
+                      {index === 1 ? (
+                        <div className="">
+                          <label>{field.label}</label>
+                          <div className="gender-register-tutor">
+                            <label>Male</label>
                             <input
-                                type={field.type}
-                                
-                                value={formData[field.name]}
-                                onChange={(e) => {
-                                  setFormData({
-                                    ...formData,
-                                    [field.name]: e.target.files[0],
-                                  });
-                                  setErrors({ ...errors, [field.name]: "" });
-                                }}
-                                required
-                              />
-                          </div>): (
-                            <div>
-                              <label>{field.label}</label>
-                              <input
-                                type={field.type}
-                                placeholder={
-                                  currentPage === pages.length - 1
-                                    ? ""
-                                    : `Enter ${field.label}`
-                                }
-                                value={formData[field.name]}
-                                onChange={(e) => {
-                                  setFormData({
-                                    ...formData,
-                                    [field.name]: e.target.value,
-                                  });
-                                  setErrors({ ...errors, [field.name]: "" });
-                                }}
-                                required
-                              />
-                              {errors[field.name] && (
-                                <span className="error-message">
-                                  {errors[field.name]}
-                                </span>
-                              )}
-                            </div>
-                          )}
+                              type="radio"
+                              id="male"
+                              className="male"
+                              name="male"
+                              value=""
+                              onClick={() => {
+                                formData["gender"] = "male";
+                                // Cập nhật formData ở đây nếu cần thiết
+                              }}
+                            />
+                            <label>Female</label>
+                            <input
+                              type="radio"
+                              id="female"
+                              className="female"
+                              name="female"
+                              value="female"
+                              onClick={() => {
+                                formData["gender"] = "female";
+                                // Cập nhật formData ở đây nếu cần thiết
+                              }}
+                            />
+                          </div>
+                        </div>
+                      ) : currentPage === pages.length - 3 ? (
+                        <div>
+                          <label>{field.label}</label>
+                          <input
+                            type={field.type}
+                            value={formData[field.name]}
+                            onChange={(e) => {
+                              setFormData({
+                                ...formData,
+                                [field.name]: e.target.files[0],
+                              });
+                              setErrors({ ...errors, [field.name]: "" });
+                            }}
+                            required
+                          />
                         </div>
                       ) : (
                         <div>
@@ -413,35 +371,55 @@ export default function RegisterTutor() {
                         </div>
                       )}
                     </div>
-                  ))}
-                </div>
-                <div className="buttons">
-                  {currentPage > 0 && (
-                    <button
-                      className="backBtn"
-                      type="button"
-                      onClick={prevPage}
-                    >
-                      <span className="btnText">Back</span>
-                    </button>
+                  ) : (
+                    <div>
+                      <label>{field.label}</label>
+                      <input
+                        type={field.type}
+                        placeholder={
+                          currentPage === pages.length - 1
+                            ? ""
+                            : `Enter ${field.label}`
+                        }
+                        value={formData[field.name]}
+                        onChange={(e) => {
+                          setFormData({
+                            ...formData,
+                            [field.name]: e.target.value,
+                          });
+                          setErrors({ ...errors, [field.name]: "" });
+                        }}
+                        required
+                      />
+                      {errors[field.name] && (
+                        <span className="error-message">
+                          {errors[field.name]}
+                        </span>
+                      )}
+                    </div>
                   )}
-                  <button
-                    className="nextBtn"
-                    type={
-                      currentPage === pages.length - 1 ? "submit" : "button"
-                    }
-                    onClick={currentPage === pages.length - 1 ? null : nextPage}
-                  >
-                    <span className="btnText">
-                      {currentPage === pages.length - 1 ? "Create" : "Next"}
-                    </span>
-                  </button>
                 </div>
-              </div>
-            </form>
+              ))}
+            </div>
+            <div className="buttons">
+              {currentPage > 0 && (
+                <button className="backBtn" type="button" onClick={prevPage}>
+                  <span className="btnText">Back</span>
+                </button>
+              )}
+              <button
+                className="nextBtn"
+                type={currentPage === pages.length - 1 ? "submit" : "button"}
+                onClick={currentPage === pages.length - 1 ? null : nextPage}
+              >
+                <span className="btnText">
+                  {currentPage === pages.length - 1 ? "Create" : "Next"}
+                </span>
+              </button>
+            </div>
           </div>
-        </section>
-      )}
-    </>
+        </form>
+      </div>
+    </div>
   );
 }

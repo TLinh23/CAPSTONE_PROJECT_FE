@@ -18,3 +18,5 @@ export const orderRequestUrl = `${baseUrl}order-requests`;
 export const subjectUrl = `${baseUrl}api/Subject/get-subjects`;
 
 export const loginUrl = `${baseUrl}api/Account/login`;
+
+export const resetPassUrl = `${baseUrl}api/Account/reset-password`;

@@ -9,7 +9,6 @@ import ListOrderRequestPage from "./pages/ListOrderRequestPage";
 import Login from "./pages/Login/Login";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 import ChangePassword from "./pages/Changepassword/Changepassword";
-import RegisterTutor from "./pages/RegisterTutor/RegisterTutor";
 import CreateClassroom from "./pages/CreateClassroom/CreateClassroom";
 import ClassListParent from "./pages/ClassListForParent/ClassListParent";
 import PageOrderRequestDetail from "./pages/PageOrderRequestDetail";
@@ -20,9 +19,9 @@ import ListClassManager from "./components/Staff/ClassManager/ListClassManager";
 import Transaction from "./components/Staff/TransactionManager/Transaction";
 import AddTransaction from "./components/Staff/TransactionManager/AddTransaction";
 import ListStaffManager from "./components/Admin/StaffManager/ListStaffManager";
-import AddStaff from "./components/Admin/StaffManager/AddStaff"; 
-import ListAssessmentManager from "./components/Tutor/AssessmentManager/ListAssessmentManager"
-import RegisterAsParent from "./pages/RegisterParent/RegisterAsParent"
+import AddStaff from "./components/Admin/StaffManager/AddStaff";
+import ListAssessmentManager from "./components/Tutor/AssessmentManager/ListAssessmentManager";
+import RegisterAsParent from "./pages/RegisterParent/RegisterAsParent";
 import AddAssessment from "./components/Tutor/AssessmentManager/AddAssessment";
 //trang account detail
 import AccountDetail from "./pages/PageAccountDetail";
@@ -38,7 +37,7 @@ import PageManageSubjects from "./pages/PageManageSubjects";
 import PageTutorClassroomDetail from "./pages/PageTutorClassroomDetail";
 import PageTutorListStudent from "./pages/PageTutorListStudent";
 import PageCreateNewStudentInClass from "./pages/PageCreateNewStudentInClass";
-
+import PageRegisterAsTutor from "./pages/RegisterTutor/PageRegisterAsTutor";
 
 //list your routes here
 export const routes = [
@@ -63,7 +62,7 @@ export const routes = [
   { path: "/login", element: <Login /> },
   { path: "/forgotpassword", element: <ForgotPassword /> },
   { path: "/changepassword", element: <ChangePassword /> },
-  { path: "/register-tutor", element: <RegisterTutor /> },
+  { path: "/register-tutor", element: <PageRegisterAsTutor /> },
   { path: "/create-classroom", element: <CreateClassroom /> },
   { path: "/class-list-parent", element: <ClassListParent /> },
   //loc
@@ -81,8 +80,7 @@ export const routes = [
   { path: "/listAssessmentManager", element: <ListAssessmentManager /> },
   { path: "/register-parent", element: <RegisterAsParent /> },
   { path: "/assessDetail/:id", element: <AssessmentDetails /> },
-  { path: "/addAssess", element: <AddAssessment/> },
-  
+  { path: "/addAssess", element: <AddAssessment /> },
 
   { path: "/", element: <NewHomePage /> },
   { path: "*", element: <NotFound /> },
