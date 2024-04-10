@@ -62,13 +62,6 @@ function SideBar() {
           )}
           {roleKey === ROLE_NAME.STAFF && (
             <>
-              {mainMenu.map((i) => (
-                <SideBarItem
-                  key={`menu-${i?.id}`}
-                  item={i}
-                  rolePermission={[]}
-                />
-              ))}
               {STAFF_MENU.map((i) => (
                 <SideBarItem
                   key={`staff-menu-${i?.id}`}

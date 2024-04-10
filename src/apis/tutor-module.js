@@ -1,6 +1,7 @@
 import {
   countryUrl,
   employeeDummyUrl,
+  profileUrl,
   todoListUrl,
   todoWithPagination,
 } from "../constants/APIConfig";
@@ -61,5 +62,11 @@ export const getListTodoWithObj = (paramsObj) => {
   const queryString = convertObjectToQueryString(paramsObj);
   return requestAPI({
     url: `${todoWithPagination}${queryString}`,
+  });
+};
+
+export const getProfileDetail = () => {
+  return requestAPI({
+    url: `${profileUrl}`,
   });
 };

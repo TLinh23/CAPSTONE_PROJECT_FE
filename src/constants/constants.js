@@ -1,5 +1,10 @@
 import ClassRoomIcon from "src/components/icons/ClassRoomIcon";
-import { PARENT_HREF, STAFF_HREF, TUTOR_HREF } from "./navbarConstant";
+import {
+  ADMIN_HREF,
+  PARENT_HREF,
+  STAFF_HREF,
+  TUTOR_HREF,
+} from "./navbarConstant";
 import React from "react";
 import ScheduleIcon from "src/components/icons/ScheduleIcon";
 import RequestIcon from "src/components/icons/RequestIcon";
@@ -76,7 +81,7 @@ export const PARENT_MENU = [
 export const STAFF_MENU = [
   {
     id: 1,
-    name: "List Account",
+    name: "List Classroom",
     href: TUTOR_HREF.SCHEDULE,
     icon: <ProfileIcon />,
     listActiveRouter: [TUTOR_HREF.SCHEDULE],
@@ -95,15 +100,22 @@ export const STAFF_MENU = [
     icon: <SubjectIcon />,
     listActiveRouter: [STAFF_HREF.MANAGE_SUBJECT],
   },
+  {
+    id: 4,
+    name: "List Account",
+    href: STAFF_HREF.MANAGE_SUBJECT,
+    icon: <ProfileIcon />,
+    listActiveRouter: [STAFF_HREF.MANAGE_SUBJECT],
+  },
 ];
 
 export const ADMIN_MENU = [
   {
     id: 1,
     name: "List Staff",
-    href: TUTOR_HREF.SCHEDULE,
+    href: ADMIN_HREF.LIST_STAFF,
     icon: <ProfileIcon />,
-    listActiveRouter: [TUTOR_HREF.SCHEDULE],
+    listActiveRouter: [ADMIN_HREF.LIST_STAFF],
   },
 ];
 
@@ -132,7 +144,7 @@ export const LIST_CLASS_LEVEL_DEFAULT = [
 
 export const LIST_STATUS_FILTER = [
   { id: 1, key: "CREATED", value: "Created" },
-  { id: 2, key: "REMOVE", value: "Remove" },
+  { id: 2, key: "REMOVED", value: "Removed" },
 ];
 
 export const LIST_GENDER_VALUE = [

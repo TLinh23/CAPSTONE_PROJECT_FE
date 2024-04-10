@@ -38,7 +38,14 @@ function PopupTemplate({
             >
               <div className="flex items-center justify-between gap-3 bg-[#eeeeee] py-[14px] px-5 rounded-t-lg">
                 <SmallTitle className="">{title}</SmallTitle>
-                <CloseDialogIcon />
+                <div
+                  className="cursor-pointer"
+                  onClick={() => {
+                    setShowDialog(false);
+                  }}
+                >
+                  <CloseDialogIcon />
+                </div>
               </div>
               <div className="px-5 pb-[18px] pt-[12px]">{children}</div>
             </motion.div>
