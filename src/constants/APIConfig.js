@@ -20,3 +20,5 @@ export const subjectUrl = `${baseUrl}api/Subject/get-subjects`;
 export const loginUrl = `${baseUrl}api/Account/login`;
 
 export const resetPassUrl = `${baseUrl}api/Account/reset-password`;
+
+export const registerTutorUl = `${baseUrl}api/Account/register-tutor`;

@@ -5,20 +5,76 @@ import SecondaryBtn from "../common/SecondaryBtn";
 import PrimaryBtn from "../common/PrimaryBtn";
 import PrimaryInputCheckbox from "../common/PrimaryInputCheckbox";
 
-function CVTutor({ setActiveTab }) {
+function CVTutor({
+  setActiveTab,
+  formilk,
+  otherInformation,
+  setOtherInformation,
+}) {
   const [isConfirmCreate, setIsConfirmCreate] = useState(false);
   return (
-    <div>
+    <div className="bg-white block-border">
       <Title>Your CV</Title>
       <div className="max-w-[1200px] grid grid-cols-37 gap-6 mt-8">
         <div>Education level</div>
-        <PrimaryInput />
+        <PrimaryInput
+          placeholder="Enter educational level"
+          id="EducationLevel"
+          classNameInput={`${
+            formilk.touched.EducationLevel && formilk.errors.EducationLevel
+              ? "border border-red-500"
+              : ""
+          }`}
+          onChange={formilk.handleChange}
+          onBlur={formilk.handleBlur}
+          value={formilk.values.EducationLevel || ""}
+          isError={
+            formilk.touched.EducationLevel && formilk.errors.EducationLevel
+          }
+          messageError={formilk.errors.EducationLevel}
+        />
         <div>School</div>
-        <PrimaryInput />
+        <PrimaryInput
+          placeholder="Enter school"
+          id="School"
+          classNameInput={`${
+            formilk.touched.School && formilk.errors.School
+              ? "border border-red-500"
+              : ""
+          }`}
+          onChange={formilk.handleChange}
+          onBlur={formilk.handleBlur}
+          value={formilk.values.School || ""}
+          isError={formilk.touched.School && formilk.errors.School}
+          messageError={formilk.errors.School}
+        />
         <div>Graduation Year</div>
-        <PrimaryInput />
+        <PrimaryInput
+          placeholder="Enter graduation year"
+          id="GraduationYear"
+          classNameInput={`${
+            formilk.touched.GraduationYear && formilk.errors.GraduationYear
+              ? "border border-red-500"
+              : ""
+          }`}
+          onChange={formilk.handleChange}
+          onBlur={formilk.handleBlur}
+          value={formilk.values.GraduationYear || ""}
+          isError={
+            formilk.touched.GraduationYear && formilk.errors.GraduationYear
+          }
+          messageError={formilk.errors.GraduationYear}
+        />
         <div>Upload CV</div>
-        <input type="file" />
+        <input
+          type="file"
+          onChange={(e) => {
+            setOtherInformation({
+              ...otherInformation,
+              Cv: e.target.files[0],
+            });
+          }}
+        />
       </div>
       <div className="flex items-center gap-5 mt-5">
         <PrimaryInputCheckbox
@@ -43,7 +99,11 @@ function CVTutor({ setActiveTab }) {
         >
           Back
         </SecondaryBtn>
-        <PrimaryBtn onClick={() => {}} className="!w-[160px]">
+        <PrimaryBtn
+          type="submit"
+          className="!w-[160px]"
+          disabled={!isConfirmCreate}
+        >
           Create
         </PrimaryBtn>
       </div>
