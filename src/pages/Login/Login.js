@@ -93,90 +93,92 @@ export default function Login() {
           />
         </NavLink>
       </div>
-      <div className="login-page">
-        <div className="login-form-container">
-          <div className="logo-login">
-            <img
-              className="logo-img-login"
-              alt="Logo"
-              src="/images/logo-login.png"
-            />
-          </div>
-          <hr />
-          <div className="content-login">
-            <h1 className="title-login">Login</h1>
-            <form onSubmit={formilk.handleSubmit}>
-              <PrimaryInput
-                id="email"
-                title="Email"
-                classNameInput={`${
-                  formilk.touched.email && formilk.errors.email
-                    ? "border border-red-500"
-                    : ""
-                }`}
-                placeholder="name@company.com"
-                onChange={formilk.handleChange}
-                onBlur={formilk.handleBlur}
-                value={formilk.values.email}
-                isError={formilk.touched.email && formilk.errors.email}
-                messageError={formilk.errors.email}
+      <div className="flex items-center justify-center height-screen-login">
+        <div className="max-w-[900px]">
+          <div className="login-form-container">
+            <div className="logo-login">
+              <img
+                className="logo-img-login"
+                alt="Logo"
+                src="/images/logo-login.png"
               />
+            </div>
+            <hr />
+            <div className="content-login">
+              <h1 className="title-login">Login</h1>
+              <form onSubmit={formilk.handleSubmit}>
+                <PrimaryInput
+                  id="email"
+                  title="Email"
+                  classNameInput={`${
+                    formilk.touched.email && formilk.errors.email
+                      ? "border border-red-500"
+                      : ""
+                  }`}
+                  placeholder="name@company.com"
+                  onChange={formilk.handleChange}
+                  onBlur={formilk.handleBlur}
+                  value={formilk.values.email}
+                  isError={formilk.touched.email && formilk.errors.email}
+                  messageError={formilk.errors.email}
+                />
 
-              <PrimaryInput
-                id="password"
-                type="password"
-                title="Password"
-                classNameInput={`${
-                  formilk.touched.password && formilk.errors.password
-                    ? "border border-red-500"
-                    : ""
-                }`}
-                className="mt-5"
-                placeholder="••••••••"
-                onChange={formilk.handleChange}
-                onBlur={formilk.handleBlur}
-                value={formilk.values.password}
-                isError={formilk.touched.password && formilk.errors.password}
-                messageError={formilk.errors.password}
-              />
+                <PrimaryInput
+                  id="password"
+                  type="password"
+                  title="Password"
+                  classNameInput={`${
+                    formilk.touched.password && formilk.errors.password
+                      ? "border border-red-500"
+                      : ""
+                  }`}
+                  className="mt-5"
+                  placeholder="••••••••"
+                  onChange={formilk.handleChange}
+                  onBlur={formilk.handleBlur}
+                  value={formilk.values.password}
+                  isError={formilk.touched.password && formilk.errors.password}
+                  messageError={formilk.errors.password}
+                />
 
-              <div className="mt-3 forgot">
-                <Link className="forgot-link" to="/forgotpassword">
-                  Forgot Password ?
-                </Link>
+                <div className="mt-3 forgot">
+                  <Link className="forgot-link" to="/forgotpassword">
+                    Forgot Password ?
+                  </Link>
+                </div>
+
+                <PrimaryBtn
+                  className="mt-8"
+                  type="submit"
+                  disabled={JSON.stringify(formilk.errors) !== "{}"}
+                >
+                  Login
+                </PrimaryBtn>
+                <div className="mt-5 register">Do not have an account?</div>
+              </form>
+              <div className="flex items-center gap-3 mt-3">
+                <button
+                  onClick={() => {
+                    navigate("/register-parent");
+                  }}
+                  className="flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-[#eaac13] to-[#ee4444] rounded-md"
+                >
+                  <p className="text-base font-bold text-white">
+                    Start as parent
+                  </p>
+                  <ArrowRightIcon />
+                </button>
+                <button
+                  onClick={() => {
+                    navigate("/register-tutor");
+                  }}
+                  className="flex items-center gap-2 px-5 py-3 bg-transparent border border-gray-500 rounded-md"
+                >
+                  <p className="text-base font-bold text-black">
+                    Join as Instructor
+                  </p>
+                </button>
               </div>
-
-              <PrimaryBtn
-                className="mt-8"
-                type="submit"
-                disabled={JSON.stringify(formilk.errors) !== "{}"}
-              >
-                Login
-              </PrimaryBtn>
-              <div className="mt-5 register">Do not have an account?</div>
-            </form>
-            <div className="flex items-center gap-3 mt-3">
-              <button
-                onClick={() => {
-                  navigate("/register-parent");
-                }}
-                className="flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-[#eaac13] to-[#ee4444] rounded-md"
-              >
-                <p className="text-base font-bold text-white">
-                  Start as parent
-                </p>
-                <ArrowRightIcon />
-              </button>
-              <button
-                onClick={() => {
-                  navigate("/register-tutor");
-                }}
-                className="flex items-center gap-2 px-5 py-3 bg-transparent border border-gray-500 rounded-md"
-              >
-                <p className="text-base font-bold text-black">
-                  Join as Instructor
-                </p>
-              </button>
             </div>
           </div>
         </div>

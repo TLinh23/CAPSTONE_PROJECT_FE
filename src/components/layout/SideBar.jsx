@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import SideBarItem from "./SideBarItem";
 import {
   ADMIN_MENU,
@@ -11,6 +11,9 @@ import {
 import { motion } from "framer-motion";
 import { useSideBarContext } from "src/context/SideBarContext";
 import { useAuthContext } from "src/context/AuthContext";
+import { useQueries } from "react-query";
+import ClassroomSideBarItem from "./ClassroomSideBarItem";
+import { getClassByTutor } from "src/apis/class-module";
 
 function SideBar() {
   const variants = {
@@ -22,7 +25,28 @@ function SideBar() {
     },
   };
   const { isOpenSideBar } = useSideBarContext();
-  const { roleKey } = useAuthContext();
+  const { roleKey, userId } = useAuthContext();
+  const [listClassroom, setListClassroom] = useState();
+  useQueries([
+    {
+      queryKey: ["getListClass"],
+      queryFn: async () => {
+        if (roleKey === ROLE_NAME.TUTOR) {
+          const queryObj = {};
+          queryObj["PagingRequest.CurrentPage"] = 1;
+          queryObj["PagingRequest.PageSize"] = 5;
+          queryObj["TutorId"] = userId;
+          // change your api request
+          const response = await getClassByTutor(queryObj);
+          setListClassroom(response?.data?.data);
+          return response?.data;
+        }
+      },
+      enabled: !!userId,
+    },
+  ]);
+  console.log("listClassroom: ", listClassroom);
+
   return (
     <motion.div
       animate={isOpenSideBar ? "open" : "closed"}
@@ -33,13 +57,7 @@ function SideBar() {
         <div className="flex flex-col">
           {roleKey === ROLE_NAME.TUTOR && (
             <>
-              {mainMenu.map((i) => (
-                <SideBarItem
-                  key={`menu-${i?.id}`}
-                  item={i}
-                  rolePermission={[]}
-                />
-              ))}
+              <ClassroomSideBarItem listClassroom={listClassroom} />
               {TUTOR_MENU.map((i) => (
                 <SideBarItem
                   key={`tutor-menu-${i?.id}`}

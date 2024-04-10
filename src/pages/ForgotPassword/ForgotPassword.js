@@ -70,50 +70,52 @@ export default function ForgotPassword() {
           />
         </NavLink>
       </div>
-      <div className="forgotpassword-page">
-        <div className="forgotpassword-container">
-          <div className="logo-forgotpassword">
-            <img
-              className="logo-img-forgotpassword"
-              alt="Logo"
-              src="/images/logo-forgot.png"
-            />
-          </div>
-          <hr className="hr" />
-          <div className="content-forgotpassword">
-            <h1 className="title-forgotpassword">Forgot Password</h1>
-            <form onSubmit={formilk.handleSubmit}>
-              <PrimaryInput
-                id="email"
-                title="Email"
-                classNameInput={`${
-                  formilk.touched.email && formilk.errors.email
-                    ? "border border-red-500"
-                    : ""
-                }`}
-                placeholder="name@company.com"
-                onChange={formilk.handleChange}
-                onBlur={formilk.handleBlur}
-                value={formilk.values.email}
-                isError={formilk.touched.email && formilk.errors.email}
-                messageError={formilk.errors.email}
+      <div className="flex items-center justify-center height-screen-login">
+        <div className="max-w-[900px]">
+          <div className="forgotpassword-container">
+            <div className="logo-forgotpassword">
+              <img
+                className="logo-img-forgotpassword"
+                alt="Logo"
+                src="/images/logo-forgot.png"
               />
-              <div className="flex items-center gap-3 mt-10">
-                <SecondaryBtn
-                  onClick={() => {
-                    navigate(-1);
-                  }}
-                >
-                  Back
-                </SecondaryBtn>
-                <PrimaryBtn
-                  type="submit"
-                  disabled={JSON.stringify(formilk.errors) !== "{}"}
-                >
-                  Reset Password
-                </PrimaryBtn>
-              </div>
-            </form>
+            </div>
+            <hr className="hr" />
+            <div className="content-forgotpassword">
+              <h1 className="title-forgotpassword">Forgot Password</h1>
+              <form onSubmit={formilk.handleSubmit}>
+                <PrimaryInput
+                  id="email"
+                  title="Email"
+                  classNameInput={`${
+                    formilk.touched.email && formilk.errors.email
+                      ? "border border-red-500"
+                      : ""
+                  }`}
+                  placeholder="name@company.com"
+                  onChange={formilk.handleChange}
+                  onBlur={formilk.handleBlur}
+                  value={formilk.values.email}
+                  isError={formilk.touched.email && formilk.errors.email}
+                  messageError={formilk.errors.email}
+                />
+                <div className="flex items-center gap-3 mt-10">
+                  <SecondaryBtn
+                    onClick={() => {
+                      navigate(-1);
+                    }}
+                  >
+                    Back
+                  </SecondaryBtn>
+                  <PrimaryBtn
+                    type="submit"
+                    disabled={JSON.stringify(formilk.errors) !== "{}"}
+                  >
+                    Reset Password
+                  </PrimaryBtn>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
       </div>
