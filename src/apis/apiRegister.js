@@ -8,8 +8,8 @@ export const useRegisterAsParent = () =>{
        try {
             const registerParent = await axios({
                  method: "post",
-                 url: "https://localhost:5000/api/Account/register-parent",
-                 data: userData, // Truyền dữ liệu người dùng đã nhập vào đây
+                 url: "https://classntutor.coderdao.click/api/Account/register-parent",
+                 data: userData, 
             });
             if (
                  registerParent.status === 200 ||

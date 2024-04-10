@@ -6,9 +6,10 @@ import StepperInformation from "./StepperInformation";
 import { validateAccountStepData } from "src/hooks/useValidate";
 import { titleHeader } from "src/constants/titleHeader";
 import { useNotification } from "src/hooks/useNotification";
-import { useRegisterAsParent } from "src/apis/apiRegister";
-
-
+// import { useRegisterAsParent } from "src/apis/apiRegister";
+import { useMutation } from "react-query";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const initialValue = {
      email: "",
@@ -24,7 +25,7 @@ const RegisterAsParent = () => {
      const [currentPage, setCurrentPage] = useState(0);
      const [data, setData] = useState(initialValue);
      const [errors, setErrors] = useState({});
-     const {contextHolder} = useNotification();
+     const { contextHolder } = useNotification();
 
      const handleChange = (name, value) => {
           setData((prevData) => ({
@@ -37,29 +38,48 @@ const RegisterAsParent = () => {
           }));
      };
 
-     const {apiRegisterParent} = useRegisterAsParent();
+     // const {apiRegisterParent} = useRegisterAsParent();
+
+     const registerParent = useMutation(
+          (tutorData) => {
+               return axios.post(
+                    "https://classntutor.coderdao.click/api/Account/register-parent",
+                    tutorData,
+                    {
+                         headers: {
+                              "Content-Type": "multipart/form-data;",
+                              Accept: "*/*",
+                         },
+                    }
+               );
+          },
+          {
+               onSuccess: (data) => {
+                    console.log("DATA: ", data);
+                    toast.success("Register successfully. Please login!");
+               },
+               onError: (err) => {
+                    console.log("Login failed", err);
+                    toast.error("Register failed, try again!");
+               },
+          }
+     );
 
      const handleSubmit = () => {
-          const fieldErrors = validateAccountStepData(titleHeader, currentPage, data);
-          if (Object.keys(fieldErrors).length === 0) {
-               console.log(data);
-               apiRegisterParent({
-                    Email: data.email,
-                    Password: data.password,
-                    FullName: data.fullName,
-                    Avatar: data.avatar,
-                    Phone: data.phone,
-                    Gender: data.gender,
-                    Address: data.address,
-                    Dob: data.date,
-                    RoleId: 2,
-               });
-          } else {
-               setErrors(fieldErrors);
-          }
+          console.log(data);
+          // @ts-ignore
+          registerParent.mutate({
+               Gender: "nam",
+               Phone: "0932424233",
+               RoleId: 2,
+               Address: "ha noi",
+               Dob: "2023-01-01",
+               Avatar: "C:/fakepath/Screenshot 2024-04-08 214416.png",
+               FullName: "le son",
+               Password: "123456",
+          });
      };
 
-     
      const getData = (name) => {
           return data[name];
      };
