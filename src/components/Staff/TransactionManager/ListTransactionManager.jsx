@@ -1,17 +1,18 @@
 import React, { useState } from "react";
-import Layout from "../../layout/Layout"; 
+import Layout from "../../layout/Layout";
 import FilterDropDown from "../../common/FilterDropDown";
 import Pagination from "../../common/Pagination";
 import SearchInput from "../../common/SearchInput";
 import Table from "../../common/Table";
 import Title from "../../common/Title";
-import searchFilterPayments from "src/constants/searchFilterPayments";
 import useDebounce from "src/hooks/useDebounce";
 import PrimaryBtn from "../../common/PrimaryBtn";
-import RenderStatus from "../../Admin/RenderStatus"; 
 import DeniedBtn from "../../common/DeniedBtn";
-import ShowDetail from "../../Admin/ShowDetail";
 import axios from "axios";
+import { searchFilterPayments } from "src/constants/APIConfig";
+import RenderStatus from "src/components/common/RenderStatus";
+import ShowDetail from "src/components/common/ShowDetail";
+
 // Dữ liệu giả định
 // const mockData = [
 //   { id: 1, payer: "Trang Pham", requestBy: "Khang Nguyen", amount: "200", reqDate: "10-01-2024",payDate: "10-01-2024", status: "PAID" },
@@ -25,35 +26,35 @@ function ListTransactionManager() {
   const debouncedSearchValue = useDebounce(searchParam, 500);
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
-  const [data, setData] = useState([])
-  const searchFilterPayment = async () => {     
+  const [data, setData] = useState([]);
+  const searchFilterPayment = async () => {
     try {
-         const res = await axios.get(searchFilterPayments, {
-          params: {
-            PagingRequest: {
-              CurrentPage : page,
-              PageSize: limit,
-              PageRange: page*limit
-            },
-            PayerId: 5,
-            RequestId: 0,
-          }
-         });
-         setData(res.data.items)
+      const res = await axios.get(searchFilterPayments, {
+        params: {
+          PagingRequest: {
+            CurrentPage: page,
+            PageSize: limit,
+            PageRange: page * limit,
+          },
+          PayerId: 5,
+          RequestId: 0,
+        },
+      });
+      setData(res.data.items);
     } catch (error) {
-         console.log(error)
+      console.log(error);
     }
- };
+  };
 
   // Tính toán dữ liệu hiển thị dựa trên searchParam, page và limit
-  const filteredData = data.filter(account =>
+  const filteredData = data.filter((account) =>
     account.name.toLowerCase().includes(debouncedSearchValue.toLowerCase())
   );
   const paginatedData = filteredData.slice((page - 1) * limit, page * limit);
 
   return (
     <Layout>
-      <div className="container mx-auto p-4">
+      <div className="container p-4 mx-auto">
         <Title>Transaction Management</Title>
         <div className="flex flex-col gap-4 py-5 md:items-center md:flex-row md:justify-end">
           <SearchInput
@@ -105,23 +106,23 @@ const accountColumns = [
       },
       {
         Header: "Payer",
-        accessor: "name", 
+        accessor: "name",
       },
       {
         Header: "Request by",
-        accessor: "requestBy", 
+        accessor: "requestBy",
       },
       {
         Header: "Amount",
-        accessor: "amount", 
+        accessor: "amount",
       },
       {
         Header: "Request Date",
-        accessor: "reqDate", 
+        accessor: "reqDate",
       },
       {
         Header: "Pay Date",
-        accessor: "payDate", 
+        accessor: "payDate",
       },
       {
         Header: "Status",

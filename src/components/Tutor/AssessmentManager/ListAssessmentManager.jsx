@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../../layout/Layout";
 import FilterDropDown from "../../common/FilterDropDown";
 import Pagination from "../../common/Pagination";
@@ -6,12 +6,12 @@ import SearchInput from "../../common/SearchInput";
 import Table from "../../common/Table";
 import Title from "../../common/Title";
 import useDebounce from "src/hooks/useDebounce";
-import getAllEvaluation from "src/constants/getAllEvaluation";
 import RenderStatus from "src/components/common/RenderStatus";
 import ShowDetail from "src/components/common/ShowDetail";
 import PrimaryBtn from "../../common/PrimaryBtn";
-import axios from 'axios'; 
-import { useSearchParam } from 'react-router-dom';
+import axios from "axios";
+import { useParams } from "react-router-dom";
+import { getAllEvaluation } from "src/constants/APIConfig";
 
 // Dữ liệu giả định
 // const mockData = [
@@ -26,8 +26,8 @@ function ListAssessmentManager() {
   const debouncedSearchValue = useDebounce(searchParam, 500);
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
-  const [data, setData] = useState([])
-  const { param : id } = useSearchParam();
+  const [data, setData] = useState([]);
+  const { id } = useParams();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,7 +35,7 @@ function ListAssessmentManager() {
         const res = await axios.get(`${getAllEvaluation}/${id}`);
         setData(res.data);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       }
     };
 
@@ -43,7 +43,7 @@ function ListAssessmentManager() {
   }, [id]);
 
   // Tính toán dữ liệu hiển thị dựa trên searchParam, page và limit
-  const filteredData = data.filter(transaction =>
+  const filteredData = data.filter((transaction) =>
     transaction.name.toLowerCase().includes(debouncedSearchValue.toLowerCase())
   );
   const paginatedData = filteredData.slice((page - 1) * limit, page * limit);
@@ -56,7 +56,7 @@ function ListAssessmentManager() {
 
   return (
     <Layout>
-      <div className="container mx-auto p-4">
+      <div className="container p-4 mx-auto">
         <Title>Class Assessment</Title>
         <div className="flex flex-col gap-4 py-5 md:items-center md:flex-row md:justify-end">
           <SearchInput
@@ -92,8 +92,11 @@ function ListAssessmentManager() {
           totalItems={filteredData.length}
         />
 
-        <div className="fixed bottom-0 right-0 text-xs p-2 z-10">
-          <PrimaryBtn onClick={handleAddNewTransaction} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        <div className="fixed bottom-0 right-0 z-10 p-2 text-xs">
+          <PrimaryBtn
+            onClick={handleAddNewTransaction}
+            className="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
+          >
             Add Access
           </PrimaryBtn>
         </div>
