@@ -35,6 +35,8 @@ const validationSchema = Yup.object({
   Cmnd: identityValidation,
 });
 
+const EXCLUDED_KEY = ["RePassword"];
+
 function PageRegisterAsTutor() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("setup");
@@ -78,6 +80,7 @@ function PageRegisterAsTutor() {
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       try {
+        const formData = new FormData();
         const submitObject = {
           ...values,
           ...otherInformation,
@@ -86,8 +89,18 @@ function PageRegisterAsTutor() {
           submitObject["Avatar"] = imageUpload;
         }
         console.log("Go create tutor", submitObject);
+        for (const key in submitObject) {
+          const value = submitObject[key];
+          const isExcludedKey = EXCLUDED_KEY.includes(key);
+
+          if (isExcludedKey || !value) {
+            continue;
+          }
+
+          formData.append(key, value);
+        }
         // @ts-ignore
-        registerTutorMutation.mutate(submitObject);
+        registerTutorMutation.mutate(formData);
       } catch (error) {
         console.error("Call api failed:", error.response.data);
       }
