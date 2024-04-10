@@ -1,43 +1,69 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Title from "../common/Title";
 import PrimaryBtn from "../common/PrimaryBtn";
 import PrimaryInput from "../common/PrimaryInput";
 import SecondaryBtn from "../common/SecondaryBtn";
 import UploadImage from "../common/UploadImage";
-import useUploadImage from "src/hooks/useUploadImage";
 import FilterDropDown from "../common/FilterDropDown";
 import { format } from "date-fns";
+import { LIST_GENDER_VALUE } from "src/constants/constants";
 
-function TutorInformation({ setActiveTab }) {
-  const { imageUrlResponse, handleUploadImage } = useUploadImage();
-  const [studentDetail, setStudentDetail] = useState(undefined);
+function TutorInformation({
+  setActiveTab,
+  formilk,
+  imageUpload,
+  handleUploadImage,
+  otherInformation,
+  setOtherInformation,
+}) {
   const [gender, setGender] = useState();
+
+  useEffect(() => {
+    if (gender) {
+      setOtherInformation({
+        ...otherInformation,
+        Gender: gender?.value,
+      });
+    }
+  }, [gender]);
   return (
-    <div>
+    <div className="bg-white block-border">
       <Title>Your Information</Title>
       <div className="max-w-[1200px] grid md:grid-cols-37 grid-cols-1 gap-6 mt-8">
         <div className="flex flex-col items-center justify-center gap-5">
           <UploadImage
             onChange={(e) => handleUploadImage(e)}
-            imageUrlResponse={imageUrlResponse}
+            imageUrlResponse={imageUpload}
           />
         </div>
         <div className="flex flex-col gap-3">
           <PrimaryInput
-            title={"Full Name"}
+            title={
+              <div>
+                Full Name <span className="text-red-500">*</span>
+              </div>
+            }
             required
             placeholder="Enter full name"
+            id="FullName"
+            classNameInput={`${
+              formilk.touched.FullName && formilk.errors.FullName
+                ? "border border-red-500"
+                : ""
+            }`}
+            onChange={formilk.handleChange}
+            onBlur={formilk.handleBlur}
+            value={formilk.values.FullName || ""}
+            isError={formilk.touched.FullName && formilk.errors.FullName}
+            messageError={formilk.errors.FullName}
           />
           <div className="grid grid-cols-2 gap-3">
             <FilterDropDown
               title="Gender"
-              listDropdown={[
-                { id: 1, value: "Male", name: "Male" },
-                { id: 2, value: "Female", name: "Female" },
-              ]}
-              showing={gender || { id: 1, value: "Male", name: "Male" }}
+              listDropdown={LIST_GENDER_VALUE}
+              showing={gender}
               setShowing={setGender}
-              disabled
+              textDefault={otherInformation?.Gender || "Select gender"}
             />
             <div>
               <div className="mb-2 text-sm font-bold text-gray">
@@ -46,22 +72,22 @@ function TutorInformation({ setActiveTab }) {
               <input
                 max={new Date().toISOString().slice(0, 10)}
                 value={
-                  studentDetail?.birthDate
-                    ? format(new Date(studentDetail?.birthDate), "yyyy-MM-dd")
+                  otherInformation?.Dob
+                    ? format(new Date(otherInformation?.Dob), "yyyy-MM-dd")
                     : ""
                 }
                 onChange={(e) => {
                   const selectedDate = e.target.value;
                   const currentDate = new Date().toISOString().slice(0, 10);
                   if (selectedDate > currentDate) {
-                    setStudentDetail({
-                      ...studentDetail,
-                      birthDate: currentDate,
+                    setOtherInformation({
+                      ...otherInformation,
+                      Dob: currentDate,
                     });
                   } else {
-                    setStudentDetail({
-                      ...studentDetail,
-                      birthDate: selectedDate,
+                    setOtherInformation({
+                      ...otherInformation,
+                      Dob: selectedDate,
                     });
                   }
                 }}
@@ -71,22 +97,90 @@ function TutorInformation({ setActiveTab }) {
             </div>
           </div>
           <div className="grid grid-cols-2 gap-3">
-            <PrimaryInput title="Phone" />
-            <PrimaryInput title="Address" />
+            <PrimaryInput
+              title={
+                <div>
+                  Phone <span className="text-red-500">*</span>
+                </div>
+              }
+              required
+              placeholder="Enter phone number"
+              id="Phone"
+              classNameInput={`${
+                formilk.touched.Phone && formilk.errors.Phone
+                  ? "border border-red-500"
+                  : ""
+              }`}
+              onChange={formilk.handleChange}
+              onBlur={formilk.handleBlur}
+              value={formilk.values.Phone || ""}
+              isError={formilk.touched.Phone && formilk.errors.Phone}
+              messageError={formilk.errors.Phone}
+            />
+            <PrimaryInput
+              title={<div>Address</div>}
+              placeholder="Enter phone number"
+              id="Address"
+              classNameInput={`${
+                formilk.touched.Address && formilk.errors.Address
+                  ? "border border-red-500"
+                  : ""
+              }`}
+              onChange={formilk.handleChange}
+              onBlur={formilk.handleBlur}
+              value={formilk.values.Address || ""}
+              isError={formilk.touched.Address && formilk.errors.Address}
+              messageError={formilk.errors.Address}
+            />
           </div>
-          <PrimaryInput title="ID Number" />
+          <PrimaryInput
+            title={
+              <div>
+                ID Number <span className="text-red-500">*</span>
+              </div>
+            }
+            required
+            placeholder="Enter ID Number"
+            id="Cmnd"
+            classNameInput={`${
+              formilk.touched.Cmnd && formilk.errors.Cmnd
+                ? "border border-red-500"
+                : ""
+            }`}
+            onChange={formilk.handleChange}
+            onBlur={formilk.handleBlur}
+            value={formilk.values.Cmnd || ""}
+            isError={formilk.touched.Cmnd && formilk.errors.Cmnd}
+            messageError={formilk.errors.Cmnd}
+          />
           <div className="grid grid-cols-2 gap-3">
             <div>
               <div className="mb-2 text-sm font-bold text-gray">
                 Image Front ID Number
               </div>
-              <input type="file" />
+              <input
+                type="file"
+                onChange={(e) => {
+                  setOtherInformation({
+                    ...otherInformation,
+                    FrontCmnd: e.target.files[0],
+                  });
+                }}
+              />
             </div>
             <div>
               <div className="mb-2 text-sm font-bold text-gray">
                 Image Back ID Number
               </div>
-              <input type="file" />
+              <input
+                type="file"
+                onChange={(e) => {
+                  setOtherInformation({
+                    ...otherInformation,
+                    BackCmnd: e.target.files[0],
+                  });
+                }}
+              />
             </div>
           </div>
         </div>

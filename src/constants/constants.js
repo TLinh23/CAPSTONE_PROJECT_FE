@@ -134,3 +134,8 @@ export const LIST_STATUS_FILTER = [
   { id: 1, key: "CREATED", value: "Created" },
   { id: 2, key: "REMOVE", value: "Remove" },
 ];
+
+export const LIST_GENDER_VALUE = [
+  { id: 1, value: "MALE", name: "Male" },
+  { id: 2, value: "FEMALE", name: "Female" },
+];
