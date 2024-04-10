@@ -41,3 +41,7 @@ export const updateSubjectUrl = `${baseUrl}api/Subject/update-subject`;
 export const deleteSubjectUrl = `${baseUrl}api/Subject/delete-subject`;
 
 export const createSubjectUrl = `${baseUrl}api/Subject/add-subject`;
+
+export const getClassUrl = `${baseUrl}api/Class/get-classes`;
+
+export const getTutorClassUrl = `${baseUrl}api/Class/get-class-for-tutor`;

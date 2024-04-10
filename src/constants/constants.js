@@ -17,9 +17,7 @@ export const mainMenu = [
   {
     id: 1,
     name: "Classrooms",
-    href: TUTOR_HREF.CLASSROOM,
     icon: <ClassRoomIcon />,
-    listActiveRouter: [TUTOR_HREF.CLASSROOM],
   },
 ];
 

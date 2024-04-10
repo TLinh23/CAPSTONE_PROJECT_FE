@@ -240,7 +240,6 @@ const RenderAction = ({ data }) => {
   const queryClient = useQueryClient();
   const [showDialog, setShowDialog] = useState(false);
   const [showDialogEdit, setShowDialogEdit] = useState(false);
-  const [showDialogDelete, setShowDialogDelete] = useState(false);
   const [subjectDetail, setSubjectDetail] = useState(undefined);
   const [subjectStatus, setSubjectStatus] = useState(undefined);
 
@@ -276,8 +275,8 @@ const RenderAction = ({ data }) => {
 
   const handleEditSubject = async () => {
     const submitObject = {
-      ...subjectDetail,
       SubjectId: data?.subjectId,
+      SubjectName: subjectDetail?.SubjectName || data?.subjectName,
     };
     if (subjectStatus) {
       submitObject["Status"] = subjectStatus?.key;
@@ -291,40 +290,6 @@ const RenderAction = ({ data }) => {
     }
     // @ts-ignore
     editSubjectMutation.mutate(formData);
-  };
-
-  const deleteSubjectMutation = useMutation(
-    async (id) => {
-      return await deleteSubjectDetail(id);
-    },
-    {
-      onSuccess: (data) => {
-        console.log("Data: ", data);
-        if (data?.status >= 200 && data?.status < 300) {
-          toast.success("Update successfully");
-          setShowDialogEdit(false);
-          queryClient.invalidateQueries("getListSubjects");
-        } else {
-          toast.error(
-            data?.message ||
-              data?.response?.data?.message ||
-              data?.response?.data ||
-              "Oops! Something went wrong..."
-          );
-        }
-      },
-      onError: (err) => {
-        toast.error(
-          // @ts-ignore
-          err?.response?.data?.message || err?.message || "Delete error"
-        );
-      },
-    }
-  );
-
-  const handleClickDeleteSubject = async () => {
-    // @ts-ignore
-    deleteSubjectMutation.mutate(data?.subjectId);
   };
 
   return (
@@ -404,39 +369,6 @@ const RenderAction = ({ data }) => {
         }}
         className="cursor-pointer"
       />
-
-      <PopupTemplate
-        title="Delete Subject"
-        setShowDialog={setShowDialogDelete}
-        showDialog={showDialogDelete}
-        classNameWrapper="md:min-w-[486px]"
-      >
-        <div className="flex items-center gap-4">
-          Are you sure to delete this subject {data?.subjectName}
-        </div>
-        <div className="flex items-center justify-end gap-5 mt-5">
-          <PrimaryBtn onClick={handleClickDeleteSubject} className="w-[120px]">
-            Save
-          </PrimaryBtn>
-          <SecondaryBtn
-            onClick={() => {
-              setShowDialogDelete(false);
-            }}
-            className="w-[120px]"
-          >
-            Cancel
-          </SecondaryBtn>
-        </div>
-      </PopupTemplate>
-
-      <GarbageIcon
-        className="cursor-pointer"
-        onClick={() => {
-          setShowDialogDelete(true);
-        }}
-      >
-        Delete
-      </GarbageIcon>
     </div>
   );
 };

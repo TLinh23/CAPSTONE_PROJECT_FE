@@ -73,7 +73,7 @@ function Header() {
                 processLogout();
                 checkRoleKey();
               }}
-              className="w-[120px] ml-5"
+              className="!w-[120px] ml-5"
             >
               Logout
             </SecondaryBtn>
