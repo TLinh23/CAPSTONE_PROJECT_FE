@@ -4,11 +4,11 @@ import Title from "../../common/Title";
 import Input from "../../common/PrimaryInput";
 import PrimaryBtn from "../../common/PrimaryBtn";
 import axios from "axios";
-import createPayment from "src/constants/createPayment";
-import useNotification from "src/hooks/useNotification";
+import { useNotification } from "src/hooks/useNotification";
+import { createPayment } from "src/constants/APIConfig";
 
 function AddTransaction() {
-  const { contextHolder, openNotification } = useNotification()
+  const { contextHolder, openNotification } = useNotification();
   const [transaction, setTransaction] = useState({
     paymentType: "",
     requestedBy: 0,
@@ -25,40 +25,32 @@ function AddTransaction() {
     }));
   };
 
-  const handleSubmit = async() => {
-      try {
-        const fetchData = await axios.post(createPayment, {
-          payerId: transaction.payer,
-          requestId: transaction.requestedBy,
-          paymentAmount: transaction.amount,
-          paymentDesc: transaction.description,
-          paymentType: transaction.paymentType,
-          requestDate: Date.now(),
-          payDate: Date.now(),
-          createdAt: Date.now(),
-          updatedAt: Date.now(),
-          status: 'CREATED'
-        });
+  const handleSubmit = async () => {
+    try {
+      const fetchData = await axios.post(createPayment, {
+        payerId: transaction.payer,
+        requestId: transaction.requestedBy,
+        paymentAmount: transaction.amount,
+        paymentDesc: transaction.description,
+        paymentType: transaction.paymentType,
+        requestDate: Date.now(),
+        payDate: Date.now(),
+        createdAt: Date.now(),
+        updatedAt: Date.now(),
+        status: "CREATED",
+      });
 
-        if(fetchData.status == 200) {
-          openNotification(
-            'topRight',
-            'success',
-            'create successfully!'
-          )
-        }
-      } catch (error) {
-        openNotification(
-          'topRight',
-          'error',
-          error
-        )
+      if (fetchData.status == 200) {
+        openNotification("topRight", "success", "create successfully!");
       }
+    } catch (error) {
+      openNotification("topRight", "error", error);
+    }
   };
 
   return (
     <Layout>
-      { contextHolder }
+      {contextHolder}
       <div className="container p-4 mx-auto">
         <Title>Staff - Add New Transaction</Title>
         <div className="mt-4">
