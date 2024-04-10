@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import ParentProfileDetail from "./Parent/ParentProfileDetail";
 import { useParams } from "react-router-dom";
 import { useQueries } from "react-query";
-import { getListTodoWithObj } from "src/apis/tutor-module";
 import TutorProfileDetail from "./Tutor/TutorProfileDetail";
 import StaffProfileDetail from "./Staff/StaffProfileDetail";
 import { ROLE_NAME } from "src/constants/constants";
 import StudentProfileDetail from "./Student/StudentProfileDetail";
+import { getProfileDetail } from "src/apis/tutor-module";
+import { useAuthContext } from "src/context/AuthContext";
+import AdminProfileDetail from "./Admin/AdminProfileDetail";
 
 const studentTest = {
   id: 5,
@@ -33,6 +35,7 @@ const staffTest = {
   address: "nghia dia",
 };
 function ViewProfileDetail() {
+  const { roleKey } = useAuthContext();
   const { id } = useParams();
   const [dataProfileDetail, setDataProfileDetail] = useState(undefined);
 
@@ -42,14 +45,16 @@ function ViewProfileDetail() {
       queryKey: ["getProfile", id],
       queryFn: async () => {
         if (id) {
-          const response = await getListTodoWithObj(id);
-          setDataProfileDetail(studentTest);
+          const response = await getProfileDetail();
+          setDataProfileDetail(response?.data?.data);
           return response?.data;
         }
       },
       enabled: !!id,
     },
   ]);
+
+  console.log("dataProfileDetail: ", dataProfileDetail);
 
   return (
     <div>
@@ -64,6 +69,9 @@ function ViewProfileDetail() {
       )}
       {dataProfileDetail?.roleKey === ROLE_NAME.STUDENT && (
         <StudentProfileDetail dataProfileDetail={dataProfileDetail} />
+      )}
+      {roleKey === ROLE_NAME.ADMIN && (
+        <AdminProfileDetail dataProfileDetail={dataProfileDetail} />
       )}
     </div>
   );

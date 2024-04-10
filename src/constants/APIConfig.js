@@ -16,7 +16,6 @@ export const getDetailEvaluation = `${baseUrl}/Evaluations/get-detail-evaluation
 
 export const addEvaluation = `${baseUrl}/Evaluations/add-evaluation`;
 
-
 //Test ccommit
 
 export const todoListUrl = `https://jsonplaceholder.typicode.com/todos`;
@@ -34,3 +33,11 @@ export const loginUrl = `${baseUrl}api/Account/login`;
 export const resetPassUrl = `${baseUrl}api/Account/reset-password`;
 
 export const registerTutorUl = `${baseUrl}api/Account/register-tutor`;
+
+export const profileUrl = `${baseUrl}api/Person/get-profile`;
+
+export const updateSubjectUrl = `${baseUrl}api/Subject/update-subject`;
+
+export const deleteSubjectUrl = `${baseUrl}api/Subject/delete-subject`;
+
+export const createSubjectUrl = `${baseUrl}api/Subject/add-subject`;

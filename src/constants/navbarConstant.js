@@ -12,3 +12,7 @@ export const PARENT_HREF = {
 export const STAFF_HREF = {
   MANAGE_SUBJECT: "/manage-subjects",
 };
+
+export const ADMIN_HREF = {
+  LIST_STAFF: "/listStaffManager",
+};
