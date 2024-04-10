@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import ArrowRightIcon from "../icons/ArrowRightIcon";
 import { ReactTyped } from "react-typed";
 import HeartIcon from "../icons/HeartIcon";
 import StarIcon from "../icons/StarIcon";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useQueries } from "react-query";
+import { getListClass } from "src/apis/class-module";
 
 const LIST_ITEM_SEPARATE_PAGE_1 = [
   {
@@ -55,12 +57,28 @@ const LIST_ITEM_SEPARATE_PAGE_2 = [
     id: 4,
     logo: "https://amentotech.com/htmls/tuturn/images/stats/img-04.png",
     number: "7+ Milioon",
-    description: "Active instructor and students available on the platform",
+    description: "Active tutor and students available on the platform",
   },
 ];
 
 function HomePageContent() {
   const navigate = useNavigate();
+  const [listTutor, setListTutor] = useState(undefined);
+  // useQueries([
+  //   {
+  //     queryKey: ["getListTutor"],
+  //     queryFn: async () => {
+  //         const queryObj = {};
+  //         queryObj["PagingRequest.CurrentPage"] = 1;
+  //         queryObj["PagingRequest.PageSize"] = 5;
+  //         // change your api request
+  //         const response = await getListClass(queryObj);
+  //         setListTutor(response?.data?.data);
+  //         return response?.data;
+  //     },
+  //   },
+  // ]);
+
   return (
     <div>
       {/* Page 1 */}
@@ -103,7 +121,7 @@ function HomePageContent() {
               className="flex items-center gap-2 px-5 py-3 bg-transparent border border-gray-500 rounded-md"
             >
               <p className="text-base font-bold text-black">
-                Join as Instructor
+                Join as Tutor
                 <span className="ml-3 text-blue-400">It&apos;s Free!</span>
               </p>
             </button>
@@ -131,6 +149,34 @@ function HomePageContent() {
           ))}
         </div>
       </div>
+
+      {/* Page 3 - Carousel do later, now grid box */}
+      <PageContentWrapper className="flex flex-col items-center">
+        <div className="max-w-[750px] flex flex-col items-center justify-center text-center">
+          <img
+            src="https://amentotech.com/htmls/tuturn/images/zigzag-line.svg"
+            alt="zigzag-line"
+          />
+          <h2 className="mt-3 text-lg font-normal">Our featured tutors</h2>
+          <div className="mt-3 text-4xl font-semibold">
+            Every tutor is professional <br /> and highly qualified
+          </div>
+        </div>
+        <div className="mt-5">
+          <div className="grid grid-cols-3 gap-4">
+            <FeaturedInstructorCard />
+            <FeaturedInstructorCard />
+            <FeaturedInstructorCard />
+          </div>
+        </div>
+        <Link
+          to={"/tutors"}
+          className="mt-5 w-fit flex items-center gap-2 px-5 py-3 rounded-md bg-[#6a307d] hover:bg-[#6a307d90]"
+        >
+          <p className="text-base font-bold text-white">Explore all tutors</p>
+          <ArrowRightIcon />
+        </Link>
+      </PageContentWrapper>
 
       {/* Page 2  */}
       <PageContentWrapper className="grid grid-cols-1 gap-5 md:grid-cols-2">
@@ -185,38 +231,6 @@ function HomePageContent() {
         </div>
       </div>
 
-      {/* Page 3 - Carousel do later, now grid box */}
-      <PageContentWrapper className="flex flex-col items-center">
-        <div className="max-w-[750px] flex flex-col items-center justify-center text-center">
-          <img
-            src="https://amentotech.com/htmls/tuturn/images/zigzag-line.svg"
-            alt="zigzag-line"
-          />
-          <h2 className="mt-3 text-lg font-normal">Our featured instructors</h2>
-          <div className="mt-3 text-4xl font-semibold">
-            Every instructor is professional <br /> and highly qualified
-          </div>
-          <div className="mt-5 text-base font-light">
-            Accusamus et iusidio dignissimos ducimus blanditiis praesentium
-            voluptatum deleniti atque corrupti quos dolores etmquasa molestias
-            epturi sint occaecati cupiditate non providente mikume molareshe.
-          </div>
-        </div>
-        <div className="mt-5">
-          <div className="grid grid-cols-3 gap-4">
-            <FeaturedInstructorCard />
-            <FeaturedInstructorCard />
-            <FeaturedInstructorCard />
-          </div>
-        </div>
-        <button className="mt-5 w-fit flex items-center gap-2 px-5 py-3 rounded-md bg-[#6a307d] hover:bg-[#6a307d90]">
-          <p className="text-base font-bold text-white">
-            Explore all instructors
-          </p>
-          <ArrowRightIcon />
-        </button>
-      </PageContentWrapper>
-
       {/* Page 4 - No value, do later */}
       <div className="bg-[#F7F8FC]">
         <div className="py-10 mx-auto max-w-[1116px] grid md:grid-cols-6 grid-cols-3 gap-5">
@@ -245,11 +259,6 @@ function HomePageContent() {
           <div className="mt-3 text-4xl font-semibold">
             Choose from the top visited
             <br /> categories you may like
-          </div>
-          <div className="mt-5 text-base font-light">
-            Accusamus et iusidio dignissimos ducimus blanditiis praesentium
-            voluptatum deleniti atque corrupti quos dolores etmquasa molestias
-            epturi sint occaecati cupiditate non providente mikume molareshe.
           </div>
         </div>
         <div className="mt-5">
