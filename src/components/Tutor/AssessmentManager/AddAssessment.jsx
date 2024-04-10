@@ -3,14 +3,17 @@ import Layout from "../../layout/Layout";
 import Title from "../../common/Title";
 import Input from "../../common/PrimaryInput";
 import PrimaryBtn from "../../common/PrimaryBtn";
+import addEvaluation from "src/constants/addEvaluation";
+import useNotification from "src/hooks/useNotification";
 
 function AddAssessment() {
     const [transaction, setTransaction] = useState({
-        studentName: '',
-        class: '',
+        StudentId: 0,
+        class: 0,
         subject: '',
         comment: ''
     });
+    const { contextHolder, openNotification } = useNotification()
     const handleChange = (e) => {
         const { name, value } = e.target;
         setTransaction(prevState => ({
@@ -19,25 +22,50 @@ function AddAssessment() {
         }));
     };
 
-    const handleSubmit = () => {
-        // Logic to handle the submission of the new transaction
-        console.log("New Transaction Data:", transaction);
+    const handleSubmit = async() => {
+        try {
+            const fetchData = await axios.post(addEvaluation, {
+              StudentId: transaction.StudentId,
+              ClassId: transaction.class,
+              Comment: transaction.comment,
+              Score: 0,
+              Date: Date.now(),
+              createdAt: Date.now(),
+              updatedAt: Date.now(),
+              status: 'CREATED'
+            });
+    
+            if(fetchData.status == 200) {
+              openNotification(
+                'topRight',
+                'success',
+                'create successfully!'
+              )
+            }
+          } catch (error) {
+            openNotification(
+              'topRight',
+              'error',
+              error
+            )
+          }
     };
 
     return (
         <Layout>
+            { contextHolder }
             <div className="container mx-auto p-4">
                 <Title>Add New Assessment</Title>
                 <div className="mt-4">
                     <div className="flex items-center mb-4">
-                        <label className="inline-block w-1/3 text-gray-700 text-sm font-bold" htmlFor="studentName">
+                        <label className="inline-block w-1/3 text-gray-700 text-sm font-bold" htmlFor="StudentId">
                             Student name:
                         </label>
                         <Input
-                            id="studentName"
-                            name="studentName"
+                            id="StudentId"
+                            name="StudentId"
                             placeholder="Student name"
-                            value={transaction.studentName}
+                            value={transaction.StudentId}
                             onChange={handleChange}
                             className="w-2/3"
                         />

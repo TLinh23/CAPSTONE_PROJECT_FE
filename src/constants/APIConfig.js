@@ -5,6 +5,18 @@ export const refreshAccessTokenUrl = `${baseUrl}auth/refresh-token`;
 export const countryUrl = `${baseUrl}countries`;
 
 export const uploadImageUrl = `${baseUrl}/Users/UploadImage`;
+
+export const searchFilterPayments = `${baseUrl}/Payment/search-filter-payment`;
+
+export const createPayment = `${baseUrl}/Payment/create-payment`;
+
+export const getAllEvaluation = `${baseUrl}/Evaluations/get-all-evaluation-by-classId`;
+
+export const getDetailEvaluation = `${baseUrl}/Evaluations/get-detail-evaluation`;
+
+export const addEvaluation = `${baseUrl}/Evaluations/add-evaluation`;
+
+
 //Test ccommit
 
 export const todoListUrl = `https://jsonplaceholder.typicode.com/todos`;
