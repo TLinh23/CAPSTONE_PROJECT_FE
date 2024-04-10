@@ -6,16 +6,19 @@ import SearchInput from "../../common/SearchInput";
 import Table from "../../common/Table";
 import Title from "../../common/Title";
 import useDebounce from "src/hooks/useDebounce";
+import getAllEvaluation from "src/constants/getAllEvaluation";
 import RenderStatus from "src/components/common/RenderStatus";
 import ShowDetail from "src/components/common/ShowDetail";
 import PrimaryBtn from "../../common/PrimaryBtn";
+import axios from 'axios'; 
+import { useSearchParam } from 'react-router-dom';
 
 // Dữ liệu giả định
-const mockData = [
-  { id: 1, name: "Phạm Văn A", class: "Class 1", subject: "Math", cmt: "Good" },
-  { id: 1, name: "Phạm Văn A", class: "Class 1", subject: "Math", cmt: "Good" },
-  // Thêm các bản ghi giả định khác nếu cần
-];
+// const mockData = [
+//   { id: 1, name: "Phạm Văn A", class: "Class 1", subject: "Math", cmt: "Good" },
+//   { id: 1, name: "Phạm Văn A", class: "Class 1", subject: "Math", cmt: "Good" },
+//   // Thêm các bản ghi giả định khác nếu cần
+// ];
 
 function ListAssessmentManager() {
   const [isFilterSelected, setIsFilterSelected] = useState(false);
@@ -23,9 +26,24 @@ function ListAssessmentManager() {
   const debouncedSearchValue = useDebounce(searchParam, 500);
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
+  const [data, setData] = useState([])
+  const { param : id } = useSearchParam();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get(`${getAllEvaluation}/${id}`);
+        setData(res.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, [id]);
 
   // Tính toán dữ liệu hiển thị dựa trên searchParam, page và limit
-  const filteredData = mockData.filter(transaction =>
+  const filteredData = data.filter(transaction =>
     transaction.name.toLowerCase().includes(debouncedSearchValue.toLowerCase())
   );
   const paginatedData = filteredData.slice((page - 1) * limit, page * limit);

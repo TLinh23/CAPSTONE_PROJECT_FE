@@ -41,7 +41,7 @@ cache
 generated
 graphql.schema.json
 
-.vscode
+/.vscode/
 /types
 
 # idea

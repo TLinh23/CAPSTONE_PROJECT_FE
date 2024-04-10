@@ -5,17 +5,19 @@ import Pagination from "../../common/Pagination";
 import SearchInput from "../../common/SearchInput";
 import Table from "../../common/Table";
 import Title from "../../common/Title";
+import searchFilterPayments from "src/constants/searchFilterPayments";
 import useDebounce from "src/hooks/useDebounce";
 import PrimaryBtn from "../../common/PrimaryBtn";
 import RenderStatus from "../../Admin/RenderStatus"; 
 import DeniedBtn from "../../common/DeniedBtn";
 import ShowDetail from "../../Admin/ShowDetail";
+import axios from "axios";
 // Dữ liệu giả định
-const mockData = [
-  { id: 1, payer: "Trang Pham", requestBy: "Khang Nguyen", amount: "200", reqDate: "10-01-2024",payDate: "10-01-2024", status: "PAID" },
-  { id: 2, payer: "Trang Pham", requestBy: "Khang Nguyen", amount: "200", reqDate: "10-01-2024", status: "UNPAID" },
+// const mockData = [
+//   { id: 1, payer: "Trang Pham", requestBy: "Khang Nguyen", amount: "200", reqDate: "10-01-2024",payDate: "10-01-2024", status: "PAID" },
+//   { id: 2, payer: "Trang Pham", requestBy: "Khang Nguyen", amount: "200", reqDate: "10-01-2024", status: "UNPAID" },
 
-];
+// ];
 
 function ListTransactionManager() {
   const [isFilterSelected, setIsFilterSelected] = useState();
@@ -26,11 +28,18 @@ function ListTransactionManager() {
   const [data, setData] = useState([])
   const searchFilterPayment = async () => {     
     try {
-         const fetchData = await axios({
-              method: "get",
-              url: 'https://localhost:5000/api/Payment/search-filter-payment'
+         const res = await axios.get(searchFilterPayments, {
+          params: {
+            PagingRequest: {
+              CurrentPage : page,
+              PageSize: limit,
+              PageRange: page*limit
+            },
+            PayerId: 5,
+            RequestId: 0,
+          }
          });
-         setData(fetchData.data)
+         setData(res.data.items)
     } catch (error) {
          console.log(error)
     }

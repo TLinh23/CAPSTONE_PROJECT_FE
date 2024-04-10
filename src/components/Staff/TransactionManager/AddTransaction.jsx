@@ -4,27 +4,18 @@ import Title from "../../common/Title";
 import Input from "../../common/PrimaryInput";
 import PrimaryBtn from "../../common/PrimaryBtn";
 import axios from "axios";
+import createPayment from "src/constants/createPayment";
+import useNotification from "src/hooks/useNotification";
 
 function AddTransaction() {
+  const { contextHolder, openNotification } = useNotification()
   const [transaction, setTransaction] = useState({
     paymentType: "",
-    requestedBy: "",
-    payer: "",
-    amount: "",
+    requestedBy: 0,
+    payer: 0,
+    amount: 0,
     description: "",
   });
-
-  const postPayment = async () => {
-    try {
-      const fetchData = await axios({
-        method: "post",
-        url: "https://localhost:5000/api/Payment/search-filter-payment",
-        data: transaction,
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -34,13 +25,40 @@ function AddTransaction() {
     }));
   };
 
-  const handleSubmit = () => {
-    // Logic to handle the submission of the new transaction
-    console.log("New Transaction Data:", transaction);
+  const handleSubmit = async() => {
+      try {
+        const fetchData = await axios.post(createPayment, {
+          payerId: transaction.payer,
+          requestId: transaction.requestedBy,
+          paymentAmount: transaction.amount,
+          paymentDesc: transaction.description,
+          paymentType: transaction.paymentType,
+          requestDate: Date.now(),
+          payDate: Date.now(),
+          createdAt: Date.now(),
+          updatedAt: Date.now(),
+          status: 'CREATED'
+        });
+
+        if(fetchData.status == 200) {
+          openNotification(
+            'topRight',
+            'success',
+            'create successfully!'
+          )
+        }
+      } catch (error) {
+        openNotification(
+          'topRight',
+          'error',
+          error
+        )
+      }
   };
 
   return (
     <Layout>
+      { contextHolder }
       <div className="container p-4 mx-auto">
         <Title>Staff - Add New Transaction</Title>
         <div className="mt-4">
