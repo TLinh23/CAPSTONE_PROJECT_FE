@@ -45,7 +45,6 @@ function SideBar() {
       enabled: !!userId,
     },
   ]);
-  console.log("listClassroom: ", listClassroom);
 
   return (
     <motion.div

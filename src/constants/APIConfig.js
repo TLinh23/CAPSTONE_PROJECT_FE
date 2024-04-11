@@ -34,6 +34,8 @@ export const resetPassUrl = `${baseUrl}api/Account/reset-password`;
 
 export const registerTutorUl = `${baseUrl}api/Account/register-tutor`;
 
+export const registerParentUrl = `${baseUrl}api/Account/register-parent`;
+
 export const profileUrl = `${baseUrl}api/Person/get-profile`;
 
 export const updateSubjectUrl = `${baseUrl}api/Subject/update-subject`;

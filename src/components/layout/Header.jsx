@@ -70,6 +70,7 @@ function Header() {
             <SecondaryBtn
               onClick={() => {
                 localStorage.clear();
+                navigate("/");
                 processLogout();
                 checkRoleKey();
               }}
