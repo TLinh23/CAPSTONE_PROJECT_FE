@@ -21,7 +21,6 @@ import AddTransaction from "./components/Staff/TransactionManager/AddTransaction
 import ListStaffManager from "./components/Admin/StaffManager/ListStaffManager";
 import AddStaff from "./components/Admin/StaffManager/AddStaff";
 import ListAssessmentManager from "./components/Tutor/AssessmentManager/ListAssessmentManager";
-import RegisterAsParent from "./pages/RegisterParent/RegisterAsParent";
 import AddAssessment from "./components/Tutor/AssessmentManager/AddAssessment";
 //trang account detail
 import AccountDetail from "./pages/PageAccountDetail";
