@@ -6,7 +6,6 @@ import {
   ROLE_NAME,
   STAFF_MENU,
   TUTOR_MENU,
-  mainMenu,
 } from "src/constants/constants";
 import { motion } from "framer-motion";
 import { useSideBarContext } from "src/context/SideBarContext";
@@ -27,6 +26,7 @@ function SideBar() {
   const { isOpenSideBar } = useSideBarContext();
   const { roleKey, userId } = useAuthContext();
   const [listClassroom, setListClassroom] = useState();
+
   useQueries([
     {
       queryKey: ["getListClass"],

@@ -149,3 +149,8 @@ export const LIST_GENDER_VALUE = [
   { id: 1, value: "MALE", name: "Male" },
   { id: 2, value: "FEMALE", name: "Female" },
 ];
+
+export const LIST_CLASS_FILTER = [
+  { id: 1, key: "ACTIVE", value: "Active" },
+  { id: 2, key: "SUSPEND", value: "Suspend" },
+];

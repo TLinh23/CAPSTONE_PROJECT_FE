@@ -66,7 +66,7 @@ function SideBarItem({ item }) {
   return (
     <div className="flex items-center gap-2 py-1">
       <Link
-        to={`/ClassDetailManager/${item?.classId}`}
+        to={`/tutor-classrooms/${item?.classId}`}
         className={`cursor-pointer flex items-center gap-2 py-2 smooth-transform pr-2 bg-transparent text-[#4F4F4F] ml-5 pl-2 hover:bg-[#2F8DE415] border-b border-[#2F8DE475]`}
       >
         <p className="text-sm">{item?.className}</p>

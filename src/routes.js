@@ -39,6 +39,7 @@ import PageCreateNewStudentInClass from "./pages/PageCreateNewStudentInClass";
 import PageRegisterAsTutor from "./pages/RegisterTutor/PageRegisterAsTutor";
 import PageIntroduceAllTutor from "./pages/PageIntroduceAllTutor";
 import PageRegisterAsParent from "./pages/RegisterParent/PageRegisterAsParent";
+import PageListTutorClassroom from "./pages/PageListTutorClassroom";
 
 //list your routes here
 export const routes = [
@@ -63,6 +64,7 @@ export const routes = [
     element: <PageIntroduceAllTutor />,
   },
   { path: "/register-parent", element: <PageRegisterAsParent /> },
+  { path: "/tutor-classrooms", element: <PageListTutorClassroom /> },
 
   { path: "/todos", element: <TodoListPage /> },
   { path: "/login", element: <Login /> },
