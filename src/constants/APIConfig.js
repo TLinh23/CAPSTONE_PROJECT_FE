@@ -54,4 +54,8 @@ export const getStudentsClassUrl = `${baseUrl}api/Class/get-students-in-class`;
 
 export const addStudentIntoClassUrl = `${baseUrl}api/Class/add-students-in-class`;
 
-export const deleteStudentUrl = `${baseUrl}api/Class/delete-students-in-class`;
+export const deleteStudentUrl = `${baseUrl}api/Class/delete-student-in-class`;
+
+export const createClassStudentUrl = `${baseUrl}api/Class/add-class`;
+
+export const updateClassStudentUrl = `${baseUrl}api/Class/update-class`;

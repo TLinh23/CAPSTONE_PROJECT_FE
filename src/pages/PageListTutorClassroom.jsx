@@ -6,11 +6,13 @@ import { getClassByTutor } from "src/apis/class-module";
 import DeniedBtn from "src/components/common/DeniedBtn";
 import FilterDropDown from "src/components/common/FilterDropDown";
 import Pagination from "src/components/common/Pagination";
+import PrimaryBtn from "src/components/common/PrimaryBtn";
 import RenderStatus from "src/components/common/RenderStatus";
 import SearchInput from "src/components/common/SearchInput";
 import ShowDetail from "src/components/common/ShowDetail";
 import Table from "src/components/common/Table";
 import Title from "src/components/common/Title";
+import EditIcon from "src/components/icons/EditIcon";
 import Layout from "src/components/layout/Layout";
 import { LIST_CLASS_FILTER, ROLE_NAME } from "src/constants/constants";
 import { useAuthContext } from "src/context/AuthContext";
@@ -57,7 +59,9 @@ function PageListTutorClassroom() {
 
   return (
     <Layout>
-      <Title>My Classroom List</Title>
+      <div className="flex items-center justify-between gap-3">
+        <Title>My Classroom List</Title>
+      </div>
       <div className="flex flex-col gap-4 py-5 md:items-center md:flex-row md:justify-end">
         <SearchInput
           placeholder="Search by name"
@@ -72,7 +76,10 @@ function PageListTutorClassroom() {
           textDefault="Select status"
         />
       </div>
-      <div className="flex items-center justify-end pb-5">
+      <div className="flex items-center justify-between pb-5">
+        <Link className="w-[190px]" to={"/tutor-create-classroom"}>
+          <PrimaryBtn>Create Classroom</PrimaryBtn>
+        </Link>
         <DeniedBtn
           onClick={() => {
             setPage(1);
@@ -139,22 +146,14 @@ const columns = [
           <RenderStatus status={data?.status}>{data?.status}</RenderStatus>
         ),
       },
-      // {
-      //   Header: "Action",
-      //   accessor: (data) => {
-      //     return (
-      //       <div className="flex items-center gap-4">
-      //         <PrimaryBtn>Accept</PrimaryBtn>
-      //         <DeniedBtn>Decline</DeniedBtn>
-      //       </div>
-      //     );
-      //   },
-      // },
       {
         Header: " ",
         accessor: (data) => {
           return (
             <div className="flex items-center gap-4">
+              <Link to={`/tutor-classrooms/${data?.classId}/edit`}>
+                <EditIcon />
+              </Link>
               <Link to={`/tutor-classrooms/${data?.classId}`}>
                 <ShowDetail />
               </Link>

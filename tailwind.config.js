@@ -50,6 +50,8 @@ module.exports = {
         454510: "45fr 45fr 10fr",
         502030: "50fr 20fr 30fr",
         155530: "15fr 50fr 35fr",
+        303535: "30fr 35fr 35fr",
+        3530305: "35fr 30fr 30fr 5fr",
       },
       zIndex: {
         9999: "9999",
