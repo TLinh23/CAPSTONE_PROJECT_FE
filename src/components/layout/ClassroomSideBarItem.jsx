@@ -3,6 +3,15 @@ import ClassRoomIcon from "../icons/ClassRoomIcon";
 import ArrowLeftIcon from "../icons/ArrowLeftIcon";
 import { AnimatePresence, motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import SideBarItem from "./SideBarItem";
+import { TUTOR_HREF } from "src/constants/navbarConstant";
+
+const LIST_CLASSROOM_ITEM = {
+  id: 1,
+  name: "List Classroom",
+  href: TUTOR_HREF.LIST_CLASSROOMS,
+  listActiveRouter: [TUTOR_HREF.LIST_CLASSROOMS],
+};
 
 function ClassroomSideBarItem({ listClassroom }) {
   const [open, setOpen] = useState(false);
@@ -42,9 +51,16 @@ function ClassroomSideBarItem({ listClassroom }) {
               duration: 0.2,
             }}
           >
-            {listClassroom?.items?.map((i, index) => (
-              <SideBarItem key={`sub-menu-${i?.id}-${index}`} item={i} />
-            ))}
+            <>
+              <SideBarItem
+                key={`first`}
+                item={LIST_CLASSROOM_ITEM}
+                rolePermission={[]}
+              />
+              {listClassroom?.items?.map((i, index) => (
+                <ClassroomItem key={`sub-menu-${i?.id}-${index}`} item={i} />
+              ))}
+            </>
           </motion.div>
         )}
       </AnimatePresence>
@@ -62,7 +78,7 @@ const variants = {
   },
 };
 
-function SideBarItem({ item }) {
+function ClassroomItem({ item }) {
   return (
     <div className="flex items-center gap-2 py-1">
       <Link

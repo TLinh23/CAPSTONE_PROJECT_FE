@@ -1,12 +1,19 @@
 import {
   addStudentIntoClassUrl,
+  createClassStudentUrl,
   deleteStudentUrl,
   getClassDetailUrl,
   getClassUrl,
   getStudentsClassUrl,
   getTutorClassUrl,
+  updateClassStudentUrl,
 } from "src/constants/APIConfig";
-import { convertObjectToQueryString, postAPI, requestAPI } from "src/libs/api";
+import {
+  convertObjectToQueryString,
+  postAPI,
+  putAPI,
+  requestAPI,
+} from "src/libs/api";
 
 export const getListClass = (paramsObj) => {
   const queryString = convertObjectToQueryString(paramsObj);
@@ -45,6 +52,20 @@ export const addStudentIntoClass = (queryObj) => {
 export const deleteStudentOutOfClass = (queryObj) => {
   return postAPI({
     url: `${deleteStudentUrl}`,
+    data: queryObj,
+  });
+};
+
+export const createClassDetail = (queryObj) => {
+  return postAPI({
+    url: `${createClassStudentUrl}`,
+    data: queryObj,
+  });
+};
+
+export const editClassDetail = (queryObj) => {
+  return putAPI({
+    url: `${updateClassStudentUrl}`,
     data: queryObj,
   });
 };

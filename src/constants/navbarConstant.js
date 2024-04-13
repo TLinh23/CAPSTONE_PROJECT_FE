@@ -3,6 +3,7 @@ export const TUTOR_HREF = {
   CLASSROOM_REQUEST: "/classroom-requests",
   SCHEDULE: "/schedule",
   LIST_TRANSACTION: "/abcd",
+  LIST_CLASSROOMS: "/tutor-classrooms",
 };
 
 export const PARENT_HREF = {

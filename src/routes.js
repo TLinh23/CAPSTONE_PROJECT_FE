@@ -9,7 +9,6 @@ import ListOrderRequestPage from "./pages/ListOrderRequestPage";
 import Login from "./pages/Login/Login";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 import ChangePassword from "./pages/Changepassword/Changepassword";
-import CreateClassroom from "./pages/CreateClassroom/CreateClassroom";
 import ClassListParent from "./pages/ClassListForParent/ClassListParent";
 import PageOrderRequestDetail from "./pages/PageOrderRequestDetail";
 import PageCreateOrderRequest from "./pages/PageCreateOrderRequest";
@@ -40,6 +39,8 @@ import PageRegisterAsTutor from "./pages/RegisterTutor/PageRegisterAsTutor";
 import PageIntroduceAllTutor from "./pages/PageIntroduceAllTutor";
 import PageRegisterAsParent from "./pages/RegisterParent/PageRegisterAsParent";
 import PageListTutorClassroom from "./pages/PageListTutorClassroom";
+import PageTutorCreateClassroom from "./pages/PageTutorCreateClassroom";
+import PageEditTutorClassroomDetail from "./pages/PageEditTutorClassroomDetail";
 
 //list your routes here
 export const routes = [
@@ -54,6 +55,10 @@ export const routes = [
   { path: "/opended-classrooms", element: <PageOpenedClassRooms /> },
   { path: "/schedule", element: <PageSchedule /> },
   { path: "/tutor-classrooms/:id", element: <PageTutorClassroomDetail /> },
+  {
+    path: "/tutor-classrooms/:id/edit",
+    element: <PageEditTutorClassroomDetail />,
+  },
   { path: "/tutor-classrooms/:id/students", element: <PageTutorListStudent /> },
   {
     path: "/tutor-classrooms/:id/students/create",
@@ -65,13 +70,13 @@ export const routes = [
   },
   { path: "/register-parent", element: <PageRegisterAsParent /> },
   { path: "/tutor-classrooms", element: <PageListTutorClassroom /> },
+  { path: "/tutor-create-classroom", element: <PageTutorCreateClassroom /> },
 
   { path: "/todos", element: <TodoListPage /> },
   { path: "/login", element: <Login /> },
   { path: "/forgotpassword", element: <ForgotPassword /> },
   { path: "/changepassword", element: <ChangePassword /> },
   { path: "/register-tutor", element: <PageRegisterAsTutor /> },
-  { path: "/create-classroom", element: <CreateClassroom /> },
   { path: "/class-list-parent", element: <ClassListParent /> },
   //loc
   { path: "/accountManager", element: <AccountManager /> },

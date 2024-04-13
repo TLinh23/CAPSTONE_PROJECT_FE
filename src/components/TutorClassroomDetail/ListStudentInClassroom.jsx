@@ -102,6 +102,7 @@ const columns = [
 const RenderAction = ({ data }) => {
   const [showDialog, setShowDialog] = useState(false);
   const [showDeleDialog, setShowDeleDialog] = useState(false);
+  const { id } = useParams();
 
   const deleteStudentMutation = useMutation(
     async (newData) => {
@@ -132,7 +133,11 @@ const RenderAction = ({ data }) => {
   );
 
   const handleDeleteStudent = () => {
-    console.log("Handle delete");
+    // @ts-ignore
+    deleteStudentMutation.mutate({
+      classId: id,
+      studenId: data?.id,
+    });
   };
 
   return (
