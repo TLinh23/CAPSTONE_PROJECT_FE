@@ -137,8 +137,9 @@ function EditTutorClassroomDetail() {
     const queryObj = {
       ...classRoomDetail,
       tutorId: userId,
+      classId: id,
       status: "ACTIVE",
-      addScheduleDto: listLevels,
+      updateScheduleDto: listLevels,
     };
     if (listLevels) {
       queryObj["updateScheduleDto"] = listLevels;

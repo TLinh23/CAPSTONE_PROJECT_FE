@@ -23,17 +23,21 @@ function StaffProfileDetail(props) {
               <div className="mb-5 text-xl font-semibold text-center">
                 Avatar
               </div>
-              <div className="flex items-center justify-center border rounded border-primary w-[200px] h-[200px]">
+              <div className="flex items-center justify-center rounded w-[200px] h-[200px]">
                 <img
                   className="object-cover w-full h-full rounded"
-                  src="https://vcdn-thethao.vnecdn.net/2023/09/03/ronaldo-850-jpeg-1693687478-1789-1693688039.jpg"
+                  src={
+                    dataProfileDetail?.userAvater || "/images/logo-default.png"
+                  }
                   alt=""
                 />
               </div>
             </div>
           </div>
-          <div className="mt-5">Role: Staff</div>
-          <div className="mt-3">Email: staff@gmail.com</div>
+          <div className="mt-5">
+            Role: {dataProfileDetail?.account?.roleName}
+          </div>
+          <div className="mt-3">Email: {dataProfileDetail?.account?.email}</div>
         </div>
         <div className="flex flex-col gap-4">
           <PrimaryInput
@@ -44,36 +48,25 @@ function StaffProfileDetail(props) {
             }
             placeholder="Enter first name"
             value={
-              dataProfileDetail?.userName ? dataProfileDetail?.userName : ""
+              dataProfileDetail?.fullName ? dataProfileDetail?.fullName : ""
             }
             readOnly
           />
           <div className="grid items-center grid-cols-2 gap-4">
             <PrimaryInput
               title="Gender"
-              placeholder="Enter gender"
-              value={"Male"}
-              disabled
+              value={dataProfileDetail?.gender ? dataProfileDetail?.gender : ""}
+              readOnly
             />
-            <div>
-              <PrimarySmallTitle className="mb-2">
-                Date of birth
-              </PrimarySmallTitle>
-              <input
-                max={new Date().toISOString().slice(0, 10)}
-                value={
-                  dataProfileDetail?.birthDate
-                    ? format(
-                        new Date(dataProfileDetail?.birthDate),
-                        "yyyy-MM-dd"
-                      )
-                    : ""
-                }
-                type="date"
-                disabled
-                className="w-full h-[46px] px-4 py-3 border rounded-md outline-none border-gray focus:border-primary hover:border-primary smooth-transform"
-              />
-            </div>
+            <PrimaryInput
+              title="Birth date"
+              value={
+                dataProfileDetail?.dob
+                  ? format(new Date(dataProfileDetail?.dob), "dd-MM-yyyy")
+                  : ""
+              }
+              readOnly
+            />
           </div>
           {roleKey === ROLE_NAME.STAFF && (
             <>
@@ -99,12 +92,14 @@ function StaffProfileDetail(props) {
         </div>
       </div>
       {roleKey === ROLE_NAME.STAFF &&
-        String(userId) === String(dataProfileDetail?.id) && (
+        String(userId) === String(dataProfileDetail?.account?.personId) && (
           <div className="flex justify-center mt-8">
             <PrimaryBtn
               className="md:max-w-[222px]"
               onClick={() => {
-                navigate(`/profile/${dataProfileDetail?.id}/edit`);
+                navigate(
+                  `/profile/${dataProfileDetail?.account?.personId}/edit`
+                );
               }}
             >
               Update

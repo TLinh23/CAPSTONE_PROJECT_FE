@@ -6,6 +6,7 @@ import {
   getClassUrl,
   getStudentsClassUrl,
   getTutorClassUrl,
+  scheduleUrl,
   updateClassStudentUrl,
 } from "src/constants/APIConfig";
 import {
@@ -67,5 +68,12 @@ export const editClassDetail = (queryObj) => {
   return putAPI({
     url: `${updateClassStudentUrl}`,
     data: queryObj,
+  });
+};
+
+export const getScheduleByClass = (paramsObj) => {
+  const queryString = convertObjectToQueryString(paramsObj);
+  return requestAPI({
+    url: `${scheduleUrl}${queryString}`,
   });
 };

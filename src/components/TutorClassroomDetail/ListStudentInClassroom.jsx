@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import useDebounce from "src/hooks/useDebounce";
 import Table from "../common/Table";
-import { useMutation, useQueries } from "react-query";
+import { useMutation, useQueries, useQueryClient } from "react-query";
 import DeniedBtn from "../common/DeniedBtn";
 import ProfileHeader from "../Profile/ProfileHeader";
 import PrimaryBtn from "../common/PrimaryBtn";
@@ -15,28 +14,26 @@ import PopupTemplate from "../common/PopupTemplate";
 import PrimaryInput from "../common/PrimaryInput";
 import SecondaryBtn from "../common/SecondaryBtn";
 import { toast } from "react-toastify";
+import { STUDENT_STATUS } from "src/constants/constants";
 
 function ListStudentInClassroom() {
   const [classRoomDetail, setClassRoomDetail] = useState(undefined);
-  const [searchParam, setSearchParam] = useState("");
-  const debouncedSearchValue = useDebounce(searchParam, 500);
   const { id } = useParams();
   useQueries([
     {
-      queryKey: ["getListStudents", debouncedSearchValue],
+      queryKey: ["getListStudents"],
       queryFn: async () => {
-        const queryObj = {};
-        if (debouncedSearchValue) {
-          queryObj["search"] = debouncedSearchValue;
-        }
-
-        // change your api request
         const response = await getClassDetailData(id);
         setClassRoomDetail(response?.data?.data);
         return response?.data;
       },
     },
   ]);
+  const filteredValue = classRoomDetail?.studentInformationDto?.filter(
+    (item) => {
+      return item?.statusClassMember === STUDENT_STATUS.CREATED;
+    }
+  );
 
   return (
     <div>
@@ -46,19 +43,12 @@ function ListStudentInClassroom() {
           <PrimaryBtn>Add new Student</PrimaryBtn>
         </Link>
       </div>
-      {/* <div className="flex flex-col gap-4 py-5 md:items-center md:flex-row md:justify-end">
-        <SearchInput
-          placeholder="Search by name"
-          onChange={(e) => setSearchParam(e.target.value)}
-          value={searchParam || ""}
-        />
-      </div> */}
 
       <div className="mt-5 bg-white table-style block-border">
         <Table
           pageSizePagination={20}
           columns={columns}
-          data={classRoomDetail?.studentInformationDto}
+          data={filteredValue || []}
         />
       </div>
     </div>
@@ -100,6 +90,7 @@ const columns = [
 ];
 
 const RenderAction = ({ data }) => {
+  const queryClient = useQueryClient();
   const [showDialog, setShowDialog] = useState(false);
   const [showDeleDialog, setShowDeleDialog] = useState(false);
   const { id } = useParams();
@@ -114,6 +105,7 @@ const RenderAction = ({ data }) => {
         console.log("Data: ", data);
         if (data?.status >= 200 && data?.status < 300) {
           toast.success("Delete student successfully");
+          queryClient.invalidateQueries("getListStudents");
         } else {
           toast.error(
             data?.message ||
@@ -135,8 +127,8 @@ const RenderAction = ({ data }) => {
   const handleDeleteStudent = () => {
     // @ts-ignore
     deleteStudentMutation.mutate({
-      classId: id,
-      studenId: data?.id,
+      classId: Number(id),
+      studentId: data?.studentId,
     });
   };
 
@@ -208,18 +200,15 @@ const RenderAction = ({ data }) => {
         <div>
           Do you want to delete this student {data?.fullName} out of class
         </div>
-        <div className="flex items-center justify-end">
-          <SecondaryBtn
-            onClick={handleDeleteStudent}
-            className="max-w-[160px] mt-5"
-          >
-            Save
-          </SecondaryBtn>
+        <div className="flex items-center justify-end gap-5 mt-10">
+          <DeniedBtn onClick={handleDeleteStudent} className="max-w-[160px]">
+            Delete
+          </DeniedBtn>
           <SecondaryBtn
             onClick={() => {
               setShowDeleDialog(false);
             }}
-            className="max-w-[160px] mt-5"
+            className="max-w-[160px]"
           >
             Close
           </SecondaryBtn>

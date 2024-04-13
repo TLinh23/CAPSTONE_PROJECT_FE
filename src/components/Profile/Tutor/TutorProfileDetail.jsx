@@ -14,22 +14,16 @@ import EditSubjectPopup from "./EditSubjectPopup";
 import PrimarySmallTitle from "src/components/common/PrimarySmallTitle";
 import ProfileHeader from "../ProfileHeader";
 import DeniedBtn from "src/components/common/DeniedBtn";
+import DeleteSubjectPopup from "./DeleteSubjectPopup";
 
 function TutorProfileDetail(props) {
   const { dataProfileDetail } = props;
-  // fill data from dataProfileDetail, which is from api
   const { userId, roleKey } = useAuthContext();
   const [isShowPopupAddStudent, setIsShowPopupAddStudent] = useState(false);
-  const [isShowPopupEditStudent, setIsShowPopupEditStudent] = useState(false);
-  const [gender, setGender] = useState();
   const navigate = useNavigate();
 
   const handleClickAddMoreStudent = () => {
     setIsShowPopupAddStudent(true);
-  };
-
-  const handleEditStudent = () => {
-    setIsShowPopupEditStudent(true);
   };
 
   return (
@@ -42,17 +36,21 @@ function TutorProfileDetail(props) {
               <div className="mb-5 text-xl font-semibold text-center">
                 Avatar
               </div>
-              <div className="flex items-center justify-center border rounded border-primary w-[200px] h-[200px]">
+              <div className="flex items-center justify-center rounded w-[200px] h-[200px]">
                 <img
                   className="object-cover w-full h-full rounded"
-                  src="https://vcdn-thethao.vnecdn.net/2023/09/03/ronaldo-850-jpeg-1693687478-1789-1693688039.jpg"
+                  src={
+                    dataProfileDetail?.userAvater || "/images/logo-default.png"
+                  }
                   alt=""
                 />
               </div>
             </div>
           </div>
-          <div className="mt-5">Role: Tutor</div>
-          <div className="mt-3">Email: tutor@gmail.com</div>
+          <div className="mt-5">
+            Role: {dataProfileDetail?.account?.roleName}
+          </div>
+          <div className="mt-3">Email: {dataProfileDetail?.account?.email}</div>
         </div>
         <div className="flex flex-col gap-4">
           <PrimaryInput
@@ -63,96 +61,74 @@ function TutorProfileDetail(props) {
             }
             placeholder="Enter first name"
             value={
-              dataProfileDetail?.userName ? dataProfileDetail?.userName : ""
+              dataProfileDetail?.fullName ? dataProfileDetail?.fullName : ""
             }
             readOnly
           />
           <div className="grid items-center grid-cols-2 gap-4">
-            <FilterDropDown
+            <PrimaryInput
               title="Gender"
-              listDropdown={[
-                { id: 1, value: "Male", name: "Male" },
-                { id: 2, value: "Female", name: "Female" },
-              ]}
-              showing={gender || { id: 1, value: "Male", name: "Male" }}
-              setShowing={setGender}
-              disabled
+              value={dataProfileDetail?.gender ? dataProfileDetail?.gender : ""}
+              readOnly
             />
-            <div>
-              <PrimarySmallTitle className="mb-2">
-                Date of birth
-              </PrimarySmallTitle>
-              <input
-                max={new Date().toISOString().slice(0, 10)}
+            <PrimaryInput
+              title="Birth date"
+              value={
+                dataProfileDetail?.dob
+                  ? format(new Date(dataProfileDetail?.dob), "dd-MM-yyyy")
+                  : ""
+              }
+              readOnly
+            />
+          </div>
+          {((roleKey === ROLE_NAME.TUTOR &&
+            String(userId) === String(dataProfileDetail?.account?.personId)) ||
+            roleKey === ROLE_NAME.STAFF) && (
+            <>
+              <PrimaryInput
+                title="Identify number"
+                placeholder="Enter identify number"
                 value={
-                  dataProfileDetail?.birthDate
-                    ? format(
-                        new Date(dataProfileDetail?.birthDate),
-                        "yyyy-MM-dd"
-                      )
+                  dataProfileDetail?.tutor?.cmnd
+                    ? dataProfileDetail?.tutor?.cmnd
                     : ""
                 }
-                type="date"
-                disabled
-                className="w-full h-[46px] px-4 py-3 border rounded-md outline-none border-gray focus:border-primary hover:border-primary smooth-transform"
+                readOnly
               />
-            </div>
-          </div>
-          {(roleKey === ROLE_NAME.TUTOR &&
-            String(userId) === String(dataProfileDetail?.id)) ||
-            (roleKey === ROLE_NAME.STAFF && (
-              <>
-                <PrimaryInput
-                  title="Identify number"
-                  placeholder="Enter identify number"
-                  value={
-                    dataProfileDetail?.idNumber
-                      ? dataProfileDetail?.idNumber
-                      : ""
-                  }
-                  readOnly
-                  isVisible={
-                    (roleKey === ROLE_NAME.TUTOR &&
-                      String(userId) === String(dataProfileDetail?.id)) ||
-                    roleKey === ROLE_NAME.STAFF
-                  }
-                />
-                <PrimaryInput
-                  title="Phone number"
-                  placeholder="Enter phone number"
-                  type="number"
-                  value={
-                    dataProfileDetail?.phone ? dataProfileDetail?.phone : ""
-                  }
-                  readOnly
-                  isVisible={
-                    (roleKey === ROLE_NAME.TUTOR &&
-                      String(userId) === String(dataProfileDetail?.id)) ||
-                    roleKey === ROLE_NAME.STAFF
-                  }
-                />
-                <PrimaryInput
-                  title="Address"
-                  rows={4}
-                  placeholder="Enter address"
-                  value={
-                    dataProfileDetail?.address ? dataProfileDetail?.address : ""
-                  }
-                  readOnly
-                  isVisible={
-                    (roleKey === ROLE_NAME.TUTOR &&
-                      String(userId) === String(dataProfileDetail?.id)) ||
-                    roleKey === ROLE_NAME.STAFF
-                  }
-                />
-              </>
-            ))}
+              <PrimaryInput
+                title="Phone number"
+                placeholder="Enter phone number"
+                value={dataProfileDetail?.phone ? dataProfileDetail?.phone : ""}
+                readOnly
+              />
+              <PrimaryInput
+                title="Address"
+                rows={4}
+                placeholder="Enter address"
+                value={
+                  dataProfileDetail?.address ? dataProfileDetail?.address : ""
+                }
+                readOnly
+              />
+            </>
+          )}
+          <PrimaryInput
+            title={<p>School</p>}
+            value={
+              dataProfileDetail?.tutor?.school
+                ? dataProfileDetail?.tutor?.school
+                : ""
+            }
+            readOnly
+          />
           <div className="grid items-center grid-cols-2 gap-4">
             <PrimaryInput
               title={<p>Education level</p>}
               placeholder="Enter education level"
               value={
-                dataProfileDetail?.userName ? dataProfileDetail?.userName : ""
+                dataProfileDetail?.tutor?.educationLevel
+                  ? dataProfileDetail?.tutor?.educationLevel
+                  : ""
               }
               readOnly
             />
@@ -160,7 +136,9 @@ function TutorProfileDetail(props) {
               title={<p>Graduation year</p>}
               placeholder="Enter graduation year"
               value={
-                dataProfileDetail?.userName ? dataProfileDetail?.userName : ""
+                dataProfileDetail?.tutor?.graduationYear
+                  ? dataProfileDetail?.tutor?.graduationYear
+                  : ""
               }
               readOnly
             />
@@ -170,39 +148,40 @@ function TutorProfileDetail(props) {
             <div>
               <a
                 className="underline hover:text-primary smooth-transform"
-                href="https://ik.imagekit.io/ducdev/Minimalist%20Modern%20Professional%20CV%20Resume.pdf?updatedAt=1711421259030"
+                href={dataProfileDetail?.tutor?.cv}
                 target="_blank"
                 rel="noreferrer"
               >
                 View CV Now
               </a>
             </div>
-            {(roleKey === ROLE_NAME.TUTOR &&
-              String(userId) === String(dataProfileDetail?.id)) ||
-              (roleKey === ROLE_NAME.STAFF && (
-                <>
-                  <PrimarySmallTitle>Identify Card</PrimarySmallTitle>
-                  <div>
-                    <a
-                      className="underline hover:text-primary smooth-transform"
-                      href="https://ik.imagekit.io/ducdev/default-image.jpg?updatedAt=1711243098701"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      View Front
-                    </a>{" "}
-                    /{" "}
-                    <a
-                      className="underline hover:text-primary smooth-transform"
-                      href="https://ik.imagekit.io/ducdev/default-image.jpg?updatedAt=1711243098701"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      View Back
-                    </a>
-                  </div>
-                </>
-              ))}
+            {((roleKey === ROLE_NAME.TUTOR &&
+              String(userId) ===
+                String(dataProfileDetail?.account?.personId)) ||
+              roleKey === ROLE_NAME.STAFF) && (
+              <>
+                <PrimarySmallTitle>Identify Card</PrimarySmallTitle>
+                <div>
+                  <a
+                    className="underline hover:text-primary smooth-transform"
+                    href={dataProfileDetail?.tutor?.frontCmnd}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    View Front
+                  </a>{" "}
+                  /{" "}
+                  <a
+                    className="underline hover:text-primary smooth-transform"
+                    href={dataProfileDetail?.tutor?.backCmnd}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    View Back
+                  </a>
+                </div>
+              </>
+            )}
           </div>
         </div>
         <div>
@@ -216,17 +195,18 @@ function TutorProfileDetail(props) {
               className="border-b border-b-gray"
             />
             <div className="flex flex-col">
-              {[1, 2].map((item) => (
+              {dataProfileDetail?.subjectTutors?.map((item, index) => (
                 <SubjectItem
-                  key={item}
-                  handleClickEdit={handleEditStudent}
+                  key={index}
                   roleKey={roleKey}
                   userId={userId}
                   dataProfileDetail={dataProfileDetail}
+                  item={item}
                 />
               ))}
               {roleKey === ROLE_NAME.TUTOR &&
-                String(userId) === String(dataProfileDetail?.id) && (
+                String(userId) ===
+                  String(dataProfileDetail?.account?.personId) && (
                   <div
                     className="p-2 text-center cursor-pointer smooth-transform hover:underline"
                     onClick={handleClickAddMoreStudent}
@@ -239,7 +219,7 @@ function TutorProfileDetail(props) {
         </div>
       </div>
       {roleKey === ROLE_NAME.TUTOR &&
-        String(userId) === String(dataProfileDetail?.id) && (
+        String(userId) === String(dataProfileDetail?.account?.personId) && (
           <div className="flex justify-center mt-8">
             <PrimaryBtn
               className="md:max-w-[222px]"
@@ -271,6 +251,54 @@ function TutorProfileDetail(props) {
       >
         <AddSubjectPopup />
       </PopupTemplate>
+    </div>
+  );
+}
+
+export default TutorProfileDetail;
+
+function SubjectItem({ item, roleKey, userId, dataProfileDetail }) {
+  const [isShowPopupEditStudent, setIsShowPopupEditStudent] = useState(false);
+  const [isShowPopupDeleteStudent, setIsShowPopupDeleteStudent] =
+    useState(false);
+
+  const handleClickEdit = () => {
+    setIsShowPopupEditStudent(true);
+  };
+
+  const handleClickDelete = () => {
+    setIsShowPopupDeleteStudent(true);
+  };
+
+  return (
+    <>
+      <div className="flex items-center justify-between gap-3 px-3 py-2 border-b border-b-gray">
+        <div>
+          <div>{item?.subjectName}</div>
+          <div>Class Level: {item?.level}</div>
+        </div>
+        {roleKey === ROLE_NAME.TUTOR &&
+          String(userId) === String(dataProfileDetail?.account?.personId) && (
+            <div>
+              <PrimaryBtn
+                className="!w-fit !py-1"
+                onClick={() => {
+                  handleClickEdit();
+                }}
+              >
+                Edit
+              </PrimaryBtn>
+              <DeniedBtn
+                className="!w-fit !py-1 mt-1"
+                onClick={() => {
+                  handleClickDelete();
+                }}
+              >
+                Delete
+              </DeniedBtn>
+            </div>
+          )}
+      </div>
       <PopupTemplate
         setShowDialog={setIsShowPopupEditStudent}
         showDialog={isShowPopupEditStudent}
@@ -279,40 +307,14 @@ function TutorProfileDetail(props) {
       >
         <EditSubjectPopup />
       </PopupTemplate>
-    </div>
-  );
-}
-
-export default TutorProfileDetail;
-
-function SubjectItem({ handleClickEdit, roleKey, userId, dataProfileDetail }) {
-  return (
-    <div className="flex items-center justify-between gap-3 px-3 py-2 border-b border-b-gray">
-      <div>
-        <div>Toán</div>
-        <div>Class Level: 12</div>
-      </div>
-      {roleKey === ROLE_NAME.TUTOR &&
-        String(userId) === String(dataProfileDetail?.id) && (
-          <div>
-            <PrimaryBtn
-              className="!w-fit !py-1"
-              onClick={() => {
-                handleClickEdit();
-              }}
-            >
-              Edit
-            </PrimaryBtn>
-            <DeniedBtn
-              className="!w-fit !py-1 mt-1"
-              onClick={() => {
-                handleClickEdit();
-              }}
-            >
-              Delete
-            </DeniedBtn>
-          </div>
-        )}
-    </div>
+      <PopupTemplate
+        setShowDialog={setIsShowPopupDeleteStudent}
+        showDialog={isShowPopupDeleteStudent}
+        title="Delete subject"
+        classNameWrapper="md:!min-w-[486px]"
+      >
+        <DeleteSubjectPopup item={item} />
+      </PopupTemplate>
+    </>
   );
 }
