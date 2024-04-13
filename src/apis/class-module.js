@@ -6,6 +6,8 @@ import {
   getClassUrl,
   getStudentsClassUrl,
   getTutorClassUrl,
+  requestByIdUrl,
+  requestForTutorUrl,
   scheduleUrl,
   updateClassStudentUrl,
 } from "src/constants/APIConfig";
@@ -75,5 +77,18 @@ export const getScheduleByClass = (paramsObj) => {
   const queryString = convertObjectToQueryString(paramsObj);
   return requestAPI({
     url: `${scheduleUrl}${queryString}`,
+  });
+};
+
+export const getListRequestForTutor = (paramsObj) => {
+  const queryString = convertObjectToQueryString(paramsObj);
+  return requestAPI({
+    url: `${requestForTutorUrl}${queryString}`,
+  });
+};
+
+export const getRequestDetailForTutor = (id) => {
+  return requestAPI({
+    url: `${requestByIdUrl}/${id}`,
   });
 };

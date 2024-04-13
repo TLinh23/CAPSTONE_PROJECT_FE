@@ -3,11 +3,13 @@ import Title from "../common/Title";
 import SearchInput from "../common/SearchInput";
 import FilterDropDown from "../common/FilterDropDown";
 
-function TutorSchedule() {
+function TutorSchedule({ scheduleDetail }) {
   const [searchParam, setSearchParam] = useState("");
+  console.log("scheduleDetail: ", scheduleDetail);
   return (
     <div className="bg-[#ffffff] block-border">
       <Title>My Schedule</Title>
+
       <div className="flex flex-col justify-between gap-5 md:flex-row md:items-center">
         <SearchInput
           placeholder="Search by key"
@@ -22,6 +24,7 @@ function TutorSchedule() {
           className="max-w-[240px]"
         />
       </div>
+
       <div className="grid grid-cols-7 mt-5">
         <div className="schedule-border">Mon</div>
         <div className="schedule-border">Tue</div>
@@ -31,22 +34,25 @@ function TutorSchedule() {
         <div className="schedule-border">Sat</div>
         <div className="schedule-border border-end-line">Sun</div>
 
-        <div className="schedule-border">Class Name</div>
-        <div className="schedule-border">Class Name</div>
-        <div className="schedule-border">Class Name</div>
-        <div className="schedule-border">Class Name</div>
-        <div className="schedule-border">Class Name</div>
-        <div className="schedule-border">Class Name</div>
-        <div className="schedule-border border-end-line">Class Name</div>
+        <div className="schedule-border">
+          <span className="underline">ClassName</span>
+          <br /> 12h-20h
+        </div>
+        <div className="schedule-border">Toan 3 - 21h - 23h</div>
+        <div className="schedule-border">---</div>
+        <div className="schedule-border">---</div>
+        <div className="schedule-border">---</div>
+        <div className="schedule-border">---</div>
+        <div className="schedule-border border-end-line">---</div>
 
-        <div className="schedule-border border-end-row">Class Name</div>
-        <div className="schedule-border border-end-row">Class Name</div>
-        <div className="schedule-border border-end-row">Class Name</div>
-        <div className="schedule-border border-end-row">Class Name</div>
-        <div className="schedule-border border-end-row">Class Name</div>
-        <div className="schedule-border border-end-row">Class Name</div>
+        <div className="schedule-border border-end-row">---</div>
+        <div className="schedule-border border-end-row">---</div>
+        <div className="schedule-border border-end-row">---</div>
+        <div className="schedule-border border-end-row">---</div>
+        <div className="schedule-border border-end-row">---</div>
+        <div className="schedule-border border-end-row">---</div>
         <div className="schedule-border border-end-row border-end-line">
-          Class Name
+          ---
         </div>
       </div>
     </div>

@@ -25,9 +25,9 @@ export const TUTOR_MENU = [
   {
     id: 1,
     name: "List Request",
-    href: TUTOR_HREF.CLASSROOM,
+    href: TUTOR_HREF.REQUEST,
     icon: <RequestIcon />,
-    listActiveRouter: [TUTOR_HREF.CLASSROOM],
+    listActiveRouter: [TUTOR_HREF.REQUEST],
   },
   {
     id: 2,
@@ -158,4 +158,15 @@ export const LIST_GENDER_VALUE = [
 export const LIST_CLASS_FILTER = [
   { id: 1, key: "ACTIVE", value: "Active" },
   { id: 2, key: "SUSPEND", value: "Suspend" },
+];
+
+export const LIST_REQUEST_TYPE_FILTER = [
+  { id: 1, key: "JOIN", value: "Join" },
+  { id: 2, key: "OPEN", value: "Open" },
+];
+
+export const LIST_REQUEST_STATUS_FILTER = [
+  { id: 1, key: "PENDING", value: "Pending" },
+  { id: 2, key: "ACCEPTED", value: "Accepted" },
+  { id: 2, key: "REJECTED", value: "Rejected" },
 ];
