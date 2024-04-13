@@ -5,27 +5,40 @@ import PrimaryBtn from "src/components/common/PrimaryBtn";
 import PrimaryInput from "src/components/common/PrimaryInput";
 import PrimarySmallTitle from "src/components/common/PrimarySmallTitle";
 import UploadImage from "src/components/common/UploadImage";
+import {
+  LIST_CLASS_LEVEL_DEFAULT,
+  LIST_GENDER_VALUE,
+} from "src/constants/constants";
 import useUploadImage from "src/hooks/useUploadImage";
 
 function AddStudentPopup() {
   const [studentDetail, setStudentDetail] = useState(undefined);
-  const { imageUrlResponse, handleUploadImage, imageUpload } = useUploadImage();
-  const [gender, setGender] = useState();
+  const [classLevelSelected, setClassLevelSelected] = useState(undefined);
+  const { handleUploadImage, imageUpload } = useUploadImage();
+  const [gender, setGender] = useState(undefined);
+
   return (
     <div>
       <div className="grid gap-5 grid-cols-73">
         <div className="flex flex-col gap-3">
-          <PrimaryInput title="Student Name: " />
+          <PrimaryInput
+            title="Student Name: "
+            onChange={(e) => {
+              setStudentDetail({
+                ...studentDetail,
+                fullName: e.target.value,
+              });
+            }}
+            value={studentDetail?.fullName || ""}
+            placeholder="Enter full name"
+          />
           <div className="grid grid-cols-2 gap-5">
             <FilterDropDown
               title="Gender"
-              listDropdown={[
-                { id: 1, value: "Male", name: "Male" },
-                { id: 2, value: "Female", name: "Female" },
-              ]}
-              showing={gender || { id: 1, value: "Male", name: "Male" }}
+              listDropdown={LIST_GENDER_VALUE}
+              showing={gender}
               setShowing={setGender}
-              disabled
+              textDefault="Select gender"
             />
             <div>
               <PrimarySmallTitle className="mb-2">
@@ -58,8 +71,24 @@ function AddStudentPopup() {
               />
             </div>
           </div>
-          <PrimaryInput title="Student Phone: " />
-          <PrimaryInput title="Student Level: " />
+          <FilterDropDown
+            title="Student Level"
+            listDropdown={LIST_CLASS_LEVEL_DEFAULT}
+            showing={classLevelSelected}
+            setShowing={setClassLevelSelected}
+            textDefault="Select student level"
+          />
+          <PrimaryInput
+            title="Student Phone: "
+            onChange={(e) => {
+              setStudentDetail({
+                ...studentDetail,
+                phone: e.target.value,
+              });
+            }}
+            value={studentDetail?.phone || ""}
+            placeholder="Enter phone number"
+          />
         </div>
         <div className="w-full h-auto">
           <div className="flex flex-col items-center justify-between h-full">
@@ -69,7 +98,7 @@ function AddStudentPopup() {
               </div>
               <div className="flex items-center justify-center border rounded border-primary w-[200px] h-[200px]">
                 <UploadImage
-                  imageUrlResponse={imageUrlResponse}
+                  imageUrlResponse={imageUpload}
                   onChange={(e) => handleUploadImage(e)}
                 />
               </div>

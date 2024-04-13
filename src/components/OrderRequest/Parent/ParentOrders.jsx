@@ -40,8 +40,6 @@ function ParentOrders() {
     },
   ]);
 
-  console.log("listOrderRequest: ", listOrderRequest);
-
   return (
     <div>
       <Title>Manage Classroom Request</Title>

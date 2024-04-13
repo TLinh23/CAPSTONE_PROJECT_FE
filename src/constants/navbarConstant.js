@@ -4,6 +4,7 @@ export const TUTOR_HREF = {
   SCHEDULE: "/schedule",
   LIST_TRANSACTION: "/abcd",
   LIST_CLASSROOMS: "/tutor-classrooms",
+  REQUEST: "/classroom-requests",
 };
 
 export const PARENT_HREF = {

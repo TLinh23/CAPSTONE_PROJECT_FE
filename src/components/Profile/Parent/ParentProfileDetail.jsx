@@ -17,16 +17,10 @@ function ParentProfileDetail(props) {
   const { dataProfileDetail } = props;
   const { userId, roleKey } = useAuthContext();
   const [isShowPopupAddStudent, setIsShowPopupAddStudent] = useState(false);
-  const [isShowPopupEditStudent, setIsShowPopupEditStudent] = useState(false);
-  const [gender, setGender] = useState();
   const navigate = useNavigate();
 
   const handleClickAddMoreStudent = () => {
     setIsShowPopupAddStudent(true);
-  };
-
-  const handleEditStudent = () => {
-    setIsShowPopupEditStudent(true);
   };
 
   return (
@@ -120,7 +114,6 @@ function ParentProfileDetail(props) {
                 <StudentItem
                   item={item}
                   key={index}
-                  handleClickEdit={handleEditStudent}
                   roleKey={roleKey}
                   userId={userId}
                   dataProfileDetail={dataProfileDetail}
@@ -160,26 +153,18 @@ function ParentProfileDetail(props) {
       >
         <AddStudentPopup />
       </PopupTemplate>
-      <PopupTemplate
-        setShowDialog={setIsShowPopupEditStudent}
-        showDialog={isShowPopupEditStudent}
-        title="Edit student"
-      >
-        <EditStudentPopup />
-      </PopupTemplate>
     </div>
   );
 }
 
 export default ParentProfileDetail;
 
-function StudentItem({
-  item,
-  handleClickEdit,
-  roleKey,
-  userId,
-  dataProfileDetail,
-}) {
+function StudentItem({ item, roleKey, userId, dataProfileDetail }) {
+  const [isShowPopupEditStudent, setIsShowPopupEditStudent] = useState(false);
+  const handleClickEdit = () => {
+    setIsShowPopupEditStudent(true);
+  };
+
   return (
     <div className="flex items-center justify-between gap-3 px-3 py-2 border-b border-b-gray">
       <div>
@@ -207,6 +192,13 @@ function StudentItem({
             </DeniedBtn>
           </div>
         )}
+      <PopupTemplate
+        setShowDialog={setIsShowPopupEditStudent}
+        showDialog={isShowPopupEditStudent}
+        title="Edit student"
+      >
+        <EditStudentPopup />
+      </PopupTemplate>
     </div>
   );
 }

@@ -11,30 +11,67 @@ import PrimaryBtn from "src/components/common/PrimaryBtn";
 import DeniedBtn from "src/components/common/DeniedBtn";
 import RenderStatus from "src/components/common/RenderStatus";
 import ShowDetail from "src/components/common/ShowDetail";
+import { getListRequestForTutor } from "src/apis/class-module";
+import { useAuthContext } from "src/context/AuthContext";
+import { Link } from "react-router-dom";
+import {
+  LIST_REQUEST_STATUS_FILTER,
+  LIST_REQUEST_TYPE_FILTER,
+} from "src/constants/constants";
+import { getListSubjects } from "src/apis/subject-module";
 
 function TutorOrders() {
-  const [isFilterSelected, setIsFilterSelected] = useState();
   const [listOrderRequest, setListOrderRequest] = useState(undefined);
   const [searchParam, setSearchParam] = useState("");
   const debouncedSearchValue = useDebounce(searchParam, 500);
+  const [subjectSelected, setSubjectSelected] = useState(undefined);
+  const [statusSelected, setStatusSelected] = useState(undefined);
+  const [typeSelected, setTypeSelected] = useState();
+  const [listAllSubjects, setListAllSubjects] = useState(undefined);
+
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
+  const { userId } = useAuthContext();
 
   useQueries([
     {
-      queryKey: ["getListOrderRequest", page, limit, debouncedSearchValue],
+      queryKey: [
+        "getListRequestForTutor",
+        page,
+        limit,
+        debouncedSearchValue,
+        userId,
+        subjectSelected,
+      ],
       queryFn: async () => {
         const queryObj = {
-          skip: (page - 1) * limit,
-          limit: limit,
+          PersonId: Number(userId),
         };
+        queryObj["PagingRequest.CurrentPage"] = page;
+        queryObj["PagingRequest.PageSize"] = limit;
+
         if (debouncedSearchValue) {
           queryObj["search"] = debouncedSearchValue;
         }
+        if (subjectSelected) {
+          queryObj["SubjectId"] = subjectSelected?.subjectId;
+        }
 
-        // change your api request
-        const response = await getListTodoWithObj(queryObj);
-        setListOrderRequest(response?.data);
+        const response = await getListRequestForTutor(queryObj);
+        setListOrderRequest(response?.data?.data);
+        return response?.data;
+      },
+      enabled: !!userId,
+    },
+    {
+      queryKey: ["getListSubjects"],
+      queryFn: async () => {
+        const queryObj = {};
+        queryObj["PagingRequest.CurrentPage"] = 1;
+        queryObj["PagingRequest.PageSize"] = 20;
+
+        const response = await getListSubjects(queryObj);
+        setListAllSubjects(response?.data?.data);
         return response?.data;
       },
     },
@@ -49,22 +86,46 @@ function TutorOrders() {
           onChange={(e) => setSearchParam(e.target.value)}
           value={searchParam || ""}
         />
+      </div>
+      <div className="flex items-center gap-4 pb-5">
         <FilterDropDown
-          listDropdown={[
-            { id: 1, value: "Male", name: "Male" },
-            { id: 2, value: "Female", name: "Female" },
-          ]}
-          showing={isFilterSelected}
-          setShowing={setIsFilterSelected}
-          className="md:max-w-[220px]"
+          listDropdown={listAllSubjects?.items || []}
+          showing={subjectSelected}
+          setShowing={setSubjectSelected}
+          textDefault="Select subject"
         />
+        <FilterDropDown
+          listDropdown={LIST_REQUEST_TYPE_FILTER}
+          showing={typeSelected}
+          setShowing={setTypeSelected}
+          textDefault="Select type"
+        />
+        <FilterDropDown
+          listDropdown={LIST_REQUEST_STATUS_FILTER}
+          showing={statusSelected}
+          setShowing={setStatusSelected}
+          textDefault="Select status"
+        />
+        <DeniedBtn
+          onClick={() => {
+            setPage(1);
+            setLimit(10);
+            setSearchParam("");
+            setStatusSelected(undefined);
+            setTypeSelected(undefined);
+            setSubjectSelected(undefined);
+          }}
+          className="max-w-[150px]"
+        >
+          Remove Filter
+        </DeniedBtn>
       </div>
 
       <div className="bg-white table-style block-border">
         <Table
           pageSizePagination={limit}
           columns={columns}
-          data={listOrderRequest?.todos}
+          data={listOrderRequest?.items}
         />
       </div>
 
@@ -73,7 +134,7 @@ function TutorOrders() {
         setPageSize={setLimit}
         currentPage={page}
         setCurrentPage={setPage}
-        totalItems={listOrderRequest?.total}
+        totalItems={listOrderRequest?.pagination?.totalItem}
       />
     </div>
   );
@@ -87,28 +148,32 @@ const columns = [
     columns: [
       {
         Header: "No",
-        accessor: (data) => <p>{data?.id}</p>,
+        accessor: (data) => <p>{data?.requestId}</p>,
       },
       {
-        Header: "Tutor",
-        accessor: (data) => <p>Tutor</p>,
+        Header: "Class Name",
+        accessor: (data) => <p>{data?.className}</p>,
       },
       {
         Header: "Subject",
-        accessor: (data) => <p>Subject</p>,
+        accessor: (data) => <p>{data?.subjectName}</p>,
+      },
+      {
+        Header: "Parent Name",
+        accessor: (data) => <p>{data?.parentName}</p>,
       },
       {
         Header: "Student Name",
-        accessor: (data) => <p>{data?.todo}</p>,
+        accessor: (data) => <p>{data?.studentName}</p>,
       },
       {
         Header: "Request",
-        accessor: (data) => <p>Request</p>,
+        accessor: (data) => <p>{data?.requestType}</p>,
       },
       {
         Header: "Status",
         accessor: (data) => (
-          <RenderStatus status="approved">Approved</RenderStatus>
+          <RenderStatus status={data?.status}>{data?.status}</RenderStatus>
         ),
       },
       {
@@ -127,9 +192,9 @@ const columns = [
         accessor: (data) => {
           return (
             <div className="flex items-center gap-4">
-              <a href={`/classroom-requests/${data?.id}`}>
+              <Link to={`/classroom-requests/${data?.requestId}`}>
                 <ShowDetail />
-              </a>
+              </Link>
             </div>
           );
         },

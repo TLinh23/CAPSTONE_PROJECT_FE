@@ -61,3 +61,13 @@ export const createClassStudentUrl = `${baseUrl}api/Class/add-class`;
 export const updateClassStudentUrl = `${baseUrl}api/Class/update-class`;
 
 export const scheduleUrl = `${baseUrl}api/Schedule/get-schedule-for-current-user-and-class-id`;
+
+export const requestForTutorUrl = `${baseUrl}api/Request/get-requests-for-tutor`;
+
+export const requestByIdUrl = `${baseUrl}api/Request/get-request-by-id`;
+
+export const addStudentUrl = `${baseUrl}api/Student/add-student`;
+
+export const updateStudentUrl = `${baseUrl}api/Student/update-student`;
+
+export const deleteStudentInParentUrl = `${baseUrl}api/Student/delete-student`;

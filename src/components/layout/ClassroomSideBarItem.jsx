@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import SideBarItem from "./SideBarItem";
 import { TUTOR_HREF } from "src/constants/navbarConstant";
+import { shortenValue } from "src/libs/shortenAddress";
 
 const LIST_CLASSROOM_ITEM = {
   id: 1,
@@ -21,7 +22,7 @@ function ClassroomSideBarItem({ listClassroom }) {
   return (
     <div>
       <div
-        className={`flex items-center justify-between pr-2 py-3 pl-2 cursor-pointer menu-item hover:bg-[#2F8DE415] ${
+        className={`flex items-center justify-between pr-2 py-3 cursor-pointer menu-item hover:bg-[#2F8DE415] ${
           open
             ? "bg-[#2F8DE415] text-primary icon-active"
             : "bg-transparent text-[#4F4F4F]"
@@ -83,12 +84,12 @@ function ClassroomItem({ item }) {
     <div className="flex items-center gap-2 py-1">
       <Link
         to={`/tutor-classrooms/${item?.classId}`}
-        className={`cursor-pointer flex items-center gap-2 py-2 smooth-transform pr-2 bg-transparent text-[#4F4F4F] ml-5 pl-2 hover:bg-[#2F8DE415] border-b border-[#2F8DE475]`}
+        className={`cursor-pointer flex items-center gap-2 py-2 smooth-transform pr-2 bg-transparent text-[#4F4F4F] ml-2 pl-2 hover:bg-[#2F8DE415] border-b border-[#2F8DE475]`}
       >
-        <p className="text-sm">{item?.className}</p>
+        <p className="text-sm">{shortenValue(item?.className, 15)}</p>
       </Link>
       <Link
-        className="cursor-pointer flex items-center gap-2 py-2 smooth-transform pr-2 bg-transparent text-[#4F4F4F] hover:bg-[#2F8DE415] border-b border-[#2F8DE475]"
+        className="text-sm cursor-pointer flex items-center gap-2 py-2 smooth-transform pr-2 bg-transparent text-[#4F4F4F] hover:bg-[#2F8DE415] border-b border-[#2F8DE475]"
         to={`/listAssessmentManager?id=${item?.classId}`}
       >
         Assessments

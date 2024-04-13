@@ -51,13 +51,7 @@ export default function Login() {
       },
       onError: (err) => {
         console.log("Login failed", err?.message);
-        toast.error(
-          err?.response?.data?.message ||
-            err?.response?.message ||
-            err?.response?.data ||
-            err?.message ||
-            "Login failed, try again!"
-        );
+        toast.error("Login failed, try again!");
       },
     }
   );
