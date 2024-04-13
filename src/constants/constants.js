@@ -140,6 +140,11 @@ export const LIST_CLASS_LEVEL_DEFAULT = [
   { id: 12, value: "12", name: "12" },
 ];
 
+export const STUDENT_STATUS = {
+  CREATED: "CREATED",
+  REMOVED: "REMOVED",
+};
+
 export const LIST_STATUS_FILTER = [
   { id: 1, key: "CREATED", value: "Created" },
   { id: 2, key: "REMOVED", value: "Removed" },

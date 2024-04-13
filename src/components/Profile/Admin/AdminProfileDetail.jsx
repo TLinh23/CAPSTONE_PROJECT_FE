@@ -26,8 +26,10 @@ function AdminProfileDetail(props) {
               </div>
             </div>
           </div>
-          <div className="mt-5">Role: Admin</div>
-          <div className="mt-3">Email: vuvanduc@gmail.com</div>
+          <div className="mt-5">
+            Role: {dataProfileDetail?.account?.roleName}
+          </div>
+          <div className="mt-3">Email: {dataProfileDetail?.account?.email}</div>
         </div>
         <div className="flex flex-col gap-4">
           <PrimaryInput

@@ -10,30 +10,6 @@ import { getProfileDetail } from "src/apis/tutor-module";
 import { useAuthContext } from "src/context/AuthContext";
 import AdminProfileDetail from "./Admin/AdminProfileDetail";
 
-const studentTest = {
-  id: 5,
-  roleKey: "student",
-  phone: "0916324234",
-  address: "nghia dia",
-};
-const parentTest = {
-  id: 4,
-  roleKey: "parent",
-  phone: "0916324234",
-  address: "nghia dia",
-};
-const tutorTest = {
-  id: 3,
-  roleKey: "tutor",
-  phone: "0916324234",
-  address: "nghia dia",
-};
-const staffTest = {
-  id: 2,
-  roleKey: "staff",
-  phone: "0916324234",
-  address: "nghia dia",
-};
 function ViewProfileDetail() {
   const { roleKey } = useAuthContext();
   const { id } = useParams();
@@ -58,13 +34,13 @@ function ViewProfileDetail() {
 
   return (
     <div>
-      {dataProfileDetail?.roleKey === ROLE_NAME.PARENT && (
+      {roleKey === ROLE_NAME.PARENT && (
         <ParentProfileDetail dataProfileDetail={dataProfileDetail} />
       )}
-      {dataProfileDetail?.roleKey === ROLE_NAME.TUTOR && (
+      {roleKey === ROLE_NAME.TUTOR && (
         <TutorProfileDetail dataProfileDetail={dataProfileDetail} />
       )}
-      {dataProfileDetail?.roleKey === ROLE_NAME.STAFF && (
+      {roleKey === ROLE_NAME.STAFF && (
         <StaffProfileDetail dataProfileDetail={dataProfileDetail} />
       )}
       {dataProfileDetail?.roleKey === ROLE_NAME.STUDENT && (
