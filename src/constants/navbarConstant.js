@@ -8,7 +8,10 @@ export const TUTOR_HREF = {
 };
 
 export const PARENT_HREF = {
-  STUDENT: "/lalala",
+  REQUEST: "/classroom-requests",
+  CLASSROOM: "/parent-classrooms",
+  ASSESMENTS: "/assessesments",
+  SCHEDULE: "/schedule",
 };
 
 export const STAFF_HREF = {

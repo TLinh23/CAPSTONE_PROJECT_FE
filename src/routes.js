@@ -9,25 +9,21 @@ import ListOrderRequestPage from "./pages/ListOrderRequestPage";
 import Login from "./pages/Login/Login";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 import ChangePassword from "./pages/Changepassword/Changepassword";
-import ClassListParent from "./pages/ClassListForParent/ClassListParent";
 import PageOrderRequestDetail from "./pages/PageOrderRequestDetail";
 import PageCreateOrderRequest from "./pages/PageCreateOrderRequest";
-//loc
 import AccountManager from "./components/Staff/AccountManager/ListAccountManager";
 import ListClassManager from "./components/Staff/ClassManager/ListClassManager";
 import Transaction from "./components/Staff/TransactionManager/Transaction";
 import AddTransaction from "./components/Staff/TransactionManager/AddTransaction";
 import ListStaffManager from "./components/Admin/StaffManager/ListStaffManager";
 import AddStaff from "./components/Admin/StaffManager/AddStaff";
-import ListAssessmentManager from "./components/Tutor/AssessmentManager/ListAssessmentManager";
 import AddAssessment from "./components/Tutor/AssessmentManager/AddAssessment";
-//trang account detail
+
 import AccountDetail from "./pages/PageAccountDetail";
 import ClassDetail from "./pages/PageClassDetail";
 import TransactionDetail from "./pages/PageTransactionDetail";
 import ListAllClass from "./pages/ListAllClass";
 import TutorFee from "./pages/TutorFee";
-import AssessmentDetails from "./pages/PageAssessDetail";
 
 import PageOpenedClassRooms from "./pages/PageOpenedClassRooms";
 import PageSchedule from "./pages/PageSchedule";
@@ -41,6 +37,9 @@ import PageRegisterAsParent from "./pages/RegisterParent/PageRegisterAsParent";
 import PageListTutorClassroom from "./pages/PageListTutorClassroom";
 import PageTutorCreateClassroom from "./pages/PageTutorCreateClassroom";
 import PageEditTutorClassroomDetail from "./pages/PageEditTutorClassroomDetail";
+import PageListParentClassroom from "./pages/PageListParentClassroom";
+import PageAssessDetail from "./pages/PageAssessDetail";
+import PageListAssessment from "./pages/PageListAssessment";
 
 //list your routes here
 export const routes = [
@@ -77,7 +76,12 @@ export const routes = [
   { path: "/forgotpassword", element: <ForgotPassword /> },
   { path: "/changepassword", element: <ChangePassword /> },
   { path: "/register-tutor", element: <PageRegisterAsTutor /> },
-  { path: "/class-list-parent", element: <ClassListParent /> },
+
+  { path: "/parent-classrooms", element: <PageListParentClassroom /> },
+
+  { path: "/assessesments", element: <PageListAssessment /> },
+  { path: "/assessesments/:id", element: <PageAssessDetail /> },
+
   //loc
   { path: "/accountManager", element: <AccountManager /> },
   { path: "/AccountDetail/:id", element: <AccountDetail /> },
@@ -90,8 +94,6 @@ export const routes = [
   { path: "/addStaff", element: <AddStaff /> },
   { path: "/lissAllClass", element: <ListAllClass /> },
   { path: "/tutorFee", element: <TutorFee /> },
-  { path: "/listAssessmentManager", element: <ListAssessmentManager /> },
-  { path: "/assessDetail/:id", element: <AssessmentDetails /> },
   { path: "/addAssess", element: <AddAssessment /> },
 
   { path: "/", element: <NewHomePage /> },

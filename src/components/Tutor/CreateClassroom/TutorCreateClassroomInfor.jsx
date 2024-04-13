@@ -52,7 +52,9 @@ function TutorCreateClassroomInfor(props) {
     <div className="bg-white block-border">
       <SmallTitle className="!font-bold">Classroom Info</SmallTitle>
       <div className="max-w-[1200px] grid grid-cols-37 gap-6 mt-8">
-        <div>Classroom name</div>
+        <div>
+          Classroom name <span className="text-dangerous">*</span>
+        </div>
         <PrimaryInput
           placeholder="Enter classroom name"
           onChange={(e) => {
@@ -63,14 +65,18 @@ function TutorCreateClassroomInfor(props) {
           }}
           value={classRoomDetail?.className || ""}
         />
-        <div>Subject</div>
+        <div>
+          Subject <span className="text-dangerous">*</span>
+        </div>
         <FilterDropDown
           textDefault={classRoomDetail?.subjectName || "Select subject"}
           listDropdown={listAllSubject?.items}
           showing={subjectSelected}
           setShowing={setSubjectSelected}
         />
-        <div>Level</div>
+        <div>
+          Level <span className="text-dangerous">*</span>
+        </div>
         <FilterDropDown
           textDefault={classRoomDetail?.classLevel || "Select class level"}
           listDropdown={STUDENT_LEVEL}

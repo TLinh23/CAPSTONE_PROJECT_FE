@@ -1,6 +1,7 @@
 import {
   addStudentIntoClassUrl,
   createClassStudentUrl,
+  deleteClassroomForTutorUrl,
   deleteStudentUrl,
   getClassDetailUrl,
   getClassUrl,
@@ -90,5 +91,11 @@ export const getListRequestForTutor = (paramsObj) => {
 export const getRequestDetailForTutor = (id) => {
   return requestAPI({
     url: `${requestByIdUrl}/${id}`,
+  });
+};
+
+export const deleteClassroomByTutor = (id) => {
+  return putAPI({
+    url: `${deleteClassroomForTutorUrl}/${id}?classId=${id}`,
   });
 };

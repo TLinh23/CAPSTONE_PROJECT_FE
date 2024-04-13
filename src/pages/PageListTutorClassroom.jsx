@@ -1,18 +1,22 @@
 import { format } from "date-fns";
 import React, { useState } from "react";
-import { useQueries } from "react-query";
+import { useMutation, useQueries, useQueryClient } from "react-query";
 import { Link } from "react-router-dom";
-import { getClassByTutor } from "src/apis/class-module";
+import { toast } from "react-toastify";
+import { deleteClassroomByTutor, getClassByTutor } from "src/apis/class-module";
 import DeniedBtn from "src/components/common/DeniedBtn";
 import FilterDropDown from "src/components/common/FilterDropDown";
 import Pagination from "src/components/common/Pagination";
+import PopupTemplate from "src/components/common/PopupTemplate";
 import PrimaryBtn from "src/components/common/PrimaryBtn";
 import RenderStatus from "src/components/common/RenderStatus";
 import SearchInput from "src/components/common/SearchInput";
+import SecondaryBtn from "src/components/common/SecondaryBtn";
 import ShowDetail from "src/components/common/ShowDetail";
 import Table from "src/components/common/Table";
 import Title from "src/components/common/Title";
 import EditIcon from "src/components/icons/EditIcon";
+import GarbageIcon from "src/components/icons/GarbageIcon";
 import Layout from "src/components/layout/Layout";
 import { LIST_CLASS_FILTER, ROLE_NAME } from "src/constants/constants";
 import { useAuthContext } from "src/context/AuthContext";
@@ -148,19 +152,83 @@ const columns = [
       },
       {
         Header: " ",
-        accessor: (data) => {
-          return (
-            <div className="flex items-center gap-4">
-              <Link to={`/tutor-classrooms/${data?.classId}/edit`}>
-                <EditIcon />
-              </Link>
-              <Link to={`/tutor-classrooms/${data?.classId}`}>
-                <ShowDetail />
-              </Link>
-            </div>
-          );
-        },
+        accessor: (data) => <RenderActionClassroom data={data} />,
       },
     ],
   },
 ];
+
+const RenderActionClassroom = ({ data }) => {
+  const [isShowPopupDeleteClassroom, setIsShowPopupDeleteClassroom] =
+    useState(false);
+  const queryClient = useQueryClient();
+  const deleteStudentMutation = useMutation(
+    async (newData) => {
+      console.log("newData: ", newData);
+      return await deleteClassroomByTutor(newData);
+    },
+    {
+      onSuccess: (data) => {
+        console.log("Data: ", data);
+        if (data?.status >= 200 && data?.status < 300) {
+          toast.success("Delete classroom successfully");
+          queryClient.invalidateQueries("getListClass");
+        } else {
+          toast.error(
+            data?.message ||
+              data?.response?.data?.message ||
+              data?.response?.data ||
+              "Oops! Something went wrong..."
+          );
+        }
+      },
+      onError: (err) => {
+        toast.error(
+          // @ts-ignore
+          err?.response?.data?.message || err?.message || "Delete error"
+        );
+      },
+    }
+  );
+
+  const handleDeleteClassroom = () => {
+    // @ts-ignore
+    deleteStudentMutation.mutate(data?.classId);
+  };
+
+  return (
+    <div className="flex items-center gap-4">
+      <Link to={`/tutor-classrooms/${data?.classId}/edit`}>
+        <EditIcon />
+      </Link>
+      <Link to={`/tutor-classrooms/${data?.classId}`}>
+        <ShowDetail />
+      </Link>
+      <GarbageIcon
+        className="cursor-pointer"
+        onClick={() => {
+          setIsShowPopupDeleteClassroom(true);
+        }}
+      />
+
+      <PopupTemplate
+        setShowDialog={setIsShowPopupDeleteClassroom}
+        showDialog={isShowPopupDeleteClassroom}
+        title="Delete classroom"
+        classNameWrapper="md:!min-w-[486px]"
+      >
+        <div>Do you want to suspend this classroom {data?.className}</div>
+        <div className="flex items-center gap-5 mt-5">
+          <SecondaryBtn
+            onClick={() => {
+              setIsShowPopupDeleteClassroom(false);
+            }}
+          >
+            Cancel
+          </SecondaryBtn>
+          <DeniedBtn onClick={handleDeleteClassroom}>Delete</DeniedBtn>
+        </div>
+      </PopupTemplate>
+    </div>
+  );
+};
