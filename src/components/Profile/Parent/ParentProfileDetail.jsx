@@ -12,6 +12,7 @@ import { ROLE_NAME } from "src/constants/constants";
 import PrimarySmallTitle from "src/components/common/PrimarySmallTitle";
 import ProfileHeader from "../ProfileHeader";
 import DeniedBtn from "src/components/common/DeniedBtn";
+import DeleteStudentPopup from "./DeleteStudentPopup";
 
 function ParentProfileDetail(props) {
   const { dataProfileDetail } = props;
@@ -160,9 +161,16 @@ function ParentProfileDetail(props) {
 export default ParentProfileDetail;
 
 function StudentItem({ item, roleKey, userId, dataProfileDetail }) {
+  const [studentProfileDetail, setStudentProfileDetail] = useState(item);
   const [isShowPopupEditStudent, setIsShowPopupEditStudent] = useState(false);
+  const [isShowPopupDeleteStudent, setIsShowPopupDeleteStudent] =
+    useState(false);
+
   const handleClickEdit = () => {
     setIsShowPopupEditStudent(true);
+  };
+  const handleClickDelete = () => {
+    setIsShowPopupDeleteStudent(true);
   };
 
   return (
@@ -185,7 +193,7 @@ function StudentItem({ item, roleKey, userId, dataProfileDetail }) {
             <DeniedBtn
               className="!w-fit !py-1 mt-1"
               onClick={() => {
-                handleClickEdit();
+                handleClickDelete();
               }}
             >
               Delete
@@ -197,7 +205,19 @@ function StudentItem({ item, roleKey, userId, dataProfileDetail }) {
         showDialog={isShowPopupEditStudent}
         title="Edit student"
       >
-        <EditStudentPopup />
+        <EditStudentPopup
+          parentId={userId}
+          item={item}
+          studentDetail={studentProfileDetail}
+          setStudentDetail={setStudentProfileDetail}
+        />
+      </PopupTemplate>
+      <PopupTemplate
+        setShowDialog={setIsShowPopupDeleteStudent}
+        showDialog={isShowPopupDeleteStudent}
+        title="Delete student"
+      >
+        <DeleteStudentPopup parentId={userId} item={item} />
       </PopupTemplate>
     </div>
   );

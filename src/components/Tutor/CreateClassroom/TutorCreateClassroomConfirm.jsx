@@ -53,11 +53,24 @@ function TutorCreateClassroomConfirm(props) {
   );
 
   const handleCreateClassroom = () => {
+    if (!classRoomDetail?.className) {
+      toast.error("Please fill classroom name");
+      return;
+    }
+    if (!classRoomDetail?.subjectId) {
+      toast.error("Please fill classroom subject");
+      return;
+    }
+    if (!classRoomDetail?.classLevel) {
+      toast.error("Please fill classroom level");
+      return;
+    }
     const queryObj = {
       ...classRoomDetail,
       tutorId: userId,
       status: "ACTIVE",
       addScheduleDto: listLevels,
+      startDate: new Date(),
     };
     console.log("Here is data send to BE", queryObj);
     toast.loading("Sending request...", {

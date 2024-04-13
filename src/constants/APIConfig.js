@@ -71,3 +71,5 @@ export const addStudentUrl = `${baseUrl}api/Student/add-student`;
 export const updateStudentUrl = `${baseUrl}api/Student/update-student`;
 
 export const deleteStudentInParentUrl = `${baseUrl}api/Student/delete-student`;
+
+export const deleteClassroomForTutorUrl = `${baseUrl}api/Class/delete-class`;

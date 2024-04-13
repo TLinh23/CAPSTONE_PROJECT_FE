@@ -12,10 +12,12 @@ import {
 import useUploadImage from "src/hooks/useUploadImage";
 
 function EditStudentPopup(props) {
-  const [studentDetail, setStudentDetail] = useState(undefined);
+  const { parentId, item, studentDetail, setStudentDetail } = props;
   const [classLevelSelected, setClassLevelSelected] = useState(undefined);
   const { handleUploadImage, imageUpload } = useUploadImage();
   const [gender, setGender] = useState(undefined);
+
+  console.log("studentDetail: ", studentDetail);
 
   return (
     <div>
@@ -38,7 +40,7 @@ function EditStudentPopup(props) {
               listDropdown={LIST_GENDER_VALUE}
               showing={gender}
               setShowing={setGender}
-              textDefault="Select gender"
+              textDefault={studentDetail?.gender || "Select gender"}
             />
             <div>
               <PrimarySmallTitle className="mb-2">
@@ -47,8 +49,8 @@ function EditStudentPopup(props) {
               <input
                 max={new Date().toISOString().slice(0, 10)}
                 value={
-                  studentDetail?.birthDate
-                    ? format(new Date(studentDetail?.birthDate), "yyyy-MM-dd")
+                  studentDetail?.dob
+                    ? format(new Date(studentDetail?.dob), "yyyy-MM-dd")
                     : ""
                 }
                 onChange={(e) => {
@@ -57,12 +59,12 @@ function EditStudentPopup(props) {
                   if (selectedDate > currentDate) {
                     setStudentDetail({
                       ...studentDetail,
-                      birthDate: currentDate,
+                      dob: currentDate,
                     });
                   } else {
                     setStudentDetail({
                       ...studentDetail,
-                      birthDate: selectedDate,
+                      dob: selectedDate,
                     });
                   }
                 }}
@@ -76,7 +78,7 @@ function EditStudentPopup(props) {
             listDropdown={LIST_CLASS_LEVEL_DEFAULT}
             showing={classLevelSelected}
             setShowing={setClassLevelSelected}
-            textDefault="Select student level"
+            textDefault={studentDetail?.studentLevel || "Select student level"}
           />
           <PrimaryInput
             title="Student Phone: "
