@@ -87,13 +87,19 @@ function FilterDropDown({
           }`}
         >
           <div className="flex items-center gap-1">
-            <p className="text-[#000000]">
-              {showing?.name ||
-                showing?.value ||
-                showing?.subjectName ||
-                showing?.fullName ||
-                textDefault}
-            </p>
+            {type === "className" ? (
+              <p className="text-[#000000]">
+                {showing?.className || textDefault}
+              </p>
+            ) : (
+              <p className="text-[#000000]">
+                {showing?.name ||
+                  showing?.value ||
+                  showing?.subjectName ||
+                  showing?.fullName ||
+                  textDefault}
+              </p>
+            )}
           </div>
           <ArrowDownIcon color="#373737" />
         </div>
@@ -115,6 +121,15 @@ function FilterDropDown({
           id="list-dropdown"
           className={`smooth-transform z-50 flex w-full flex-col gap-1 rounded-b-xl  bg-[#fff] py-3  max-h-[250px] overflow-y-auto ${classNameDropdown}`}
         >
+          {type === "className" && (
+            <DropDownItem
+              data={{ className: "All Class" }}
+              setShowing={setShowing}
+              showing={showing}
+              toggleOpen={toggleOpen}
+              type={type}
+            />
+          )}
           {listDropdown?.map((i, index) => (
             <DropDownItem
               key={index}
@@ -122,6 +137,7 @@ function FilterDropDown({
               setShowing={setShowing}
               showing={showing}
               toggleOpen={toggleOpen}
+              type={type}
             />
           ))}
         </div>
@@ -132,7 +148,7 @@ function FilterDropDown({
 
 export default FilterDropDown;
 
-function DropDownItem({ data, showing, setShowing, toggleOpen }) {
+function DropDownItem({ data, showing, setShowing, toggleOpen, type }) {
   const isSelected = showing === data;
 
   return (
@@ -145,7 +161,14 @@ function DropDownItem({ data, showing, setShowing, toggleOpen }) {
         isSelected ? "bg-[#2F8DE4] text-black" : ""
       }`}
     >
-      <p>{data?.name || data?.value || data?.subjectName || data?.fullName}</p>
+      {type === "className" ? (
+        <p>{data?.className}</p>
+      ) : (
+        <p>
+          {data?.name || data?.value || data?.subjectName || data?.fullName}
+        </p>
+      )}
+
       {isSelected && <span className="ml-1">✓</span>}
     </div>
   );

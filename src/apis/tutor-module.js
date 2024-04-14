@@ -3,6 +3,7 @@ import {
   countryUrl,
   deleteSubjectTutorUrl,
   employeeDummyUrl,
+  exploreTutorUrl,
   profileUrl,
   todoListUrl,
   todoWithPagination,
@@ -92,5 +93,12 @@ export const deleteSubjectTutor = (tutorId, subjectId, queryObj) => {
   return deleteAPI({
     url: `${deleteSubjectTutorUrl}/${tutorId}/${subjectId}?level=${queryObj?.level}`,
     data: queryObj,
+  });
+};
+
+export const getExploreTutors = (paramsObj) => {
+  const queryString = convertObjectToQueryString(paramsObj);
+  return requestAPI({
+    url: `${exploreTutorUrl}${queryString}`,
   });
 };

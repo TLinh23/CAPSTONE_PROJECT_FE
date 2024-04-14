@@ -3,6 +3,7 @@ import {
   createClassStudentUrl,
   deleteClassroomForTutorUrl,
   deleteStudentUrl,
+  filteredScheduleUrl,
   getClassDetailUrl,
   getClassUrl,
   getParentClassUrl,
@@ -113,5 +114,12 @@ export const getListRequestForParent = (paramsObj) => {
   const queryString = convertObjectToQueryString(paramsObj);
   return requestAPI({
     url: `${requestForParentUrl}${queryString}`,
+  });
+};
+
+export const getFiteredSchedule = (paramsObj) => {
+  const queryString = convertObjectToQueryString(paramsObj);
+  return requestAPI({
+    url: `${filteredScheduleUrl}${queryString}`,
   });
 };

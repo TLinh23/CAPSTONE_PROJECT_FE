@@ -3,9 +3,13 @@ import React from "react";
 import PrimaryBtn from "../common/PrimaryBtn";
 import { Link } from "react-router-dom";
 import { CLASS_REQUEST_TYPE } from "src/constants/enumConstant";
+import SecondaryBtn from "../common/SecondaryBtn";
+import { useAuthContext } from "src/context/AuthContext";
+import { ROLE_NAME } from "src/constants/constants";
 
 function ClassroomExploreItem(props) {
   const { item, isFeatured = false } = props;
+  const { roleKey } = useAuthContext();
   return (
     <div className="border border-gray-300 rounded-md">
       {isFeatured && (
@@ -32,9 +36,7 @@ function ClassroomExploreItem(props) {
           />
           <div>
             <p className="text-base font-bold">{item?.tutorName}</p>
-            <p className="text-sm font-light">
-              {item?.tutorEducationLevel || "Dai Hoc"}
-            </p>
+            <p className="text-sm font-light">{item?.school || "Dai Hoc"}</p>
           </div>
         </div>
 
@@ -46,12 +48,17 @@ function ClassroomExploreItem(props) {
           <div className="text-left">Price:</div>
           <div className="font-semibold text-right">{item?.price || "---"}</div>
         </div>
-        <div className="flex justify-end mt-2">
-          <Link
-            to={`/classroom-requests/create?tutorId=${item?.tutorId}&classId=${item?.classId}&requestType=${CLASS_REQUEST_TYPE.JOIN}`}
-          >
-            <PrimaryBtn className="!w-[100px]">Join</PrimaryBtn>
+        <div className="flex justify-between gap-3 mt-2">
+          <Link to={`/classrooms/${item?.classId}`}>
+            <SecondaryBtn className="!w-[100px]">Detail</SecondaryBtn>
           </Link>
+          {roleKey === ROLE_NAME.PARENT && (
+            <Link
+              to={`/classroom-requests/create?tutorId=${item?.tutorId}&classId=${item?.classId}&requestType=${CLASS_REQUEST_TYPE.JOIN}`}
+            >
+              <PrimaryBtn className="!w-[100px]">Join</PrimaryBtn>
+            </Link>
+          )}
         </div>
       </div>
     </div>

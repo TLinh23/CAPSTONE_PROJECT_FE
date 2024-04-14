@@ -23,11 +23,15 @@
 
 .schedule-border {
   text-align: center;
-  border-top-width: 1px;
-  border-left-width: 1px;
-  border-color: #7f7f7f;
   padding: 6px 4px;
 }
+
+.schedule-border-item {
+  text-align: center;
+  padding: 6px 4px;
+  border-bottom: 1px solid gray;
+}
+
 .border-end-line {
   border-right-width: 1px;
   border-color: #7f7f7f;
@@ -39,4 +43,11 @@
 
 .height-screen-login {
   height: calc(100vh - 80px);
+}
+
+.truncate-1-line {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }

@@ -37,6 +37,7 @@ import PageListParentClassroom from "./pages/PageListParentClassroom";
 import PageAssessDetail from "./pages/PageAssessDetail";
 import PageListAssessment from "./pages/PageListAssessment";
 import PageIntroduceAllClassrooms from "./pages/PageIntroduceAllClassrooms";
+import PageIntroduceClassroomDetail from "./pages/PageIntroduceClassroomDetail";
 
 //list your routes here
 export const routes = [
@@ -68,6 +69,11 @@ export const routes = [
     path: "/classrooms",
     element: <PageIntroduceAllClassrooms />,
   },
+  {
+    path: "/classrooms/:id",
+    element: <PageIntroduceClassroomDetail />,
+  },
+
   { path: "/register-parent", element: <PageRegisterAsParent /> },
   { path: "/tutor-classrooms", element: <PageListTutorClassroom /> },
   { path: "/tutor-create-classroom", element: <PageTutorCreateClassroom /> },

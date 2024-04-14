@@ -1,59 +1,64 @@
 import React, { useState } from "react";
 import Title from "../common/Title";
-import SearchInput from "../common/SearchInput";
 import FilterDropDown from "../common/FilterDropDown";
+import { VALUE_DAYS_OF_WEEK } from "src/constants/enumConstant";
+import { Link } from "react-router-dom";
+import { slideEndItem } from "src/libs";
 
-function TutorSchedule({ scheduleDetail }) {
-  const [searchParam, setSearchParam] = useState("");
-  console.log("scheduleDetail: ", scheduleDetail);
+function TutorSchedule(props) {
+  const {
+    scheduleDetail,
+    listClassroom,
+    classRoomSelected,
+    setClassRoomSelected,
+  } = props;
+
   return (
     <div className="bg-[#ffffff] block-border">
       <Title>My Schedule</Title>
 
-      <div className="flex flex-col justify-between gap-5 md:flex-row md:items-center">
-        <SearchInput
-          placeholder="Search by key"
-          onChange={(e) => setSearchParam(e.target.value)}
-          className="w-full my-5 min-w-[170px]"
-          value={searchParam || ""}
-        />
+      <div className="flex justify-end gap-5">
         <FilterDropDown
-          listDropdown={[]}
-          showing={undefined}
-          setShowing={undefined}
+          listDropdown={listClassroom?.items}
+          showing={classRoomSelected}
+          setShowing={setClassRoomSelected}
           className="max-w-[240px]"
+          textDefault="Select classroom"
+          type="className"
         />
       </div>
 
-      <div className="grid grid-cols-7 mt-5">
+      <div className="grid grid-cols-7 gap-2 mt-5 border">
         <div className="schedule-border">Mon</div>
         <div className="schedule-border">Tue</div>
-        <div className="schedule-border">Wen</div>
+        <div className="schedule-border">Wed</div>
         <div className="schedule-border">Thu</div>
         <div className="schedule-border">Fri</div>
         <div className="schedule-border">Sat</div>
-        <div className="schedule-border border-end-line">Sun</div>
+        <div className="schedule-border">Sun</div>
 
-        <div className="schedule-border">
-          <span className="underline">ClassName</span>
-          <br /> 12h-20h
-        </div>
-        <div className="schedule-border">Toan 3 - 21h - 23h</div>
-        <div className="schedule-border">---</div>
-        <div className="schedule-border">---</div>
-        <div className="schedule-border">---</div>
-        <div className="schedule-border">---</div>
-        <div className="schedule-border border-end-line">---</div>
-
-        <div className="schedule-border border-end-row">---</div>
-        <div className="schedule-border border-end-row">---</div>
-        <div className="schedule-border border-end-row">---</div>
-        <div className="schedule-border border-end-row">---</div>
-        <div className="schedule-border border-end-row">---</div>
-        <div className="schedule-border border-end-row">---</div>
-        <div className="schedule-border border-end-row border-end-line">
-          ---
-        </div>
+        {scheduleDetail &&
+          VALUE_DAYS_OF_WEEK.map((day) => (
+            <div key={day}>
+              {scheduleDetail
+                ?.filter((item) => item?.dayOfWeek === day)
+                ?.map((item) => (
+                  <div className="schedule-border-item" key={item?.id}>
+                    <Link to={`/classrooms/${item?.classId}`}>
+                      <span className="underline truncate-1-line">
+                        {item?.className}
+                      </span>
+                    </Link>
+                    <div className="mt-2">
+                      {`${slideEndItem(item?.sessionStart, 3)} - ${slideEndItem(
+                        item?.sessionEnd,
+                        3
+                      )}`}
+                    </div>
+                  </div>
+                ))}
+            </div>
+          ))}
       </div>
     </div>
   );

@@ -89,3 +89,7 @@ export const createOrderRequestUrl = `${baseUrl}api/Request/add-request`;
 export const addSubjectTutorUrl = `${baseUrl}api/SubjectTutor/add-subject-tutor`;
 
 export const deleteSubjectTutorUrl = `${baseUrl}api/SubjectTutor/delete-subject-tutor`;
+
+export const filteredScheduleUrl = `${baseUrl}api/Schedule/get-filter-schedule`;
+
+export const exploreTutorUrl = `${baseUrl}api/Tutor/get-tutors`;

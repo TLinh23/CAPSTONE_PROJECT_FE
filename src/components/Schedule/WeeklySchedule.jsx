@@ -4,16 +4,21 @@ import { ROLE_NAME } from "src/constants/constants";
 import TutorSchedule from "./TutorSchedule";
 import ParentSchedule from "./ParentSchedule";
 import { useQueries } from "react-query";
-import { getClassByTutor, getScheduleByClass } from "src/apis/class-module";
+import {
+  getClassByTutor,
+  getFiteredSchedule,
+  getScheduleByClass,
+} from "src/apis/class-module";
 
 function WeeklySchedule() {
   const { roleKey, userId } = useAuthContext();
   const [listClassroom, setListClassroom] = useState(undefined);
+  const [classRoomSelected, setClassRoomSelected] = useState(undefined);
   const [scheduleDetail, setScheduleDetail] = useState(undefined);
 
   useQueries([
     {
-      queryKey: ["getListClass"],
+      queryKey: ["getListClassroom"],
       queryFn: async () => {
         if (roleKey === ROLE_NAME.TUTOR) {
           const queryObj = {};
@@ -29,11 +34,21 @@ function WeeklySchedule() {
       enabled: !!userId,
     },
     {
-      queryKey: ["getSchedule"],
+      queryKey: ["getSchedule", classRoomSelected],
       queryFn: async () => {
-        const queryObj = {};
+        let queryObj = {
+          personId: userId,
+        };
+        if (classRoomSelected && classRoomSelected?.className !== "All Class") {
+          queryObj["classId"] = classRoomSelected?.classId;
+        }
+        if (classRoomSelected?.className === "All Class") {
+          queryObj = {
+            personId: userId,
+          };
+        }
 
-        const response = await getScheduleByClass(queryObj);
+        const response = await getFiteredSchedule(queryObj);
         setScheduleDetail(response?.data?.data);
         return response?.data;
       },
@@ -41,11 +56,15 @@ function WeeklySchedule() {
     },
   ]);
 
-  // getScheduleByClass
   return (
     <div>
       {roleKey === ROLE_NAME.TUTOR && (
-        <TutorSchedule scheduleDetail={scheduleDetail} />
+        <TutorSchedule
+          scheduleDetail={scheduleDetail}
+          listClassroom={listClassroom}
+          classRoomSelected={classRoomSelected}
+          setClassRoomSelected={setClassRoomSelected}
+        />
       )}
       {roleKey === ROLE_NAME.PARENT && <ParentSchedule />}
     </div>
