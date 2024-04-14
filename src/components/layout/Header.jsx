@@ -15,7 +15,7 @@ function Header() {
   const { checkRoleKey, roleKey, userId } = useAuthContext();
   return (
     <div className="sticky top-0 left-0 z-50 flex items-center justify-between w-full px-5 bg-white border-b border-gray-200 rigt-0">
-      <div className="flex items-center gap-5">
+      <div className="flex items-center w-full gap-5">
         {roleKey && (
           <div
             className="p-1 border rounded-md cursor-pointer border-gray hover:bg-[#7f7f7f30] smooth-transform"
@@ -32,6 +32,18 @@ function Header() {
             alt="logo"
             className="h-[30px] object-cover"
           />
+        </NavLink>
+        <NavLink
+          className="ml-7 p-2 hover:border-b hover:bg-[#2f8DE415] smooth-transform"
+          to="/classrooms"
+        >
+          Explore Classrooms
+        </NavLink>
+        <NavLink
+          className="p-2 hover:border-b hover:bg-[#2f8DE415] smooth-transform"
+          to="/tutors"
+        >
+          Explore Tutors
         </NavLink>
       </div>
       {roleKey ? (
