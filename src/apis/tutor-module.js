@@ -1,5 +1,7 @@
 import {
+  addSubjectTutorUrl,
   countryUrl,
+  deleteSubjectTutorUrl,
   employeeDummyUrl,
   profileUrl,
   todoListUrl,
@@ -7,7 +9,9 @@ import {
 } from "../constants/APIConfig";
 import {
   convertObjectToQueryString,
+  deleteAPI,
   patchAPI,
+  postAPI,
   putAPI,
   requestAPI,
 } from "../libs/api";
@@ -68,5 +72,24 @@ export const getListTodoWithObj = (paramsObj) => {
 export const getProfileDetail = () => {
   return requestAPI({
     url: `${profileUrl}`,
+  });
+};
+
+export const getProfileByIdDetail = (id) => {
+  return requestAPI({
+    url: `${profileUrl}/${id}`,
+  });
+};
+
+export const addSubjectTutor = (newData, id) => {
+  return postAPI({
+    url: `${addSubjectTutorUrl}`,
+    data: newData,
+  });
+};
+
+export const deleteSubjectTutor = (tutorId, subjectId) => {
+  return deleteAPI({
+    url: `${deleteSubjectTutorUrl}/${tutorId}/${subjectId}?tutorId=${tutorId}?subjectId=${subjectId}`,
   });
 };

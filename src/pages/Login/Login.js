@@ -38,7 +38,7 @@ export default function Login() {
         );
         localStorage.setItem(
           "roleKey",
-          data?.data?.data?.roleName?.toString().toLowerCase()
+          data?.data?.data?.roleName?.toString().toUpperCase()
         );
         localStorage.setItem("userId", data?.data?.data?.userId);
         checkRoleKey();

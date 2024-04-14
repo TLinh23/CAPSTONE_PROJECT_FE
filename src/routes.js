@@ -12,15 +12,11 @@ import ChangePassword from "./pages/Changepassword/Changepassword";
 import PageOrderRequestDetail from "./pages/PageOrderRequestDetail";
 import PageCreateOrderRequest from "./pages/PageCreateOrderRequest";
 import AccountManager from "./components/Staff/AccountManager/ListAccountManager";
-import ListClassManager from "./components/Staff/ClassManager/ListClassManager";
 import Transaction from "./components/Staff/TransactionManager/Transaction";
 import AddTransaction from "./components/Staff/TransactionManager/AddTransaction";
-import ListStaffManager from "./components/Admin/StaffManager/ListStaffManager";
-import AddStaff from "./components/Admin/StaffManager/AddStaff";
 import AddAssessment from "./components/Tutor/AssessmentManager/AddAssessment";
 
 import AccountDetail from "./pages/PageAccountDetail";
-import ClassDetail from "./pages/PageClassDetail";
 import TransactionDetail from "./pages/PageTransactionDetail";
 import ListAllClass from "./pages/ListAllClass";
 import TutorFee from "./pages/TutorFee";
@@ -89,13 +85,9 @@ export const routes = [
 
   { path: "/accountManager", element: <AccountManager /> },
   { path: "/AccountDetail/:id", element: <AccountDetail /> },
-  { path: "/listClassManager", element: <ListClassManager /> },
-  { path: "/ClassDetailManager/:id", element: <ClassDetail /> },
   { path: "/listTransactionManager", element: <Transaction /> },
   { path: "/transactionDetail/:id", element: <TransactionDetail /> },
   { path: "/addTransaction", element: <AddTransaction /> },
-  { path: "/listStaffManager", element: <ListStaffManager /> },
-  { path: "/addStaff", element: <AddStaff /> },
   { path: "/lissAllClass", element: <ListAllClass /> },
   { path: "/tutorFee", element: <TutorFee /> },
   { path: "/addAssess", element: <AddAssessment /> },

@@ -1,22 +1,20 @@
 import { format } from "date-fns";
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import FilterDropDown from "src/components/common/FilterDropDown";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import PopupTemplate from "src/components/common/PopupTemplate";
 import PrimaryBtn from "src/components/common/PrimaryBtn";
 import PrimaryInput from "src/components/common/PrimaryInput";
 import SmallTitle from "src/components/common/SmallTitle";
-import Title from "src/components/common/Title";
 import { useAuthContext } from "src/context/AuthContext";
 import { ROLE_NAME } from "src/constants/constants";
 import AddSubjectPopup from "./AddSubjectPopup";
-import EditSubjectPopup from "./EditSubjectPopup";
 import PrimarySmallTitle from "src/components/common/PrimarySmallTitle";
 import ProfileHeader from "../ProfileHeader";
 import DeniedBtn from "src/components/common/DeniedBtn";
 import DeleteSubjectPopup from "./DeleteSubjectPopup";
 
 function TutorProfileDetail(props) {
+  const { id } = useParams();
   const { dataProfileDetail } = props;
   const { userId, roleKey } = useAuthContext();
   const [isShowPopupAddStudent, setIsShowPopupAddStudent] = useState(false);
@@ -233,14 +231,12 @@ function TutorProfileDetail(props) {
         )}
       {roleKey === ROLE_NAME.PARENT && (
         <div className="flex justify-center mt-8">
-          <PrimaryBtn
+          <Link
+            to={`/classroom-requests/create?requestType=OPEN&tutorId=${id}`}
             className="md:max-w-[222px]"
-            onClick={() => {
-              navigate(`/classroom-requests/create?type=create`);
-            }}
           >
-            Send Request
-          </PrimaryBtn>
+            <PrimaryBtn>Send Request</PrimaryBtn>
+          </Link>
         </div>
       )}
       <PopupTemplate
@@ -279,34 +275,16 @@ function SubjectItem({ item, roleKey, userId, dataProfileDetail }) {
         </div>
         {roleKey === ROLE_NAME.TUTOR &&
           String(userId) === String(dataProfileDetail?.account?.personId) && (
-            <div>
-              <PrimaryBtn
-                className="!w-fit !py-1"
-                onClick={() => {
-                  handleClickEdit();
-                }}
-              >
-                Edit
-              </PrimaryBtn>
-              <DeniedBtn
-                className="!w-fit !py-1 mt-1"
-                onClick={() => {
-                  handleClickDelete();
-                }}
-              >
-                Delete
-              </DeniedBtn>
-            </div>
+            <DeniedBtn
+              className="!w-fit !py-1"
+              onClick={() => {
+                handleClickDelete();
+              }}
+            >
+              Delete
+            </DeniedBtn>
           )}
       </div>
-      <PopupTemplate
-        setShowDialog={setIsShowPopupEditStudent}
-        showDialog={isShowPopupEditStudent}
-        title="Edit subject"
-        classNameWrapper="md:!min-w-[486px]"
-      >
-        <EditSubjectPopup />
-      </PopupTemplate>
       <PopupTemplate
         setShowDialog={setIsShowPopupDeleteStudent}
         showDialog={isShowPopupDeleteStudent}
