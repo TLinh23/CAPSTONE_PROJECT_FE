@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useQueries } from "react-query";
+import { useMutation, useQueries, useQueryClient } from "react-query";
 import { getListTodoWithObj } from "src/apis/tutor-module";
 import FilterDropDown from "src/components/common/FilterDropDown";
 import Pagination from "src/components/common/Pagination";
@@ -19,14 +19,16 @@ import {
   LIST_REQUEST_TYPE_FILTER,
 } from "src/constants/constants";
 import { getListSubjects } from "src/apis/subject-module";
+import PopupTemplate from "src/components/common/PopupTemplate";
+import SecondaryBtn from "src/components/common/SecondaryBtn";
+import { toast } from "react-toastify";
+import { declineRequestForTutor } from "src/apis/order-module";
 
 function TutorOrders() {
   const [listOrderRequest, setListOrderRequest] = useState(undefined);
-  const [searchParam, setSearchParam] = useState("");
-  const debouncedSearchValue = useDebounce(searchParam, 500);
   const [subjectSelected, setSubjectSelected] = useState(undefined);
   const [statusSelected, setStatusSelected] = useState(undefined);
-  const [typeSelected, setTypeSelected] = useState();
+  const [typeSelected, setTypeSelected] = useState(undefined);
   const [listAllSubjects, setListAllSubjects] = useState(undefined);
 
   const [page, setPage] = useState(1);
@@ -39,9 +41,10 @@ function TutorOrders() {
         "getListRequestForTutor",
         page,
         limit,
-        debouncedSearchValue,
         userId,
         subjectSelected,
+        statusSelected,
+        typeSelected,
       ],
       queryFn: async () => {
         const queryObj = {
@@ -50,11 +53,14 @@ function TutorOrders() {
         queryObj["PagingRequest.CurrentPage"] = page;
         queryObj["PagingRequest.PageSize"] = limit;
 
-        if (debouncedSearchValue) {
-          queryObj["search"] = debouncedSearchValue;
-        }
         if (subjectSelected) {
           queryObj["SubjectId"] = subjectSelected?.subjectId;
+        }
+        if (statusSelected) {
+          queryObj["Status"] = statusSelected?.key;
+        }
+        if (typeSelected) {
+          queryObj["RequestType"] = typeSelected?.key;
         }
 
         const response = await getListRequestForTutor(queryObj);
@@ -80,14 +86,7 @@ function TutorOrders() {
   return (
     <div>
       <Title>Manage Classroom Request</Title>
-      <div className="flex flex-col gap-4 py-5 md:items-center md:flex-row md:justify-end">
-        <SearchInput
-          placeholder="Search by name"
-          onChange={(e) => setSearchParam(e.target.value)}
-          value={searchParam || ""}
-        />
-      </div>
-      <div className="flex items-center gap-4 pb-5">
+      <div className="flex items-center gap-4 py-5">
         <FilterDropDown
           listDropdown={listAllSubjects?.items || []}
           showing={subjectSelected}
@@ -110,7 +109,6 @@ function TutorOrders() {
           onClick={() => {
             setPage(1);
             setLimit(10);
-            setSearchParam("");
             setStatusSelected(undefined);
             setTypeSelected(undefined);
             setSubjectSelected(undefined);
@@ -178,14 +176,7 @@ const columns = [
       },
       {
         Header: "Action",
-        accessor: (data) => {
-          return (
-            <div className="flex items-center gap-4">
-              <PrimaryBtn>Accept</PrimaryBtn>
-              <DeniedBtn>Decline</DeniedBtn>
-            </div>
-          );
-        },
+        accessor: (data) => <RenderRequestAction data={data} />,
       },
       {
         Header: " ",
@@ -202,3 +193,88 @@ const columns = [
     ],
   },
 ];
+
+const RenderRequestAction = ({ data }) => {
+  const queryClient = useQueryClient();
+  const [showDeleDialog, setShowDeleDialog] = useState(false);
+  const [showAcceptDialog, setShowAcceptDialog] = useState(false);
+
+  const deleteRequestMutation = useMutation(
+    async (newData) => {
+      console.log("newData: ", newData);
+      return await declineRequestForTutor(newData);
+    },
+    {
+      onSuccess: (data) => {
+        console.log("Data: ", data);
+        if (data?.status >= 200 && data?.status < 300) {
+          toast.success("Decline request successfully");
+          queryClient.invalidateQueries("getListRequestForTutor");
+        } else {
+          toast.error(
+            data?.message ||
+              data?.response?.data?.message ||
+              data?.response?.data ||
+              "Oops! Something went wrong..."
+          );
+        }
+      },
+      onError: (err) => {
+        toast.error(
+          // @ts-ignore
+          err?.response?.data?.message || err?.message || "Decline error"
+        );
+      },
+    }
+  );
+
+  const handleDeleteRequest = () => {
+    // @ts-ignore
+    deleteRequestMutation.mutate({ requestId: data?.requestId });
+  };
+
+  return data?.status !== "PENDING" ? (
+    <div>---</div>
+  ) : (
+    <div className="flex items-center gap-4">
+      <PrimaryBtn>Accept</PrimaryBtn>
+
+      <PopupTemplate
+        title="Decline request"
+        setShowDialog={setShowDeleDialog}
+        showDialog={showDeleDialog}
+        classNameWrapper="md:!w-[286px]"
+      >
+        <div>
+          Do you want to decline the request of
+          <span className="font-bold">
+            {" "}
+            parent {data?.parentName}
+          </span> with{" "}
+          <span className="font-bold">student {data?.studentName}</span> out of
+          class
+        </div>
+        <div className="flex items-center justify-end gap-5 mt-10">
+          <DeniedBtn onClick={handleDeleteRequest} className="max-w-[160px]">
+            Decline
+          </DeniedBtn>
+          <SecondaryBtn
+            onClick={() => {
+              setShowDeleDialog(false);
+            }}
+            className="max-w-[160px]"
+          >
+            Close
+          </SecondaryBtn>
+        </div>
+      </PopupTemplate>
+      <DeniedBtn
+        onClick={() => {
+          setShowDeleDialog(true);
+        }}
+      >
+        Decline
+      </DeniedBtn>
+    </div>
+  );
+};

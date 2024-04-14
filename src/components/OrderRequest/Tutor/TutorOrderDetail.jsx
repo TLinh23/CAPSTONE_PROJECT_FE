@@ -20,8 +20,6 @@ function TutorOrderDetail() {
     },
   ]);
 
-  console.log("orderRequestDetail: ", orderRequestDetail);
-
   return (
     <HeaderDetail>
       <div className="bg-white block-border">

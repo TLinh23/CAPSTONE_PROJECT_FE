@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useQueries } from "react-query";
+import { useMutation, useQueries, useQueryClient } from "react-query";
 import { getListTodoWithObj } from "src/apis/tutor-module";
 import FilterDropDown from "src/components/common/FilterDropDown";
 import Pagination from "src/components/common/Pagination";
@@ -10,31 +10,73 @@ import useDebounce from "src/hooks/useDebounce";
 import DeniedBtn from "src/components/common/DeniedBtn";
 import RenderStatus from "src/components/common/RenderStatus";
 import ShowDetail from "src/components/common/ShowDetail";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
+import {
+  LIST_REQUEST_STATUS_FILTER,
+  LIST_REQUEST_TYPE_FILTER,
+} from "src/constants/constants";
+import { getListSubjects } from "src/apis/subject-module";
+import { getListRequestForParent } from "src/apis/class-module";
+import { useAuthContext } from "src/context/AuthContext";
+import { toast } from "react-toastify";
+import { cancelRequestForParent } from "src/apis/order-module";
+import PopupTemplate from "src/components/common/PopupTemplate";
+import SecondaryBtn from "src/components/common/SecondaryBtn";
 
 function ParentOrders() {
-  const [isFilterSelected, setIsFilterSelected] = useState();
   const [listOrderRequest, setListOrderRequest] = useState(undefined);
-  const [searchParam, setSearchParam] = useState("");
-  const debouncedSearchValue = useDebounce(searchParam, 500);
+  const [subjectSelected, setSubjectSelected] = useState(undefined);
+  const [statusSelected, setStatusSelected] = useState(undefined);
+  const [typeSelected, setTypeSelected] = useState(undefined);
+  const [listAllSubjects, setListAllSubjects] = useState(undefined);
+
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
+  const { userId } = useAuthContext();
 
   useQueries([
     {
-      queryKey: ["getListOrderRequest", page, limit, debouncedSearchValue],
+      queryKey: [
+        "getListRequestForParent",
+        page,
+        limit,
+        userId,
+        subjectSelected,
+        statusSelected,
+        typeSelected,
+      ],
       queryFn: async () => {
         const queryObj = {
-          skip: (page - 1) * limit,
-          limit: limit,
+          PersonId: Number(userId),
         };
-        if (debouncedSearchValue) {
-          queryObj["SearchWord"] = debouncedSearchValue;
+        queryObj["PagingRequest.CurrentPage"] = page;
+        queryObj["PagingRequest.PageSize"] = limit;
+
+        if (subjectSelected) {
+          queryObj["SubjectId"] = subjectSelected?.subjectId;
+        }
+        if (statusSelected) {
+          queryObj["Status"] = statusSelected?.key;
+        }
+        if (typeSelected) {
+          queryObj["RequestType"] = typeSelected?.key;
         }
 
-        // change your api request
-        const response = await getListTodoWithObj(queryObj);
-        setListOrderRequest(response?.data);
+        const response = await getListRequestForParent(queryObj);
+        setListOrderRequest(response?.data?.data);
+        return response?.data;
+      },
+      enabled: !!userId,
+    },
+    {
+      queryKey: ["getListSubjects"],
+      queryFn: async () => {
+        const queryObj = {};
+        queryObj["PagingRequest.CurrentPage"] = 1;
+        queryObj["PagingRequest.PageSize"] = 20;
+
+        const response = await getListSubjects(queryObj);
+        setListAllSubjects(response?.data?.data);
         return response?.data;
       },
     },
@@ -43,28 +85,44 @@ function ParentOrders() {
   return (
     <div>
       <Title>Manage Classroom Request</Title>
-      <div className="flex flex-col gap-4 py-5 md:items-center md:flex-row md:justify-end">
-        <SearchInput
-          placeholder="Search by name"
-          onChange={(e) => setSearchParam(e.target.value)}
-          value={searchParam || ""}
+      <div className="flex items-center gap-4 py-5">
+        <FilterDropDown
+          listDropdown={listAllSubjects?.items || []}
+          showing={subjectSelected}
+          setShowing={setSubjectSelected}
+          textDefault="Select subject"
         />
         <FilterDropDown
-          listDropdown={[
-            { id: 1, value: "Male", name: "Male" },
-            { id: 2, value: "Female", name: "Female" },
-          ]}
-          showing={isFilterSelected}
-          setShowing={setIsFilterSelected}
-          className="md:max-w-[220px]"
+          listDropdown={LIST_REQUEST_TYPE_FILTER}
+          showing={typeSelected}
+          setShowing={setTypeSelected}
+          textDefault="Select type"
         />
+        <FilterDropDown
+          listDropdown={LIST_REQUEST_STATUS_FILTER}
+          showing={statusSelected}
+          setShowing={setStatusSelected}
+          textDefault="Select status"
+        />
+        <DeniedBtn
+          onClick={() => {
+            setPage(1);
+            setLimit(10);
+            setStatusSelected(undefined);
+            setTypeSelected(undefined);
+            setSubjectSelected(undefined);
+          }}
+          className="max-w-[150px]"
+        >
+          Remove Filter
+        </DeniedBtn>
       </div>
 
       <div className="bg-white table-style block-border">
         <Table
           pageSizePagination={limit}
           columns={columns}
-          data={listOrderRequest?.todos}
+          data={listOrderRequest?.items}
         />
       </div>
 
@@ -73,7 +131,7 @@ function ParentOrders() {
         setPageSize={setLimit}
         currentPage={page}
         setCurrentPage={setPage}
-        totalItems={listOrderRequest?.total}
+        totalItems={listOrderRequest?.pagination?.totalItem}
       />
     </div>
   );
@@ -87,49 +145,46 @@ const columns = [
     columns: [
       {
         Header: "No",
-        accessor: (data) => <p>{data?.id}</p>,
+        accessor: (data) => <p>{data?.requestId}</p>,
       },
       {
-        Header: "Tutor",
-        accessor: (data) => <p>Tutor</p>,
+        Header: "Class Name",
+        accessor: (data) => <p>{data?.className}</p>,
       },
       {
         Header: "Subject",
-        accessor: (data) => <p>Subject</p>,
+        accessor: (data) => <p>{data?.subjectName}</p>,
+      },
+      {
+        Header: "Parent Name",
+        accessor: (data) => <p>{data?.parentName}</p>,
       },
       {
         Header: "Student Name",
-        accessor: (data) => <p>{data?.todo}</p>,
+        accessor: (data) => <p>{data?.studentName}</p>,
       },
       {
-        Header: "Price",
-        accessor: (data) => <p>Price</p>,
+        Header: "Request",
+        accessor: (data) => <p>{data?.requestType}</p>,
       },
       {
         Header: "Status",
         accessor: (data) => (
-          <RenderStatus status="approved">Approved</RenderStatus>
+          <RenderStatus status={data?.status}>{data?.status}</RenderStatus>
         ),
       },
       {
         Header: "Action",
-        accessor: (data) => {
-          return (
-            <div className="flex items-center gap-4">
-              {/* <PrimaryBtn>Accept</PrimaryBtn> */}
-              <DeniedBtn>Cancel</DeniedBtn>
-            </div>
-          );
-        },
+        accessor: (data) => <RenderRequestAction data={data} />,
       },
       {
         Header: " ",
         accessor: (data) => {
           return (
             <div className="flex items-center gap-4">
-              <NavLink to={`/classroom-requests/${data?.id}`}>
+              <Link to={`/classroom-requests/${data?.requestId}`}>
                 <ShowDetail />
-              </NavLink>
+              </Link>
             </div>
           );
         },
@@ -137,3 +192,82 @@ const columns = [
     ],
   },
 ];
+
+const RenderRequestAction = ({ data }) => {
+  const queryClient = useQueryClient();
+  const [setshowCancelDialog, setSetshowCancelDialog] = useState(false);
+
+  const cancelRequestMutation = useMutation(
+    async (newData) => {
+      console.log("newData: ", newData);
+      return await cancelRequestForParent(newData);
+    },
+    {
+      onSuccess: (data) => {
+        console.log("Data: ", data);
+        if (data?.status >= 200 && data?.status < 300) {
+          toast.success("Cancel request successfully");
+          queryClient.invalidateQueries("getListRequestForParent");
+        } else {
+          toast.error(
+            data?.message ||
+              data?.response?.data?.message ||
+              data?.response?.data ||
+              "Oops! Something went wrong..."
+          );
+        }
+      },
+      onError: (err) => {
+        toast.error(
+          // @ts-ignore
+          err?.response?.data?.message || err?.message || "Decline error"
+        );
+      },
+    }
+  );
+
+  const handleCancelRequest = () => {
+    // @ts-ignore
+    cancelRequestMutation.mutate({ requestId: data?.requestId });
+  };
+
+  return data?.status === "PENDING" ? (
+    <div>---</div>
+  ) : (
+    <div>
+      <PopupTemplate
+        title="Cancel request"
+        setShowDialog={setSetshowCancelDialog}
+        showDialog={setshowCancelDialog}
+        classNameWrapper="md:!w-[286px]"
+      >
+        <div>
+          Do you want to cancel the request to learn in
+          <span className="font-bold"> class {data?.className}</span> with{" "}
+          <span className="font-bold">tutor {data?.tutorName}</span>.
+        </div>
+        <div className="flex items-center justify-end gap-5 mt-10">
+          <DeniedBtn onClick={handleCancelRequest} className="max-w-[160px]">
+            Cancel
+          </DeniedBtn>
+          <SecondaryBtn
+            onClick={() => {
+              setSetshowCancelDialog(false);
+            }}
+            className="max-w-[160px]"
+          >
+            Close
+          </SecondaryBtn>
+        </div>
+      </PopupTemplate>
+
+      <DeniedBtn
+        onClick={() => {
+          setSetshowCancelDialog(true);
+        }}
+      >
+        Cancel
+      </DeniedBtn>
+    </div>
+  );
+};

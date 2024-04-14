@@ -48,6 +48,8 @@ export const getClassUrl = `${baseUrl}api/Class/get-classes`;
 
 export const getTutorClassUrl = `${baseUrl}api/Class/get-class-for-tutor`;
 
+export const getParentClassUrl = `${baseUrl}api/Class/get-class-for-parent`;
+
 export const getClassDetailUrl = `${baseUrl}api/Class/get-class-details`;
 
 export const getStudentsClassUrl = `${baseUrl}api/Class/get-students-in-class`;
@@ -73,3 +75,9 @@ export const updateStudentUrl = `${baseUrl}api/Student/update-student`;
 export const deleteStudentInParentUrl = `${baseUrl}api/Student/delete-student`;
 
 export const deleteClassroomForTutorUrl = `${baseUrl}api/Class/delete-class`;
+
+export const declineRequestUrl = `${baseUrl}api/Request/decline-request`;
+
+export const requestForParentUrl = `${baseUrl}api/Request/get-requests-for-parent`;
+
+export const cancelRequestUrl = `${baseUrl}api/Request/cancel-request`;

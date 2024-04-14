@@ -168,5 +168,6 @@ export const LIST_REQUEST_TYPE_FILTER = [
 export const LIST_REQUEST_STATUS_FILTER = [
   { id: 1, key: "PENDING", value: "Pending" },
   { id: 2, key: "ACCEPTED", value: "Accepted" },
-  { id: 2, key: "REJECTED", value: "Rejected" },
+  { id: 3, key: "REJECTED", value: "Rejected" },
+  { id: 4, key: "CANCELLED", value: "Cancelled" },
 ];

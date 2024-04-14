@@ -5,9 +5,11 @@ import {
   deleteStudentUrl,
   getClassDetailUrl,
   getClassUrl,
+  getParentClassUrl,
   getStudentsClassUrl,
   getTutorClassUrl,
   requestByIdUrl,
+  requestForParentUrl,
   requestForTutorUrl,
   scheduleUrl,
   updateClassStudentUrl,
@@ -97,5 +99,19 @@ export const getRequestDetailForTutor = (id) => {
 export const deleteClassroomByTutor = (id) => {
   return putAPI({
     url: `${deleteClassroomForTutorUrl}/${id}?classId=${id}`,
+  });
+};
+
+export const getClassByParent = (paramsObj) => {
+  const queryString = convertObjectToQueryString(paramsObj);
+  return requestAPI({
+    url: `${getParentClassUrl}${queryString}`,
+  });
+};
+
+export const getListRequestForParent = (paramsObj) => {
+  const queryString = convertObjectToQueryString(paramsObj);
+  return requestAPI({
+    url: `${requestForParentUrl}${queryString}`,
   });
 };
