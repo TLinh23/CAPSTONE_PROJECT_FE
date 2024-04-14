@@ -152,7 +152,7 @@ function ParentProfileDetail(props) {
         showDialog={isShowPopupAddStudent}
         title="Add student"
       >
-        <AddStudentPopup />
+        <AddStudentPopup setShowPopup={setIsShowPopupAddStudent} />
       </PopupTemplate>
     </div>
   );
@@ -210,6 +210,7 @@ function StudentItem({ item, roleKey, userId, dataProfileDetail }) {
           item={item}
           studentDetail={studentProfileDetail}
           setStudentDetail={setStudentProfileDetail}
+          setShowPopup={setIsShowPopupEditStudent}
         />
       </PopupTemplate>
       <PopupTemplate
@@ -217,7 +218,11 @@ function StudentItem({ item, roleKey, userId, dataProfileDetail }) {
         showDialog={isShowPopupDeleteStudent}
         title="Delete student"
       >
-        <DeleteStudentPopup parentId={userId} item={item} />
+        <DeleteStudentPopup
+          parentId={userId}
+          item={item}
+          setShowPopup={setIsShowPopupDeleteStudent}
+        />
       </PopupTemplate>
     </div>
   );

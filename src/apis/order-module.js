@@ -1,4 +1,5 @@
 import {
+  acceptRequestUrl,
   cancelRequestUrl,
   createOrderRequestUrl,
   declineRequestUrl,
@@ -8,6 +9,13 @@ import { postAPI, putAPI } from "src/libs/api";
 export const createOrderRequest = (queryObj) => {
   return postAPI({
     url: `${createOrderRequestUrl}`,
+    data: queryObj,
+  });
+};
+
+export const acceptRequestForTutor = (queryObj) => {
+  return putAPI({
+    url: `${acceptRequestUrl}`,
     data: queryObj,
   });
 };
