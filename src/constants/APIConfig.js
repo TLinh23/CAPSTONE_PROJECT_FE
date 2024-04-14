@@ -78,6 +78,8 @@ export const deleteClassroomForTutorUrl = `${baseUrl}api/Class/delete-class`;
 
 export const declineRequestUrl = `${baseUrl}api/Request/decline-request`;
 
+export const acceptRequestUrl = `${baseUrl}api/Request/accept-request`;
+
 export const requestForParentUrl = `${baseUrl}api/Request/get-requests-for-parent`;
 
 export const cancelRequestUrl = `${baseUrl}api/Request/cancel-request`;

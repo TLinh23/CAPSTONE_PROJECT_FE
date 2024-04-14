@@ -8,7 +8,7 @@ import PrimaryBtn from "src/components/common/PrimaryBtn";
 import { LIST_CLASS_LEVEL_DEFAULT } from "src/constants/constants";
 import { useAuthContext } from "src/context/AuthContext";
 
-function AddSubjectPopup() {
+function AddSubjectPopup({ setIsShowPopupAddStudent }) {
   const [subjectSelected, setSubjectSelected] = useState(undefined);
   const [listAllSubjects, setListAllSubjects] = useState(undefined);
   const [classLevelSelected, setClassLevelSelected] = useState(undefined);
@@ -40,6 +40,7 @@ function AddSubjectPopup() {
         console.log("Data: ", data);
         if (data?.status >= 200 && data?.status < 300) {
           toast.success("Add subject successfully");
+          setIsShowPopupAddStudent(false);
           queryClient.invalidateQueries("getProfile");
         } else {
           toast.error(

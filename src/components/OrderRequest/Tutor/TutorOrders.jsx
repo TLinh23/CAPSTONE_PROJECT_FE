@@ -22,7 +22,10 @@ import { getListSubjects } from "src/apis/subject-module";
 import PopupTemplate from "src/components/common/PopupTemplate";
 import SecondaryBtn from "src/components/common/SecondaryBtn";
 import { toast } from "react-toastify";
-import { declineRequestForTutor } from "src/apis/order-module";
+import {
+  acceptRequestForTutor,
+  declineRequestForTutor,
+} from "src/apis/order-module";
 
 function TutorOrders() {
   const [listOrderRequest, setListOrderRequest] = useState(undefined);
@@ -233,11 +236,80 @@ const RenderRequestAction = ({ data }) => {
     deleteRequestMutation.mutate({ requestId: data?.requestId });
   };
 
+  const acceptRequestMutation = useMutation(
+    async (newData) => {
+      console.log("newData: ", newData);
+      return await acceptRequestForTutor(newData);
+    },
+    {
+      onSuccess: (data) => {
+        console.log("Data: ", data);
+        if (data?.status >= 200 && data?.status < 300) {
+          toast.success("Accept request successfully");
+          queryClient.invalidateQueries("getListRequestForTutor");
+        } else {
+          toast.error(
+            data?.message ||
+              data?.response?.data?.message ||
+              data?.response?.data ||
+              "Oops! Something went wrong..."
+          );
+        }
+      },
+      onError: (err) => {
+        toast.error(
+          // @ts-ignore
+          err?.response?.data?.message || err?.message || "Accept error"
+        );
+      },
+    }
+  );
+
+  const handleAcceptRequest = () => {
+    // @ts-ignore
+    acceptRequestMutation.mutate({ requestId: data?.requestId });
+  };
+
   return data?.status !== "PENDING" ? (
     <div>---</div>
   ) : (
     <div className="flex items-center gap-4">
-      <PrimaryBtn>Accept</PrimaryBtn>
+      <PopupTemplate
+        title="Accept request"
+        setShowDialog={setShowAcceptDialog}
+        showDialog={showAcceptDialog}
+        classNameWrapper="md:!w-[286px]"
+      >
+        <div>
+          Do you want to accept the request of
+          <span className="font-bold">
+            {" "}
+            parent {data?.parentName}
+          </span> with{" "}
+          <span className="font-bold">student {data?.studentName}</span> in to
+          class
+        </div>
+        <div className="flex items-center justify-end gap-5 mt-10">
+          <PrimaryBtn onClick={handleAcceptRequest} className="max-w-[160px]">
+            Accept
+          </PrimaryBtn>
+          <SecondaryBtn
+            onClick={() => {
+              setShowAcceptDialog(false);
+            }}
+            className="max-w-[160px]"
+          >
+            Close
+          </SecondaryBtn>
+        </div>
+      </PopupTemplate>
+      <PrimaryBtn
+        onClick={() => {
+          setShowAcceptDialog(true);
+        }}
+      >
+        Accept
+      </PrimaryBtn>
 
       <PopupTemplate
         title="Decline request"

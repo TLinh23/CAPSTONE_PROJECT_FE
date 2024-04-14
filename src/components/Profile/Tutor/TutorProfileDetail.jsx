@@ -222,7 +222,7 @@ function TutorProfileDetail(props) {
             <PrimaryBtn
               className="md:max-w-[222px]"
               onClick={() => {
-                navigate(`/profile/${dataProfileDetail?.id}/edit`);
+                navigate(`/profile/${userId}/edit`);
               }}
             >
               Update
@@ -245,7 +245,7 @@ function TutorProfileDetail(props) {
         title="Add subject"
         classNameWrapper="md:!min-w-[486px]"
       >
-        <AddSubjectPopup />
+        <AddSubjectPopup setIsShowPopupAddStudent={setIsShowPopupAddStudent} />
       </PopupTemplate>
     </div>
   );
@@ -257,10 +257,6 @@ function SubjectItem({ item, roleKey, userId, dataProfileDetail }) {
   const [isShowPopupEditStudent, setIsShowPopupEditStudent] = useState(false);
   const [isShowPopupDeleteStudent, setIsShowPopupDeleteStudent] =
     useState(false);
-
-  const handleClickEdit = () => {
-    setIsShowPopupEditStudent(true);
-  };
 
   const handleClickDelete = () => {
     setIsShowPopupDeleteStudent(true);
@@ -291,7 +287,10 @@ function SubjectItem({ item, roleKey, userId, dataProfileDetail }) {
         title="Delete subject"
         classNameWrapper="md:!min-w-[486px]"
       >
-        <DeleteSubjectPopup item={item} />
+        <DeleteSubjectPopup
+          item={item}
+          setIsShowPopupDeleteStudent={setIsShowPopupDeleteStudent}
+        />
       </PopupTemplate>
     </>
   );

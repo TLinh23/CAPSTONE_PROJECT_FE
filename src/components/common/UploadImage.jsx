@@ -22,7 +22,11 @@ function UploadImage({
       ) : imageUrlResponse ? (
         <div className="flex flex-col items-center justify-center w-max">
           <img
-            src={URL.createObjectURL(imageUrlResponse)}
+            src={
+              typeof imageUrlResponse === "string"
+                ? imageUrlResponse
+                : URL.createObjectURL(imageUrlResponse)
+            }
             alt={"avatar"}
             className={`rounded w-full h-full object-cover ${classNameImage}`}
           />

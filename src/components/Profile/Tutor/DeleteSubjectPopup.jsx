@@ -5,19 +5,20 @@ import { deleteSubjectTutor } from "src/apis/tutor-module";
 import DeniedBtn from "src/components/common/DeniedBtn";
 import { useAuthContext } from "src/context/AuthContext";
 
-function DeleteSubjectPopup({ item }) {
+function DeleteSubjectPopup({ item, setIsShowPopupDeleteStudent }) {
   const { userId } = useAuthContext();
   const queryClient = useQueryClient();
 
   const deleteSubjectMutation = useMutation(
-    async () => {
-      return await deleteSubjectTutor(userId, item?.subjectId);
+    async (newData) => {
+      return await deleteSubjectTutor(userId, item?.subjectId, newData);
     },
     {
       onSuccess: (data) => {
         console.log("Data: ", data);
         if (data?.status >= 200 && data?.status < 300) {
           toast.success("Add subject successfully");
+          setIsShowPopupDeleteStudent(false);
           queryClient.invalidateQueries("getProfile");
         } else {
           toast.error(
@@ -37,8 +38,13 @@ function DeleteSubjectPopup({ item }) {
     }
   );
   const handleClickDeleteSubject = () => {
+    const queryObj = {
+      tutorId: Number(userId),
+      subjectId: item?.subjectId,
+      level: item?.level,
+    };
     // @ts-ignore
-    deleteSubjectMutation.mutate();
+    deleteSubjectMutation.mutate(queryObj);
   };
   return (
     <div>

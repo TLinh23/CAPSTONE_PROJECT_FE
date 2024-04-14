@@ -88,8 +88,9 @@ export const addSubjectTutor = (newData, id) => {
   });
 };
 
-export const deleteSubjectTutor = (tutorId, subjectId) => {
+export const deleteSubjectTutor = (tutorId, subjectId, queryObj) => {
   return deleteAPI({
-    url: `${deleteSubjectTutorUrl}/${tutorId}/${subjectId}?tutorId=${tutorId}?subjectId=${subjectId}`,
+    url: `${deleteSubjectTutorUrl}/${tutorId}/${subjectId}?level=${queryObj?.level}`,
+    data: queryObj,
   });
 };
