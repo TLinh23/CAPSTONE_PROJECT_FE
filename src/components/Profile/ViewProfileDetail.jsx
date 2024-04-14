@@ -5,8 +5,7 @@ import { useQueries } from "react-query";
 import TutorProfileDetail from "./Tutor/TutorProfileDetail";
 import StaffProfileDetail from "./Staff/StaffProfileDetail";
 import { ROLE_NAME } from "src/constants/constants";
-import StudentProfileDetail from "./Student/StudentProfileDetail";
-import { getProfileDetail } from "src/apis/tutor-module";
+import { getProfileByIdDetail } from "src/apis/tutor-module";
 import { useAuthContext } from "src/context/AuthContext";
 import AdminProfileDetail from "./Admin/AdminProfileDetail";
 
@@ -21,7 +20,7 @@ function ViewProfileDetail() {
       queryKey: ["getProfile", id],
       queryFn: async () => {
         if (id) {
-          const response = await getProfileDetail();
+          const response = await getProfileByIdDetail(id);
           setDataProfileDetail(response?.data?.data);
           return response?.data;
         }
@@ -34,19 +33,19 @@ function ViewProfileDetail() {
 
   return (
     <div>
-      {roleKey === ROLE_NAME.PARENT && (
+      {dataProfileDetail?.account?.roleName === ROLE_NAME.PARENT && (
         <ParentProfileDetail dataProfileDetail={dataProfileDetail} />
       )}
-      {roleKey === ROLE_NAME.TUTOR && (
+      {dataProfileDetail?.account?.roleName === ROLE_NAME.TUTOR && (
         <TutorProfileDetail dataProfileDetail={dataProfileDetail} />
       )}
-      {roleKey === ROLE_NAME.STAFF && (
+      {dataProfileDetail?.account?.roleName === ROLE_NAME.STAFF && (
         <StaffProfileDetail dataProfileDetail={dataProfileDetail} />
       )}
-      {dataProfileDetail?.roleKey === ROLE_NAME.STUDENT && (
+      {/* {dataProfileDetail?.roleKey === ROLE_NAME.STUDENT && (
         <StudentProfileDetail dataProfileDetail={dataProfileDetail} />
-      )}
-      {roleKey === ROLE_NAME.ADMIN && (
+      )} */}
+      {dataProfileDetail?.account?.roleName === ROLE_NAME.ADMIN && (
         <AdminProfileDetail dataProfileDetail={dataProfileDetail} />
       )}
     </div>

@@ -100,7 +100,7 @@ function Header() {
             navigate("/login");
           }}
         >
-          Log In
+          Login
         </SecondaryBtn>
       )}
     </div>

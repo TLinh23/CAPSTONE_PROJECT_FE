@@ -1,13 +1,13 @@
 import {
   cancelRequestUrl,
+  createOrderRequestUrl,
   declineRequestUrl,
-  orderRequestUrl,
 } from "src/constants/APIConfig";
 import { postAPI, putAPI } from "src/libs/api";
 
 export const createOrderRequest = (queryObj) => {
   return postAPI({
-    url: `${orderRequestUrl}`,
+    url: `${createOrderRequestUrl}`,
     data: queryObj,
   });
 };

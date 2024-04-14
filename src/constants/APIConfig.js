@@ -81,3 +81,9 @@ export const declineRequestUrl = `${baseUrl}api/Request/decline-request`;
 export const requestForParentUrl = `${baseUrl}api/Request/get-requests-for-parent`;
 
 export const cancelRequestUrl = `${baseUrl}api/Request/cancel-request`;
+
+export const createOrderRequestUrl = `${baseUrl}api/Request/add-request`;
+
+export const addSubjectTutorUrl = `${baseUrl}api/SubjectTutor/add-subject-tutor`;
+
+export const deleteSubjectTutorUrl = `${baseUrl}api/SubjectTutor/delete-subject-tutor`;

@@ -118,11 +118,11 @@ export const ADMIN_MENU = [
 ];
 
 export const ROLE_NAME = {
-  ADMIN: "admin",
-  STAFF: "staff",
-  TUTOR: "tutor",
-  PARENT: "parent",
-  STUDENT: "student",
+  ADMIN: "ADMIN",
+  STAFF: "STAFF",
+  TUTOR: "TUTOR",
+  PARENT: "PARENT",
+  STUDENT: "STUDENT",
 };
 
 export const LIST_CLASS_LEVEL_DEFAULT = [

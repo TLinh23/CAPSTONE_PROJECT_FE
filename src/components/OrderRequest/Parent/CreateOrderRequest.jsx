@@ -1,29 +1,83 @@
 import React, { useState } from "react";
 import Line from "src/components/common/Line";
-import Title from "src/components/common/Title";
-import { useMutation } from "react-query";
+import { useMutation, useQueries } from "react-query";
 import { createOrderRequest } from "src/apis/order-module";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import PrimaryBtn from "src/components/common/PrimaryBtn";
 import SmallTitle from "src/components/common/SmallTitle";
 import PrimaryInput from "src/components/common/PrimaryInput";
 import FilterDropDown from "src/components/common/FilterDropDown";
-import PrimaryTextArea from "src/components/common/PrimaryTextArea";
-
-/**
- * Below is example when you want to call api Put/ Post
- * Action onclick "Send" trigger function `handleSendData`
- * mutate object to call api to be
- */
+import ProfileHeader from "src/components/Profile/ProfileHeader";
+import { getClassDetailData } from "src/apis/class-module";
+import { getProfileByIdDetail, getProfileDetail } from "src/apis/tutor-module";
+import { getListSubjects } from "src/apis/subject-module";
+import { CLASS_REQUEST_TYPE, STUDENT_LEVEL } from "src/constants/enumConstant";
+import { useAuthContext } from "src/context/AuthContext";
 
 const TOAST_CREATE_ORDER_REQUEST = "toast-create-order-request-id";
 
+const EXCLUDED_KEY = [];
+
 function CreateOrderRequest() {
+  const { userId } = useAuthContext();
   const [newOrderRequest, setNewOrderRequest] = useState(undefined);
   const [studentSelected, setStudentSelected] = useState(undefined);
-  const [isConfirmRequest, setIsConfirmRequest] = useState(false);
   const navigate = useNavigate();
+  const [classRoomDetail, setClassRoomDetail] = useState(undefined);
+  const { search } = useLocation();
+  const { requestType, tutorId, classId } = Object.fromEntries(
+    new URLSearchParams(search)
+  );
+  const [tutorProfileDetail, setTutorProfileDetail] = useState(undefined);
+  const [listAllSubjects, setListAllSubjects] = useState(undefined);
+  const [subjectRequestSelected, setSubjectRequestSelected] =
+    useState(undefined);
+  const [profileDetail, setProfileDetail] = useState(undefined);
+  const [studentLevelSelected, setStudentLevelSelected] = useState(undefined);
+
+  useQueries([
+    {
+      queryKey: ["getClassDetail", classId],
+      queryFn: async () => {
+        const response = await getClassDetailData(classId);
+        setClassRoomDetail(response?.data?.data);
+        return response?.data;
+      },
+      enabled: !!classId,
+    },
+    {
+      queryKey: ["getProfileById", tutorId],
+      queryFn: async () => {
+        if (tutorId) {
+          const response = await getProfileByIdDetail(tutorId);
+          setTutorProfileDetail(response?.data?.data);
+          return response?.data;
+        }
+      },
+      enabled: !!tutorId,
+    },
+    {
+      queryKey: ["getListSubjects"],
+      queryFn: async () => {
+        const queryObj = {};
+        queryObj["PagingRequest.CurrentPage"] = 1;
+        queryObj["PagingRequest.PageSize"] = 99;
+
+        const response = await getListSubjects(queryObj);
+        setListAllSubjects(response?.data?.data);
+        return response?.data;
+      },
+    },
+    {
+      queryKey: ["getStudentsData"],
+      queryFn: async () => {
+        const response = await getProfileDetail();
+        setProfileDetail(response?.data?.data);
+        return response?.data;
+      },
+    },
+  ]);
 
   const createOrderRequestMutation = useMutation(
     async (newData) => {
@@ -60,74 +114,136 @@ function CreateOrderRequest() {
     toast.loading("Sending request...", {
       toastId: TOAST_CREATE_ORDER_REQUEST,
     });
-    console.log("Here is data send to BE", newOrderRequest);
-    createOrderRequestMutation.mutate(newOrderRequest);
+    if (!studentSelected) {
+      toast.error("Please select your student!");
+      return;
+    }
+    if (!newOrderRequest?.Price && !classRoomDetail?.price) {
+      toast.error("Please type price!");
+      return;
+    }
+    if (!studentLevelSelected && !classRoomDetail?.classLevel) {
+      toast.error("Please choose class level!");
+      return;
+    }
+    if (!subjectRequestSelected && !classRoomDetail?.subjectName) {
+      toast.error("Please select subject!");
+      return;
+    }
+    const openClassRequestObj = {
+      RequestType: CLASS_REQUEST_TYPE.OPEN,
+      ParentId: Number(userId),
+      TutorId: Number(tutorId),
+      StudentId: Number(studentSelected?.studentId),
+      Level: Number(studentLevelSelected?.key),
+      Price: newOrderRequest?.Price,
+    };
+    const joinClassRequestObj = {
+      RequestType: CLASS_REQUEST_TYPE.JOIN,
+      ParentId: Number(userId),
+      TutorId: Number(tutorId),
+      StudentId: Number(studentSelected?.studentId),
+      Level: Number(classRoomDetail?.classLevel),
+      Price: classRoomDetail?.price,
+    };
+    if (requestType === CLASS_REQUEST_TYPE.OPEN) {
+      const formData = new FormData();
+      for (const key in openClassRequestObj) {
+        const value = openClassRequestObj[key];
+        const isExcludedKey = EXCLUDED_KEY.includes(key);
+
+        if (isExcludedKey || !value) {
+          continue;
+        }
+
+        formData.append(key, value);
+      }
+      console.log("openClassRequestObj====: ", openClassRequestObj);
+      // @ts-ignore
+      createOrderRequestMutation.mutate(formData);
+    } else {
+      const formData = new FormData();
+      for (const key in joinClassRequestObj) {
+        const value = joinClassRequestObj[key];
+        const isExcludedKey = EXCLUDED_KEY.includes(key);
+
+        if (isExcludedKey || !value) {
+          continue;
+        }
+
+        formData.append(key, value);
+      }
+      console.log("joinClassRequestObj====: ", joinClassRequestObj);
+      // @ts-ignore
+      createOrderRequestMutation.mutate(formData);
+    }
   };
 
   return (
     <div>
-      <Title>Create Order Request</Title>
+      <ProfileHeader title="Create Order Request" />
       <Line className="my-3" />
-      <div>
+      <div className="bg-white block-border">
         <SmallTitle>Request Info</SmallTitle>
-        <div className="md:max-w-[860px]">
+        <div className="md:max-w-[860px] mt-5">
           <div className="grid gap-4 grid-cols-2080">
             <div>Tutor</div>
-            <div>Nguyen van A</div>
-            <div>Subject</div>
-            <PrimaryInput
-              onChange={(e) => {
-                setNewOrderRequest({
-                  ...newOrderRequest,
-                  subjectName: e.target.value,
-                });
-              }}
-              value={newOrderRequest?.subjectName || ""}
-            />
-            <div>Student</div>
+            <div>{tutorProfileDetail?.fullName}</div>
+            {requestType === CLASS_REQUEST_TYPE.JOIN && (
+              <>
+                <div>Class Name</div>
+                <div>{classRoomDetail?.className}</div>
+              </>
+            )}
+            <div>
+              Subject <span className="text-dangerous">*</span>
+            </div>
+            {/* listAllSubjects */}
             <FilterDropDown
-              listDropdown={[]}
+              listDropdown={listAllSubjects?.items || []}
+              showing={subjectRequestSelected}
+              setShowing={setSubjectRequestSelected}
+              textDefault="Select the subject you want to open"
+            />
+            <div>
+              Student <span className="text-dangerous">*</span>
+            </div>
+            <FilterDropDown
+              listDropdown={profileDetail?.students || []}
               showing={studentSelected}
               setShowing={setStudentSelected}
-              textDefault="Nguyen Van Hoi"
+              textDefault="Select your student"
             />
             <div>Request Type</div>
-            <PrimaryInput
-              onChange={(e) => {
-                setNewOrderRequest({
-                  ...newOrderRequest,
-                  phone: e.target.value,
-                });
-              }}
-              value={newOrderRequest?.phone || "Create class"}
+            <PrimaryInput value={requestType} readOnly />
+            <div>
+              Level <span className="text-dangerous">*</span>
+            </div>
+
+            <FilterDropDown
+              textDefault={classRoomDetail?.classLevel || "Select class level"}
+              listDropdown={STUDENT_LEVEL}
+              showing={studentLevelSelected}
+              setShowing={setStudentLevelSelected}
+              disabled={requestType === CLASS_REQUEST_TYPE.JOIN}
             />
-            <div>Level</div>
+            <div>
+              Price <span className="text-dangerous">*</span>
+            </div>
             <PrimaryInput
               onChange={(e) => {
                 setNewOrderRequest({
                   ...newOrderRequest,
-                  phone: e.target.value,
+                  Price: e.target.value,
                 });
               }}
-              value={newOrderRequest?.phone || ""}
-            />
-            <div>Price</div>
-            <PrimaryInput
-              onChange={(e) => {
-                setNewOrderRequest({
-                  ...newOrderRequest,
-                  phone: e.target.value,
-                });
-              }}
-              value={newOrderRequest?.phone || ""}
+              value={newOrderRequest?.Price || classRoomDetail?.price || ""}
+              readOnly={requestType === CLASS_REQUEST_TYPE.JOIN}
+              type="number"
             />
           </div>
           <div className="flex items-center justify-center gap-3 mt-5">
-            <PrimaryBtn
-              disabled={!isConfirmRequest}
-              onClick={handleSendData}
-              className="max-w-[200px]"
-            >
+            <PrimaryBtn onClick={handleSendData} className="max-w-[200px]">
               Send
             </PrimaryBtn>
           </div>

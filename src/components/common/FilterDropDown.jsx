@@ -91,6 +91,7 @@ function FilterDropDown({
               {showing?.name ||
                 showing?.value ||
                 showing?.subjectName ||
+                showing?.fullName ||
                 textDefault}
             </p>
           </div>
@@ -144,7 +145,7 @@ function DropDownItem({ data, showing, setShowing, toggleOpen }) {
         isSelected ? "bg-[#2F8DE4] text-black" : ""
       }`}
     >
-      <p>{data?.name || data?.value || data?.subjectName}</p>
+      <p>{data?.name || data?.value || data?.subjectName || data?.fullName}</p>
       {isSelected && <span className="ml-1">✓</span>}
     </div>
   );

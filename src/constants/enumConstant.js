@@ -22,3 +22,8 @@ export const DAYS_OF_WEEK = [
   { id: 6, key: "SAT", value: "Saturday" },
   { id: 7, key: "SUN", value: "Sunday" },
 ];
+
+export const CLASS_REQUEST_TYPE = {
+  OPEN: "OPEN",
+  JOIN: "JOIN",
+};
