@@ -39,6 +39,7 @@ function PageIntroduceAllClassrooms() {
         const queryObj = {};
         queryObj["PagingRequest.CurrentPage"] = page;
         queryObj["PagingRequest.PageSize"] = limit;
+        queryObj["Status"] = "ACTIVE";
         if (debouncedSearchValue) {
           queryObj["SearchWord"] = debouncedSearchValue;
         }

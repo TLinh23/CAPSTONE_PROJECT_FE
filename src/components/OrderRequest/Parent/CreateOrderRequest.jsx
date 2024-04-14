@@ -198,12 +198,15 @@ function CreateOrderRequest() {
             <div>
               Subject <span className="text-dangerous">*</span>
             </div>
-            {/* listAllSubjects */}
             <FilterDropDown
               listDropdown={listAllSubjects?.items || []}
               showing={subjectRequestSelected}
               setShowing={setSubjectRequestSelected}
-              textDefault="Select the subject you want to open"
+              textDefault={
+                classRoomDetail?.subjectName ||
+                "Select the subject you want to open"
+              }
+              disabled={requestType === CLASS_REQUEST_TYPE.JOIN}
             />
             <div>
               Student <span className="text-dangerous">*</span>

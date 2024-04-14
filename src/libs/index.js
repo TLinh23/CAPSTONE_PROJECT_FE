@@ -6,3 +6,7 @@ export function getValueFromKey(key, list) {
 export function slideFromEnd(value, length) {
   return value.slice(0, length);
 }
+
+export function slideEndItem(value, length) {
+  return value.slice(0, -length);
+}

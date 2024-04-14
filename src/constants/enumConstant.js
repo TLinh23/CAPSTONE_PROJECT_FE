@@ -27,3 +27,13 @@ export const CLASS_REQUEST_TYPE = {
   OPEN: "OPEN",
   JOIN: "JOIN",
 };
+
+export const VALUE_DAYS_OF_WEEK = [
+  "MON",
+  "TUE",
+  "WED",
+  "THU",
+  "FRI",
+  "SAT",
+  "SUN",
+];

@@ -36,6 +36,7 @@ function SideBar() {
           queryObj["PagingRequest.CurrentPage"] = 1;
           queryObj["PagingRequest.PageSize"] = 5;
           queryObj["TutorId"] = userId;
+          queryObj["Status"] = "ACTIVE";
           // change your api request
           const response = await getClassByTutor(queryObj);
           setListClassroom(response?.data?.data);
