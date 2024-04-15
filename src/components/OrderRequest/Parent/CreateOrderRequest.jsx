@@ -130,6 +130,7 @@ function CreateOrderRequest() {
       toast.error("Please select subject!");
       return;
     }
+
     const openClassRequestObj = {
       RequestType: CLASS_REQUEST_TYPE.OPEN,
       ParentId: Number(userId),
@@ -137,6 +138,7 @@ function CreateOrderRequest() {
       StudentId: Number(studentSelected?.studentId),
       Level: Number(studentLevelSelected?.key),
       Price: newOrderRequest?.Price,
+      SubjectId: Number(subjectRequestSelected?.subjectId),
     };
     const joinClassRequestObj = {
       RequestType: CLASS_REQUEST_TYPE.JOIN,
@@ -146,6 +148,7 @@ function CreateOrderRequest() {
       Level: Number(classRoomDetail?.classLevel),
       Price: classRoomDetail?.price,
       ClassId: Number(classId),
+      SubjectId: Number(classRoomDetail?.subjectId),
     };
     if (requestType === CLASS_REQUEST_TYPE.OPEN) {
       const formData = new FormData();

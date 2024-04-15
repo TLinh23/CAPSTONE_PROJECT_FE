@@ -23,6 +23,13 @@ import { useAuthContext } from "src/context/AuthContext";
 
 const TOAST_EDIT_CLASSROOM = "toast-edit-classroom-id";
 
+const EXCLUDED_KEY = [
+  "schedules",
+  "studentInformationDto",
+  "subjectName",
+  "tutorName",
+];
+
 function EditTutorClassroomDetail() {
   const [classRoomDetail, setClassRoomDetail] = useState(undefined);
   const { id } = useParams();
@@ -136,14 +143,12 @@ function EditTutorClassroomDetail() {
   const handleEditClassroom = () => {
     const queryObj = {
       ...classRoomDetail,
-      tutorId: userId,
-      classId: id,
+      tutorId: Number(userId),
+      classId: Number(id),
       status: "ACTIVE",
       updateScheduleDto: listLevels,
     };
-    if (listLevels) {
-      queryObj["updateScheduleDto"] = listLevels;
-    }
+    EXCLUDED_KEY.forEach((key) => delete queryObj[key]);
     console.log("Here is data send to BE", queryObj);
     toast.loading("Sending request...", {
       toastId: TOAST_EDIT_CLASSROOM,
