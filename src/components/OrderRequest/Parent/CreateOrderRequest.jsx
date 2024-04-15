@@ -145,6 +145,7 @@ function CreateOrderRequest() {
       StudentId: Number(studentSelected?.studentId),
       Level: Number(classRoomDetail?.classLevel),
       Price: classRoomDetail?.price,
+      ClassId: Number(classId),
     };
     if (requestType === CLASS_REQUEST_TYPE.OPEN) {
       const formData = new FormData();
