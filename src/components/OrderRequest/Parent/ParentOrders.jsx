@@ -1,16 +1,13 @@
 import React, { useState } from "react";
 import { useMutation, useQueries, useQueryClient } from "react-query";
-import { getListTodoWithObj } from "src/apis/tutor-module";
 import FilterDropDown from "src/components/common/FilterDropDown";
 import Pagination from "src/components/common/Pagination";
-import SearchInput from "src/components/common/SearchInput";
 import Table from "src/components/common/Table";
 import Title from "src/components/common/Title";
-import useDebounce from "src/hooks/useDebounce";
 import DeniedBtn from "src/components/common/DeniedBtn";
 import RenderStatus from "src/components/common/RenderStatus";
 import ShowDetail from "src/components/common/ShowDetail";
-import { Link, NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   LIST_REQUEST_STATUS_FILTER,
   LIST_REQUEST_TYPE_FILTER,
@@ -207,6 +204,7 @@ const RenderRequestAction = ({ data }) => {
         console.log("Data: ", data);
         if (data?.status >= 200 && data?.status < 300) {
           toast.success("Cancel request successfully");
+          setSetshowCancelDialog(false);
           queryClient.invalidateQueries("getListRequestForParent");
         } else {
           toast.error(
@@ -231,7 +229,7 @@ const RenderRequestAction = ({ data }) => {
     cancelRequestMutation.mutate({ requestId: data?.requestId });
   };
 
-  return data?.status === "PENDING" ? (
+  return data?.status !== "PENDING" ? (
     <div>---</div>
   ) : (
     <div>

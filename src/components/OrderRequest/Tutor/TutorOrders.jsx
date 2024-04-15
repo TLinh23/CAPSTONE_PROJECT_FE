@@ -1,12 +1,9 @@
 import React, { useState } from "react";
 import { useMutation, useQueries, useQueryClient } from "react-query";
-import { getListTodoWithObj } from "src/apis/tutor-module";
 import FilterDropDown from "src/components/common/FilterDropDown";
 import Pagination from "src/components/common/Pagination";
-import SearchInput from "src/components/common/SearchInput";
 import Table from "src/components/common/Table";
 import Title from "src/components/common/Title";
-import useDebounce from "src/hooks/useDebounce";
 import PrimaryBtn from "src/components/common/PrimaryBtn";
 import DeniedBtn from "src/components/common/DeniedBtn";
 import RenderStatus from "src/components/common/RenderStatus";
@@ -212,6 +209,7 @@ const RenderRequestAction = ({ data }) => {
         console.log("Data: ", data);
         if (data?.status >= 200 && data?.status < 300) {
           toast.success("Decline request successfully");
+          setShowDeleDialog(false);
           queryClient.invalidateQueries("getListRequestForTutor");
         } else {
           toast.error(
@@ -246,6 +244,7 @@ const RenderRequestAction = ({ data }) => {
         console.log("Data: ", data);
         if (data?.status >= 200 && data?.status < 300) {
           toast.success("Accept request successfully");
+          setShowAcceptDialog(false);
           queryClient.invalidateQueries("getListRequestForTutor");
         } else {
           toast.error(

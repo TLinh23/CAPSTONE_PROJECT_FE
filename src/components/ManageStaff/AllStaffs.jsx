@@ -22,7 +22,7 @@ import EditIcon from "../icons/EditIcon";
 import SecondaryBtn from "../common/SecondaryBtn";
 import { toast } from "react-toastify";
 
-function AllSubjects() {
+function AllStaffs() {
   const queryClient = useQueryClient();
   const [listAllSubjects, setListAllSubjects] = useState(undefined);
   const [searchParam, setSearchParam] = useState("");
@@ -206,7 +206,7 @@ function AllSubjects() {
   );
 }
 
-export default AllSubjects;
+export default AllStaffs;
 
 const columns = [
   {
