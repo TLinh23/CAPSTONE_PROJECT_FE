@@ -93,3 +93,9 @@ export const deleteSubjectTutorUrl = `${baseUrl}api/SubjectTutor/delete-subject-
 export const filteredScheduleUrl = `${baseUrl}api/Schedule/get-filter-schedule`;
 
 export const exploreTutorUrl = `${baseUrl}api/Tutor/get-tutors`;
+
+export const getAllStaffUrl = `${baseUrl}api/Person/get-staffs`;
+
+export const registerStaffUrl = `${baseUrl}api/Account/register-staff`;
+
+export const getAccountsUrl = `${baseUrl}api/Person/get-accounts`;

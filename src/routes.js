@@ -39,6 +39,7 @@ import PageListAssessment from "./pages/PageListAssessment";
 import PageIntroduceAllClassrooms from "./pages/PageIntroduceAllClassrooms";
 import PageIntroduceClassroomDetail from "./pages/PageIntroduceClassroomDetail";
 import PageManageAllStaffs from "./pages/ManageStaff/PageManageAllStaffs";
+import PageManageAllAccounts from "./pages/PageManageAllAccounts";
 
 //list your routes here
 export const routes = [
@@ -50,7 +51,7 @@ export const routes = [
   { path: "/manage-subjects", element: <PageManageSubjects /> },
   { path: "/collections", element: <CollectionPage /> },
   { path: "/collections/:slug", element: <CollectionPage /> },
-  { path: "/opended-classrooms", element: <PageOpenedClassRooms /> },
+  { path: "/manage-classrooms", element: <PageOpenedClassRooms /> },
   { path: "/schedule", element: <PageSchedule /> },
   { path: "/tutor-classrooms/:id", element: <PageTutorClassroomDetail /> },
   {
@@ -88,15 +89,18 @@ export const routes = [
   { path: "/parent-classrooms", element: <PageListParentClassroom /> },
 
   { path: "/manage-staffs", element: <PageManageAllStaffs /> },
+  { path: "/manage-accounts", element: <PageManageAllAccounts /> },
 
   { path: "/assessesments", element: <PageListAssessment /> },
   { path: "/assessesments/:id", element: <PageAssessDetail /> },
+  { path: "/assessesments/create", element: <AddAssessment /> },
+
+  { path: "/manage-transactions", element: <Transaction /> },
+  { path: "/transactions/:id", element: <TransactionDetail /> },
+  { path: "/transactions/create", element: <AddTransaction /> },
 
   { path: "/accountManager", element: <AccountManager /> },
   { path: "/AccountDetail/:id", element: <AccountDetail /> },
-  { path: "/listTransactionManager", element: <Transaction /> },
-  { path: "/transactionDetail/:id", element: <TransactionDetail /> },
-  { path: "/addTransaction", element: <AddTransaction /> },
   { path: "/lissAllClass", element: <ListAllClass /> },
   { path: "/tutorFee", element: <TutorFee /> },
   { path: "/addAssess", element: <AddAssessment /> },

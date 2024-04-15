@@ -15,7 +15,10 @@ export const PARENT_HREF = {
 };
 
 export const STAFF_HREF = {
+  MANAGE_CLASSROOM: "/manage-classrooms",
   MANAGE_SUBJECT: "/manage-subjects",
+  MANAGE_ACCOUNTS: "/manage-accounts",
+  LIST_TRANSACTION: "/manage-transactions",
 };
 
 export const ADMIN_HREF = {

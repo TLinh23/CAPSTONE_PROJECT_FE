@@ -21,10 +21,15 @@ import PrimaryBtn from "../common/PrimaryBtn";
 import EditIcon from "../icons/EditIcon";
 import SecondaryBtn from "../common/SecondaryBtn";
 import { toast } from "react-toastify";
+import { getAllStaffs } from "src/apis/staff-module";
+import CreateNewStaff from "./CreateNewStaff";
+import { format } from "date-fns";
+import GarbageIcon from "../icons/GarbageIcon";
+import StaffDetail from "./StaffDetail";
 
 function AllStaffs() {
   const queryClient = useQueryClient();
-  const [listAllSubjects, setListAllSubjects] = useState(undefined);
+  const [listAllStaffs, setListAllStaffs] = useState(undefined);
   const [searchParam, setSearchParam] = useState("");
   const debouncedSearchValue = useDebounce(searchParam, 500);
   const [page, setPage] = useState(1);
@@ -54,8 +59,8 @@ function AllStaffs() {
           queryObj["Status"] = filterSelected?.key;
         }
 
-        const response = await getListSubjects(queryObj);
-        setListAllSubjects(response?.data?.data);
+        const response = await getAllStaffs(queryObj);
+        setListAllStaffs(response?.data?.data);
         return response?.data;
       },
       enabled: !!page && !!limit,
@@ -135,7 +140,7 @@ function AllStaffs() {
             setShowDialogCreate(true);
           }}
         >
-          Add Subject
+          Add Staff
         </PrimaryBtn>
         <DeniedBtn
           onClick={() => {
@@ -153,7 +158,7 @@ function AllStaffs() {
         <Table
           pageSizePagination={limit}
           columns={columns}
-          data={listAllSubjects?.items}
+          data={listAllStaffs?.items}
         />
       </div>
 
@@ -162,45 +167,18 @@ function AllStaffs() {
         setPageSize={setLimit}
         currentPage={page}
         setCurrentPage={setPage}
-        totalItems={listAllSubjects?.pagination?.totalItem}
+        totalItems={listAllStaffs?.pagination?.totalItem}
       />
       <PopupTemplate
-        title="Add Subject"
+        title="Add Staff"
         setShowDialog={setShowDialogCreate}
         showDialog={showDialogCreate}
         classNameWrapper="md:min-w-[486px]"
       >
-        <div className="flex flex-col items-center gap-4">
-          <PrimaryInput
-            onChange={(e) => {
-              setSubjectDetail({
-                ...subjectDetail,
-                SubjectName: e.target.value,
-              });
-            }}
-            className="w-full"
-            value={subjectDetail?.SubjectName || ""}
-          />
-          <FilterDropDown
-            listDropdown={LIST_STATUS_FILTER}
-            showing={subjectStatus}
-            setShowing={setSubjectStatus}
-            textDefault={"Choose status"}
-          />
-        </div>
-        <div className="flex items-center justify-end gap-5 mt-5">
-          <PrimaryBtn onClick={handleCreateSubject} className="w-[120px]">
-            Create
-          </PrimaryBtn>
-          <SecondaryBtn
-            onClick={() => {
-              setShowDialogCreate(false);
-            }}
-            className="w-[120px]"
-          >
-            Cancel
-          </SecondaryBtn>
-        </div>
+        <CreateNewStaff
+          setShowDialogCreate={setShowDialogCreate}
+          showDialogCreate={showDialogCreate}
+        />
       </PopupTemplate>
     </div>
   );
@@ -214,11 +192,21 @@ const columns = [
     columns: [
       {
         Header: "No",
-        accessor: (data) => <p>{data?.subjectId}</p>,
+        accessor: (data) => <p>{data?.personId}</p>,
       },
       {
-        Header: "Name",
-        accessor: (data) => <p>{data?.subjectName}</p>,
+        Header: "Full Name",
+        accessor: (data) => <p>{data?.fullName}</p>,
+      },
+      {
+        Header: "Email",
+        accessor: (data) => <p>{data?.email}</p>,
+      },
+      {
+        Header: "Birth Date",
+        accessor: (data) => (
+          <p>{data?.dob ? format(data?.dob, "dd-MM-yyyy") : "---"}</p>
+        ),
       },
       {
         Header: "Status",
@@ -293,19 +281,12 @@ const RenderAction = ({ data }) => {
   return (
     <div className="flex items-center gap-4">
       <PopupTemplate
-        title="Subject Detail"
+        title="Staff Detail"
         setShowDialog={setShowDialog}
         showDialog={showDialog}
         classNameWrapper="md:min-w-[486px]"
       >
-        <div className="flex items-center gap-4">
-          <PrimaryInput
-            className="w-full"
-            readOnly
-            value={data?.subjectName || ""}
-          />
-          <RenderStatus status={data?.status}>{data?.status}</RenderStatus>
-        </div>
+        <StaffDetail staffDetail={data} />
         <div className="flex justify-end">
           <PrimaryBtn
             onClick={() => {
@@ -324,33 +305,19 @@ const RenderAction = ({ data }) => {
         className="cursor-pointer"
       />
       <PopupTemplate
-        title="Edit Subject"
+        title="Delete Staff"
         setShowDialog={setShowDialogEdit}
         showDialog={showDialogEdit}
-        classNameWrapper="md:min-w-[486px]"
+        classNameWrapper="w-[300px]"
       >
         <div className="flex flex-col items-center gap-4">
-          <PrimaryInput
-            onChange={(e) => {
-              setSubjectDetail({
-                ...subjectDetail,
-                SubjectName: e.target.value,
-              });
-            }}
-            className="w-full"
-            value={subjectDetail?.SubjectName || data?.subjectName || ""}
-          />
-          <FilterDropDown
-            listDropdown={LIST_STATUS_FILTER}
-            showing={subjectStatus}
-            setShowing={setSubjectStatus}
-            textDefault={data?.status}
-          />
+          Do you want to delete this staff {data?.fullName} - Email:{" "}
+          {data?.email}
         </div>
         <div className="flex items-center justify-end gap-5 mt-5">
-          <PrimaryBtn onClick={handleEditSubject} className="w-[120px]">
-            Save
-          </PrimaryBtn>
+          <DeniedBtn onClick={handleEditSubject} className="w-[120px]">
+            Delete
+          </DeniedBtn>
           <SecondaryBtn
             onClick={() => {
               setShowDialogEdit(false);
@@ -361,7 +328,7 @@ const RenderAction = ({ data }) => {
           </SecondaryBtn>
         </div>
       </PopupTemplate>
-      <EditIcon
+      <GarbageIcon
         onClick={() => {
           setShowDialogEdit(true);
         }}

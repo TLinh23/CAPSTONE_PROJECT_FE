@@ -9,7 +9,7 @@ import Title from "src/components/common/Title";
 import UploadImage from "src/components/common/UploadImage";
 import useUploadImage from "src/hooks/useUploadImage";
 
-function StaffEditProfile(props) {
+function AdminEditProfile(props) {
   const { profileData } = props;
   const [staffAccountObject, setStaffAccountObject] = useState(profileData);
   const { imageUrlResponse, handleUploadImage, imageUpload } = useUploadImage();
@@ -39,7 +39,7 @@ function StaffEditProfile(props) {
                 </div>
               </div>
             </div>
-            <div className="mt-5">Role: Staff</div>
+            <div className="mt-5">Role: System Admin</div>
             <div className="mt-3">Email: namnguyen@gmail.com</div>
           </div>
           <div className="flex flex-col gap-4">
@@ -192,4 +192,4 @@ function StaffEditProfile(props) {
   );
 }
 
-export default StaffEditProfile;
+export default AdminEditProfile;
