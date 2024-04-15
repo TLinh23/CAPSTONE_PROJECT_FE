@@ -6,6 +6,7 @@ import PrimaryBtn from "../../common/PrimaryBtn";
 import axios from "axios";
 import { useNotification } from "src/hooks/useNotification";
 import { createPayment } from "src/constants/APIConfig";
+import FilterDropDown from "src/components/common/FilterDropDown";
 
 function AddTransaction() {
   const { contextHolder, openNotification } = useNotification();
@@ -50,59 +51,55 @@ function AddTransaction() {
 
   return (
     <Layout>
-      {contextHolder}
-      <div className="container p-4 mx-auto">
-        <Title>Staff - Add New Transaction</Title>
-        <div className="mt-4">
-          <div className="flex items-center mb-4">
-            <label
-              className="inline-block w-1/3 text-sm font-bold text-gray-700"
-              htmlFor="paymentType"
-            >
-              Payment Type:
-            </label>
-            <Input
-              id="paymentType"
-              name="paymentType"
-              placeholder="Payment Type"
-              value={transaction.paymentType}
-              onChange={handleChange}
-              className="w-2/3"
-            />
-          </div>
-          <div className="flex items-center mb-4">
+      <div className="bg-white block-border">
+        <Title>Add New Transaction</Title>
+        <div className="flex flex-col gap-4 mt-10">
+          <div className="grid gap-5 grid-cols-37">
             <label
               className="inline-block w-1/3 text-sm font-bold text-gray-700"
               htmlFor="requestedBy"
             >
               Requested By:
             </label>
-            <Input
-              id="requestedBy"
-              name="requestedBy"
-              placeholder="Requested By"
-              value={transaction.requestedBy}
-              onChange={handleChange}
-              className="w-2/3"
+            <FilterDropDown
+              listDropdown={undefined}
+              showing={undefined}
+              setShowing={undefined}
+              textDefault="Select requested by"
+              className="!w-2/3"
             />
           </div>
-          <div className="flex items-center mb-4">
+          <div className="grid gap-5 grid-cols-37">
             <label
               className="inline-block w-1/3 text-sm font-bold text-gray-700"
               htmlFor="payer"
             >
               Payer:
             </label>
-            <Input
-              id="payer"
-              name="payer"
-              placeholder="Payer"
-              value={transaction.payer}
-              onChange={handleChange}
-              className="w-2/3"
+            <FilterDropDown
+              listDropdown={undefined}
+              showing={undefined}
+              setShowing={undefined}
+              textDefault="Select payer"
+              className="!w-2/3"
             />
           </div>
-          <div className="flex items-center mb-4">
+          <div className="grid gap-5 grid-cols-37">
+            <label
+              className="inline-block w-1/3 text-sm font-bold text-gray-700"
+              htmlFor="payer"
+            >
+              Payer:
+            </label>
+            <FilterDropDown
+              listDropdown={undefined}
+              showing={undefined}
+              setShowing={undefined}
+              textDefault="Select payment type"
+              className="!w-2/3"
+            />
+          </div>
+          <div className="grid gap-5 grid-cols-37">
             <label
               className="inline-block w-1/3 text-sm font-bold text-gray-700"
               htmlFor="amount"
@@ -118,9 +115,9 @@ function AddTransaction() {
               className="w-2/3"
             />
           </div>
-          <div className="flex items-center mb-4">
+          <div className="grid gap-5 grid-cols-37">
             <label
-              className="inline-block w-1/3 text-sm font-bold text-gray-700"
+              className="inline-block text-sm font-bold text-gray-700"
               htmlFor="description"
             >
               Transaction Description:
@@ -134,12 +131,9 @@ function AddTransaction() {
               className="w-2/3"
             />
           </div>
-          <div className="flex justify-end mt-4">
-            <PrimaryBtn
-              onClick={handleSubmit}
-              className="px-2 py-1 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
-            >
-              Add New
+          <div className="flex justify-center mt-4">
+            <PrimaryBtn onClick={handleSubmit} className="!w-[200px]">
+              Add
             </PrimaryBtn>
           </div>
         </div>

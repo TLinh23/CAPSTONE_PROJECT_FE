@@ -140,7 +140,9 @@ function ParentProfileDetail(props) {
             <PrimaryBtn
               className="md:max-w-[222px]"
               onClick={() => {
-                navigate(`/profile/${dataProfileDetail?.id}/edit`);
+                navigate(
+                  `/profile/${dataProfileDetail?.account?.personId}/edit`
+                );
               }}
             >
               Update

@@ -7,6 +7,7 @@ import TutorEditProfile from "./Tutor/TutorEditProfile";
 import StaffEditProfile from "./Staff/StaffEditProfile";
 import NotFound from "src/pages/NotFound";
 import UnauthorizedPage from "src/pages/UnauthorizedPage";
+import AdminEditProfile from "./Admin/AdminEditProfile";
 
 function EditProfile() {
   const { id } = useParams();
@@ -23,6 +24,10 @@ function EditProfile() {
       {String(id) === String(userId) && roleKey === ROLE_NAME.STAFF && (
         <StaffEditProfile />
       )}
+      {String(id) === String(userId) && roleKey === ROLE_NAME.ADMIN && (
+        <AdminEditProfile />
+      )}
+
       {String(id) !== String(userId) && (
         <UnauthorizedPage className="height-not-found-page" />
       )}

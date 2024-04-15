@@ -2,9 +2,16 @@ import React, { useState } from "react";
 import ProfileHeader from "../ProfileHeader";
 import PrimaryInput from "src/components/common/PrimaryInput";
 import { format } from "date-fns";
+import { useAuthContext } from "src/context/AuthContext";
+import { ROLE_NAME } from "src/constants/constants";
+import { useNavigate, useParams } from "react-router-dom";
+import PrimaryBtn from "src/components/common/PrimaryBtn";
 
 function AdminProfileDetail(props) {
   const { dataProfileDetail } = props;
+  const { id } = useParams();
+  const { roleKey } = useAuthContext();
+  const navigate = useNavigate();
   return (
     <div className="bg-[#ffffff] block-border">
       <ProfileHeader title="Personal information" />
@@ -74,6 +81,21 @@ function AdminProfileDetail(props) {
           />
         </div>
       </div>
+      {roleKey === ROLE_NAME.ADMIN &&
+        String(id) === String(dataProfileDetail?.account?.personId) && (
+          <div className="flex justify-center mt-8">
+            <PrimaryBtn
+              className="md:max-w-[222px]"
+              onClick={() => {
+                navigate(
+                  `/profile/${dataProfileDetail?.account?.personId}/edit`
+                );
+              }}
+            >
+              Update
+            </PrimaryBtn>
+          </div>
+        )}
     </div>
   );
 }

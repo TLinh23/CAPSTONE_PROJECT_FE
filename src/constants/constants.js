@@ -80,16 +80,16 @@ export const STAFF_MENU = [
   {
     id: 1,
     name: "List Classroom",
-    href: TUTOR_HREF.SCHEDULE,
+    href: STAFF_HREF.MANAGE_CLASSROOM,
     icon: <ProfileIcon />,
-    listActiveRouter: [TUTOR_HREF.SCHEDULE],
+    listActiveRouter: [STAFF_HREF.MANAGE_CLASSROOM],
   },
   {
     id: 2,
     name: "Transaction",
-    href: TUTOR_HREF.LIST_TRANSACTION,
+    href: STAFF_HREF.LIST_TRANSACTION,
     icon: <TransactionIcon />,
-    listActiveRouter: [TUTOR_HREF.LIST_TRANSACTION],
+    listActiveRouter: [STAFF_HREF.LIST_TRANSACTION],
   },
   {
     id: 3,
@@ -101,9 +101,9 @@ export const STAFF_MENU = [
   {
     id: 4,
     name: "List Account",
-    href: STAFF_HREF.MANAGE_SUBJECT,
+    href: STAFF_HREF.MANAGE_ACCOUNTS,
     icon: <ProfileIcon />,
-    listActiveRouter: [STAFF_HREF.MANAGE_SUBJECT],
+    listActiveRouter: [STAFF_HREF.MANAGE_ACCOUNTS],
   },
 ];
 
@@ -147,7 +147,7 @@ export const STUDENT_STATUS = {
 
 export const LIST_STATUS_FILTER = [
   { id: 1, key: "CREATED", value: "Created" },
-  { id: 2, key: "REMOVED", value: "Removed" },
+  { id: 2, key: "DELETED", value: "Deleted" },
 ];
 
 export const LIST_GENDER_VALUE = [
