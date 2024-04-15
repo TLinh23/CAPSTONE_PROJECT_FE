@@ -102,7 +102,7 @@ function TutorCreateClassroomInfor(props) {
           onChange={(e) => {
             setClassRoomDetail({
               ...classRoomDetail,
-              maxCapacity: e.target.value,
+              maxCapacity: Number(e.target.value),
             });
           }}
           value={classRoomDetail?.maxCapacity || ""}

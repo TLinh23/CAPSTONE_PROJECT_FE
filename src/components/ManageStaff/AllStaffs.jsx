@@ -113,7 +113,7 @@ function AllStaffs() {
 
   return (
     <div>
-      <Title>Manage List Subject</Title>
+      <Title>Manage List Staff</Title>
       <div className="flex flex-col gap-4 py-5 md:items-center md:flex-row md:justify-end">
         <SearchInput
           placeholder="Search by name"

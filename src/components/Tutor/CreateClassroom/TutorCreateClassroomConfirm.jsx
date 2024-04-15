@@ -67,7 +67,7 @@ function TutorCreateClassroomConfirm(props) {
     }
     const queryObj = {
       ...classRoomDetail,
-      tutorId: userId,
+      tutorId: Number(userId),
       status: "ACTIVE",
       addScheduleDto: listLevels,
       startDate: new Date(),
