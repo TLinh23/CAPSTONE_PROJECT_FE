@@ -19,5 +19,5 @@ export const STAFF_HREF = {
 };
 
 export const ADMIN_HREF = {
-  LIST_STAFF: "/listStaffManager",
+  LIST_STAFF: "/manage-staffs",
 };
