@@ -63,6 +63,7 @@ function EditStudentPopup(props) {
       Gender: studentDetail?.gender,
       Dob: studentDetail?.dob,
       Address: studentDetail?.address,
+      PersonId: Number(studentDetail?.studentId),
     };
     if (gender) {
       queryObj["Gender"] = gender?.value;
