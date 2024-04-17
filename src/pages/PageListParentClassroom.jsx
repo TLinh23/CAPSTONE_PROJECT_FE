@@ -11,6 +11,7 @@ import RenderStatus from "src/components/common/RenderStatus";
 import SearchInput from "src/components/common/SearchInput";
 import Table from "src/components/common/Table";
 import Title from "src/components/common/Title";
+import ShowPasswordIcon from "src/components/icons/ShowPasswordIcon";
 import Layout from "src/components/layout/Layout";
 import { LIST_CLASS_FILTER, ROLE_NAME } from "src/constants/constants";
 import { useAuthContext } from "src/context/AuthContext";
@@ -145,10 +146,16 @@ const columns = [
           <RenderStatus status={data?.status}>{data?.status}</RenderStatus>
         ),
       },
-      // {
-      //   Header: " ",
-      //   accessor: (data) => <RenderActionClassroom data={data} />,
-      // },
+      {
+        Header: " ",
+        accessor: (data) => (
+          <div>
+            <Link to={`/classrooms/${data?.classId}`}>
+              <ShowPasswordIcon className="cursor-pointer" />
+            </Link>
+          </div>
+        ),
+      },
     ],
   },
 ];

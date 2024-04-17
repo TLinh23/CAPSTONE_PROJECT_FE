@@ -90,6 +90,7 @@ export const routes = [
 
   { path: "/manage-staffs", element: <PageManageAllStaffs /> },
   { path: "/manage-accounts", element: <PageManageAllAccounts /> },
+  { path: "/accounts/:id", element: <ProfilePage /> },
 
   { path: "/assessesments", element: <PageListAssessment /> },
   { path: "/assessesments/:id", element: <PageAssessDetail /> },

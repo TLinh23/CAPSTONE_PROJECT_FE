@@ -15,7 +15,7 @@ import SecondaryBtn from "src/components/common/SecondaryBtn";
 import ShowDetail from "src/components/common/ShowDetail";
 import Table from "src/components/common/Table";
 import Title from "src/components/common/Title";
-import { LIST_STATUS_FILTER } from "src/constants/constants";
+import { LIST_CLASS_FILTER, LIST_STATUS_FILTER } from "src/constants/constants";
 import useDebounce from "src/hooks/useDebounce";
 
 function StaffManageAllAccounts() {
@@ -68,7 +68,7 @@ function StaffManageAllAccounts() {
           value={searchParam || ""}
         />
         <FilterDropDown
-          listDropdown={LIST_STATUS_FILTER}
+          listDropdown={LIST_CLASS_FILTER}
           showing={filterSelected}
           setShowing={setFilterSelected}
           className="md:max-w-[220px]"
@@ -155,7 +155,7 @@ const RenderAction = ({ data }) => {
   const handleDeleteClassroom = () => {};
   return (
     <div className="flex items-center gap-4">
-      <Link to={`/profile/${data?.personId}`}>
+      <Link to={`/accounts/${data?.personId}`}>
         <ShowDetail />
       </Link>
       <DeniedBtn

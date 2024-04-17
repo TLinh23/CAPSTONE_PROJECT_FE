@@ -57,12 +57,6 @@ function ListTransactionManager() {
   );
   const paginatedData = filteredData.slice((page - 1) * limit, page * limit);
 
-  // Hàm để xử lý khi nút "Add New Transaction" được nhấn
-  const handleAddNewTransaction = () => {
-    // Logic để thêm giao dịch mới
-    console.log("Add New Transaction button clicked");
-  };
-
   return (
     <Layout>
       <div className="container p-4 mx-auto">

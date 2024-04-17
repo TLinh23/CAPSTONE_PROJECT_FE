@@ -27,6 +27,7 @@ function PageIntroduceAllClassrooms() {
         const queryObj = {};
         queryObj["PagingRequest.CurrentPage"] = 1;
         queryObj["PagingRequest.PageSize"] = 99;
+        queryObj["Status"] = "CREATED";
 
         const response = await getListSubjects(queryObj);
         setListAllSubjects(response?.data?.data);
