@@ -193,20 +193,22 @@ function TutorProfileDetail(props) {
               className="border-b border-b-gray"
             />
             <div className="flex flex-col">
-              {dataProfileDetail?.subjectTutors?.map((item, index) => (
-                <SubjectItem
-                  key={index}
-                  roleKey={roleKey}
-                  userId={userId}
-                  dataProfileDetail={dataProfileDetail}
-                  item={item}
-                />
-              ))}
+              <div className="flex flex-col max-h-[340px] overflow-auto">
+                {dataProfileDetail?.subjectTutors?.map((item, index) => (
+                  <SubjectItem
+                    key={index}
+                    roleKey={roleKey}
+                    userId={userId}
+                    dataProfileDetail={dataProfileDetail}
+                    item={item}
+                  />
+                ))}
+              </div>
               {roleKey === ROLE_NAME.TUTOR &&
                 String(userId) ===
                   String(dataProfileDetail?.account?.personId) && (
                   <div
-                    className="p-2 text-center cursor-pointer smooth-transform hover:underline"
+                    className="p-2 text-center border-t cursor-pointer smooth-transform hover:underline"
                     onClick={handleClickAddMoreStudent}
                   >
                     Add more

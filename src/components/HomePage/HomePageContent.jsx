@@ -5,6 +5,9 @@ import HeartIcon from "../icons/HeartIcon";
 import StarIcon from "../icons/StarIcon";
 import { Link, useNavigate } from "react-router-dom";
 import { useQueries } from "react-query";
+import { getExploreTutors } from "src/apis/tutor-module";
+import TutorExploreItem from "../Explore/TutorExploreItem";
+import ClassroomExploreItem from "../Explore/ClassroomExploreItem";
 import { getListClass } from "src/apis/class-module";
 
 const LIST_ITEM_SEPARATE_PAGE_1 = [
@@ -64,20 +67,35 @@ const LIST_ITEM_SEPARATE_PAGE_2 = [
 function HomePageContent() {
   const navigate = useNavigate();
   const [listTutor, setListTutor] = useState(undefined);
-  // useQueries([
-  //   {
-  //     queryKey: ["getListTutor"],
-  //     queryFn: async () => {
-  //         const queryObj = {};
-  //         queryObj["PagingRequest.CurrentPage"] = 1;
-  //         queryObj["PagingRequest.PageSize"] = 5;
-  //         // change your api request
-  //         const response = await getListClass(queryObj);
-  //         setListTutor(response?.data?.data);
-  //         return response?.data;
-  //     },
-  //   },
-  // ]);
+  const [listAllClass, setListAllClass] = useState(undefined);
+
+  useQueries([
+    {
+      queryKey: ["getListClassroom"],
+      queryFn: async () => {
+        const queryObj = {};
+        queryObj["PagingRequest.CurrentPage"] = 1;
+        queryObj["PagingRequest.PageSize"] = 4;
+        queryObj["Status"] = "ACTIVE";
+
+        const response = await getListClass(queryObj);
+        setListAllClass(response?.data?.data);
+        return response?.data;
+      },
+    },
+    {
+      queryKey: ["getExploreTutors"],
+      queryFn: async () => {
+        const queryObj = {};
+        queryObj["PagingRequest.CurrentPage"] = 1;
+        queryObj["PagingRequest.PageSize"] = 3;
+
+        const response = await getExploreTutors(queryObj);
+        setListTutor(response?.data?.data);
+        return response?.data;
+      },
+    },
+  ]);
 
   return (
     <div>
@@ -164,9 +182,9 @@ function HomePageContent() {
         </div>
         <div className="mt-5">
           <div className="grid grid-cols-3 gap-4">
-            <FeaturedInstructorCard />
-            <FeaturedInstructorCard />
-            <FeaturedInstructorCard />
+            {listTutor?.items?.map((item, index) => (
+              <TutorExploreItem item={item} key={index} isFeatured />
+            ))}
           </div>
         </div>
         <Link
@@ -198,12 +216,15 @@ function HomePageContent() {
             voluptatum deleniti atque corrupti quos dolores etmquasa molestias
             epturi sint occaecati cupiditate non providente mikume molareshe.
           </div>
-          <button className="w-fit flex items-center gap-2 px-5 py-3 rounded-md bg-[#6a307d] hover:bg-[#6a307d90]">
+          <Link
+            to={"/classrooms"}
+            className="w-fit flex items-center gap-2 px-5 py-3 rounded-md bg-[#6a307d] hover:bg-[#6a307d90]"
+          >
             <p className="text-base font-bold text-white">
               Explore more about us
             </p>
             <ArrowRightIcon />
-          </button>
+          </Link>
         </div>
         <div className="hidden md:block">
           <img
@@ -258,13 +279,13 @@ function HomePageContent() {
           </h2>
           <div className="mt-3 text-4xl font-semibold">
             Choose from the top visited
-            <br /> categories you may like
+            <br /> classes you may like
           </div>
         </div>
         <div className="mt-5">
           <div className="grid grid-cols-4 gap-4">
-            {[1, 2, 3, 4].map((i) => (
-              <TopCategoryTab key={i} />
+            {listAllClass?.items?.map((item, index) => (
+              <ClassroomExploreItem key={index} item={item} isFeatured />
             ))}
           </div>
         </div>

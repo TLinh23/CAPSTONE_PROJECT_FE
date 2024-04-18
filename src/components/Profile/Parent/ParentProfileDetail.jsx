@@ -9,7 +9,6 @@ import AddStudentPopup from "./AddStudentPopup";
 import EditStudentPopup from "./EditStudentPopup";
 import { useAuthContext } from "src/context/AuthContext";
 import { ROLE_NAME } from "src/constants/constants";
-import PrimarySmallTitle from "src/components/common/PrimarySmallTitle";
 import ProfileHeader from "../ProfileHeader";
 import DeniedBtn from "src/components/common/DeniedBtn";
 import DeleteStudentPopup from "./DeleteStudentPopup";
@@ -111,20 +110,22 @@ function ParentProfileDetail(props) {
               className="border-b border-b-gray"
             />
             <div className="flex flex-col">
-              {dataProfileDetail?.students?.map((item, index) => (
-                <StudentItem
-                  item={item}
-                  key={index}
-                  roleKey={roleKey}
-                  userId={userId}
-                  dataProfileDetail={dataProfileDetail}
-                />
-              ))}
+              <div className="flex flex-col max-h-[340px] overflow-auto">
+                {dataProfileDetail?.students?.map((item, index) => (
+                  <StudentItem
+                    item={item}
+                    key={index}
+                    roleKey={roleKey}
+                    userId={userId}
+                    dataProfileDetail={dataProfileDetail}
+                  />
+                ))}
+              </div>
               {roleKey === ROLE_NAME.PARENT &&
                 String(userId) ===
                   String(dataProfileDetail?.account?.personId) && (
                   <div
-                    className="p-2 text-center cursor-pointer smooth-transform hover:underline"
+                    className="p-2 text-center border-t cursor-pointer smooth-transform hover:underline"
                     onClick={handleClickAddMoreStudent}
                   >
                     Add more

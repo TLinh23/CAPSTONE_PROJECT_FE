@@ -6,56 +6,45 @@ import SearchInput from "../../common/SearchInput";
 import Table from "../../common/Table";
 import Title from "../../common/Title";
 import useDebounce from "src/hooks/useDebounce";
-import RenderStatus from "src/components/common/RenderStatus";
 import ShowDetail from "src/components/common/ShowDetail";
 import PrimaryBtn from "../../common/PrimaryBtn";
 import { Link } from "react-router-dom";
 import EditIcon from "src/components/icons/EditIcon";
 import PopupTemplate from "src/components/common/PopupTemplate";
-import { LIST_CLASS_LEVEL_DEFAULT } from "src/constants/constants";
-
-// Dữ liệu giả định
-const mockData = [
-  {
-    id: 1,
-    payer: "Trang Pham",
-    requestBy: "Huyen Tran",
-    amount: "200",
-    reqDate: "11-02-2024",
-    payDate: "13-02-2024",
-    status: "PAID",
-  },
-  {
-    id: 2,
-    payer: "Khang Nguyen",
-    requestBy: "Long Nguyen",
-    amount: "250",
-    reqDate: "13-02-2024",
-    status: "UNPAID",
-  },
-  {
-    id: 3,
-    payer: "Huyen Tran",
-    requestBy: "Khang Nguyen",
-    amount: "150",
-    reqDate: "09-01-2024",
-    status: "UNPAID",
-  },
-  // Thêm các bản ghi giả định khác nếu cần
-];
+import {
+  getListTransactions,
+  updateTransactionDetail,
+} from "src/apis/transaction-module";
+import { useMutation, useQueries, useQueryClient } from "react-query";
+import { format } from "date-fns";
+import { LIST_TRACSACTION_STATUS } from "src/constants/enumConstant";
+import { toast } from "react-toastify";
 
 function ListTransactionManager() {
+  const [listAllTransactions, setListAllTransactions] = useState(undefined);
   const [isFilterSelected, setIsFilterSelected] = useState(false);
   const [searchParam, setSearchParam] = useState("");
   const debouncedSearchValue = useDebounce(searchParam, 500);
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
 
-  // Tính toán dữ liệu hiển thị dựa trên searchParam, page và limit
-  const filteredData = mockData.filter((transaction) =>
-    transaction.payer.toLowerCase().includes(debouncedSearchValue.toLowerCase())
-  );
-  const paginatedData = filteredData.slice((page - 1) * limit, page * limit);
+  useQueries([
+    {
+      queryKey: ["getListTransactions", page, limit, debouncedSearchValue],
+      queryFn: async () => {
+        const queryObj = {};
+        queryObj["PagingRequest.CurrentPage"] = page;
+        queryObj["PagingRequest.PageSize"] = limit;
+        if (debouncedSearchValue) {
+          queryObj["SearchWord"] = debouncedSearchValue;
+        }
+        const response = await getListTransactions(queryObj);
+        setListAllTransactions(response?.data?.data);
+        return response?.data;
+      },
+      enabled: !!page,
+    },
+  ]);
 
   return (
     <Layout>
@@ -73,11 +62,7 @@ function ListTransactionManager() {
             value={searchParam}
           />
           <FilterDropDown
-            listDropdown={[
-              { id: 1, value: "PAID", name: "PAID" },
-              { id: 2, value: "UNPAID", name: "UNPAID" },
-              // Thêm các bộ lọc khác nếu cần
-            ]}
+            listDropdown={LIST_TRACSACTION_STATUS}
             showing={isFilterSelected}
             setShowing={setIsFilterSelected}
             className="md:max-w-[220px]"
@@ -88,8 +73,8 @@ function ListTransactionManager() {
         <div className="bg-white table-style block-border">
           <Table
             pageSizePagination={limit}
-            columns={transactionColumns}
-            data={paginatedData}
+            columns={columns}
+            data={listAllTransactions?.items}
           />
         </div>
 
@@ -98,7 +83,7 @@ function ListTransactionManager() {
           setPageSize={setLimit}
           currentPage={page}
           setCurrentPage={setPage}
-          totalItems={filteredData.length}
+          totalItems={listAllTransactions?.pagination?.totalItem}
         />
       </div>
     </Layout>
@@ -107,38 +92,58 @@ function ListTransactionManager() {
 
 export default ListTransactionManager;
 
-const transactionColumns = [
+const columns = [
   {
     Header: " ",
     columns: [
       {
         Header: "No",
-        accessor: "id",
+        accessor: (data) => <p>{data?.paymentId}</p>,
       },
       {
         Header: "Payer",
-        accessor: "payer",
+        accessor: (data) => <p>{data?.payerName}</p>,
       },
       {
-        Header: "Request by",
-        accessor: "requestBy",
+        Header: "Request By",
+        accessor: (data) => <p>{data?.requestName}</p>,
       },
       {
         Header: "Amount",
-        accessor: "amount",
+        accessor: (data) => <p>{data?.paymentAmount}</p>,
       },
       {
-        Header: "Request Date",
-        accessor: "reqDate",
+        Header: "Request date",
+        accessor: (data) => (
+          <p>
+            {data?.requestDate
+              ? format(new Date(data?.requestDate), "dd-MM-yyyy")
+              : "---"}
+          </p>
+        ),
       },
       {
-        Header: "Pay Date",
-        accessor: "payDate",
+        Header: "Pay date",
+        accessor: (data) => (
+          <p>
+            {data?.payDate
+              ? format(new Date(data?.payDate), "dd-MM-yyyy")
+              : "---"}
+          </p>
+        ),
       },
       {
         Header: "Status",
         accessor: (data) => (
-          <RenderStatus status={data.status}>{data.status}</RenderStatus>
+          <div
+            className={`border w-fit px-2 py-1 rounded-md capitalize ${
+              data?.status === "PAID"
+                ? "border-approved text-approved"
+                : "border-pending text-pending"
+            }`}
+          >
+            {data?.status}
+          </div>
         ),
       },
       {
@@ -150,13 +155,52 @@ const transactionColumns = [
 ];
 
 const RenderAction = ({ data }) => {
+  const queryClient = useQueryClient();
   const [showDialog, setShowDialog] = useState(false);
+  const [statusTransactionSelected, setStatusTransactionSelected] =
+    useState(undefined);
+
+  const updateTransactionMutation = useMutation(
+    async (newData) => {
+      console.log("newData: ", newData);
+      return await updateTransactionDetail(data?.paymentId, newData);
+    },
+    {
+      onSuccess: (data) => {
+        console.log("Data: ", data);
+        if (data?.status >= 200 && data?.status < 300) {
+          toast.success("Update transaction successfully");
+          setShowDialog(false);
+          queryClient.invalidateQueries("getListTransactions");
+        } else {
+          toast.error(
+            data?.message ||
+              data?.response?.data?.message ||
+              data?.response?.data ||
+              "Oops! Something went wrong..."
+          );
+        }
+      },
+      onError: (err) => {
+        toast.error(
+          // @ts-ignore
+          err?.response?.data?.message || err?.message || "Update error"
+        );
+      },
+    }
+  );
+  const handleUpdateTransaction = () => {
+    // @ts-ignore
+    updateTransactionMutation.mutate(statusTransactionSelected?.key);
+  };
+
   return (
     <div className="flex items-center gap-4">
-      <Link to={`/transactions/${data.id}`}>
+      <Link to={`/transactions/${data.paymentId}`}>
         <ShowDetail />
       </Link>
       <EditIcon
+        className="cursor-pointer"
         onClick={() => {
           setShowDialog(true);
         }}
@@ -170,15 +214,20 @@ const RenderAction = ({ data }) => {
           <FilterDropDown
             className="mt-4"
             title="Status"
-            listDropdown={LIST_CLASS_LEVEL_DEFAULT}
-            showing={undefined}
-            setShowing={undefined}
+            listDropdown={LIST_TRACSACTION_STATUS}
+            showing={statusTransactionSelected}
+            setShowing={setStatusTransactionSelected}
             classNameDropdown="!max-h-[140px]"
-            textDefault="UNPAID"
+            textDefault={data?.status}
             required="*"
           />
           <div className="flex justify-center mt-5">
-            <PrimaryBtn className="max-w-[160px]">Update</PrimaryBtn>
+            <PrimaryBtn
+              onClick={handleUpdateTransaction}
+              className="max-w-[160px]"
+            >
+              Update
+            </PrimaryBtn>
           </div>
         </div>
       </PopupTemplate>

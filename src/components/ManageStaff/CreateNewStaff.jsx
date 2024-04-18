@@ -16,6 +16,9 @@ import {
   requileValidation,
 } from "src/constants/validations";
 import { useFormik } from "formik";
+import { useMutation, useQueryClient } from "react-query";
+import { registerNewStaff } from "src/apis/staff-module";
+import { toast } from "react-toastify";
 
 const validationSchema = Yup.object({
   Email: emailValidation,
@@ -27,12 +30,41 @@ const validationSchema = Yup.object({
 const EXCLUDED_KEY = ["RePassword"];
 
 function CreateNewStaff(props) {
-  const { showDialogCreate, setShowDialogCreate } = props;
+  const { setShowDialogCreate } = props;
   const [otherInformation, setOtherInformation] = useState(undefined);
   const [gender, setGender] = useState(undefined);
   const { imageUpload, handleUploadImage } = useUploadImage();
+  const queryClient = useQueryClient();
 
-  // registerNewStaff
+  const registerNewStaffMutation = useMutation(
+    async (newData) => {
+      console.log("newData: ", newData);
+      return await registerNewStaff(newData);
+    },
+    {
+      onSuccess: (data) => {
+        console.log("Data: ", data);
+        if (data?.status >= 200 && data?.status < 300) {
+          toast.success("Create successfully");
+          setShowDialogCreate(false);
+          queryClient.invalidateQueries("getListStaffs");
+        } else {
+          toast.error(
+            data?.message ||
+              data?.response?.data?.message ||
+              data?.response?.data ||
+              "Oops! Something went wrong..."
+          );
+        }
+      },
+      onError: (err) => {
+        toast.error(
+          // @ts-ignore
+          err?.response?.data?.message || err?.message || "Update error"
+        );
+      },
+    }
+  );
 
   const formilk = useFormik({
     initialValues: {
@@ -43,6 +75,8 @@ function CreateNewStaff(props) {
       Phone: "",
       Address: "",
       RoleId: 2,
+      StaffType: "STAFF",
+      Gender: "MALE",
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
@@ -54,6 +88,9 @@ function CreateNewStaff(props) {
         };
         if (imageUpload) {
           submitObject["Avatar"] = imageUpload;
+        }
+        if (gender) {
+          submitObject["Gender"] = gender?.value;
         }
         console.log("Go create parent", submitObject);
         for (const key in submitObject) {
@@ -67,7 +104,7 @@ function CreateNewStaff(props) {
           formData.append(key, value);
         }
         // @ts-ignore
-        // registerParentMutation.mutate(formData);
+        registerNewStaffMutation.mutate(formData);
       } catch (error) {
         console.error("Call api failed:", error.response.data);
       }
@@ -75,7 +112,7 @@ function CreateNewStaff(props) {
   });
 
   return (
-    <form>
+    <form onSubmit={formilk.handleSubmit}>
       <div className="grid gap-5 grid-cols-73">
         <div className="flex flex-col gap-3">
           <PrimaryInput
@@ -255,7 +292,11 @@ function CreateNewStaff(props) {
         </div>
       </div>
       <div className="flex items-center justify-end gap-5 mt-5">
-        <PrimaryBtn type="submit" className="w-[120px]">
+        <PrimaryBtn
+          type="submit"
+          disabled={formilk.values.Password !== formilk.values.RePassword}
+          className="w-[120px]"
+        >
           Create
         </PrimaryBtn>
         <SecondaryBtn

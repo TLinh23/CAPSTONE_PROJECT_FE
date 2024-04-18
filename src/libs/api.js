@@ -12,6 +12,14 @@ const client = axios.create({
   },
 });
 
+const jsonClient = axios.create({
+  url: process.env.REACT_APP_BASE_URL,
+  headers: {
+    "x-api-key": process.env.REACT_APP_BASE_URL,
+    "Content-Type": "application/json",
+  },
+});
+
 /**
  * Convert a flat object to a query string
  * @param parameters A flat object
@@ -190,6 +198,30 @@ export const putAPI = async ({ ...options }) => {
   };
 
   return client({ method: "put", ...options })
+    .then(onSuccessPath)
+    .catch(onErrorPath);
+};
+
+export const putJsonAPI = async ({ ...options }) => {
+  await refreshAccessToken();
+  const cookies = cookie.parse(window?.document.cookie);
+  if (cookies.accessToken) {
+    jsonClient.defaults.headers.common.Authorization = `Bearer ${
+      cookies?.accessToken || ""
+    }`;
+  }
+  const acceptLanguagePath = localStorage.getItem("i18nextLng");
+  if (acceptLanguagePath) {
+    jsonClient.defaults.headers.common["Accept-Language"] = acceptLanguagePath;
+  }
+
+  const onSuccessPath = (response) => response;
+  const onErrorPath = (error) => {
+    // optionaly catch errors and add some additional logging here
+    return error;
+  };
+
+  return jsonClient({ method: "put", ...options })
     .then(onSuccessPath)
     .catch(onErrorPath);
 };

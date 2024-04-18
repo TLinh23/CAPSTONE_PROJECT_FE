@@ -1,77 +1,94 @@
-import React from "react";
-import HeaderDetail from "src/components/common/HeaderDetail";
-import Line from "src/components/common/Line";
+import React, { useState } from "react";
 import RenderStatus from "src/components/common/RenderStatus";
 import Title from "../../common/Title";
-
-// Dữ liệu giả định cho chi tiết giao dịch
-const transactionDetail = {
-  paymentType: "PHI DUY TRI TAI KHOAN",
-  requestedBy: "Huyen Tran",
-  payer: "Trang Pham",
-  payAmount: "200",
-  status: "PAID",
-  requestDate: "11-02-2024",
-  payDate: "13-02-2024",
-  transactionDescription: "", // Thêm mô tả giao dịch nếu có
-};
+import { useParams } from "react-router-dom";
+import { useQueries } from "react-query";
+import { getTransactionDetail } from "src/apis/transaction-module";
+import ProfileHeader from "src/components/Profile/ProfileHeader";
 
 function TransactionDetail() {
+  const [transactionDetail, setTransactionDetail] = useState(undefined);
+  const { id } = useParams();
+
+  useQueries([
+    {
+      queryKey: ["getTransactionDetail", id],
+      queryFn: async () => {
+        if (id) {
+          const response = await getTransactionDetail(id);
+          setTransactionDetail(response?.data?.data);
+          return response?.data;
+        }
+      },
+      enabled: !!id,
+    },
+  ]);
+
   return (
     <div className="bg-white block-border">
-      <Title>Transaction Details</Title>
+      <ProfileHeader title="Transaction Details" />
       <div className="max-w-2xl p-6 mx-auto mt-5 rounded-lg shadow-lg">
         <div className="flex flex-col space-y-4">
           <div className="flex justify-between">
             <RequestTitle>Payment Type:</RequestTitle>
             <RequestDescription>
-              {transactionDetail.paymentType}
+              {transactionDetail?.paymentType}
             </RequestDescription>
           </div>
 
           <div className="flex justify-between">
             <RequestTitle>Requested By:</RequestTitle>
             <RequestDescription>
-              {transactionDetail.requestedBy}
+              {transactionDetail?.requestName}
             </RequestDescription>
           </div>
 
           <div className="flex justify-between">
             <RequestTitle>Payer:</RequestTitle>
-            <RequestDescription>{transactionDetail.payer}</RequestDescription>
+            <RequestDescription>
+              {transactionDetail?.payerName}
+            </RequestDescription>
           </div>
 
           <div className="flex justify-between">
             <RequestTitle>Pay Amount:</RequestTitle>
             <RequestDescription>
-              {transactionDetail.payAmount}
+              {transactionDetail?.paymentAmount}
             </RequestDescription>
           </div>
 
           <div className="flex justify-between">
             <RequestTitle>Transaction Description:</RequestTitle>
             <RequestDescription>
-              {transactionDetail.transactionDescription}
+              {transactionDetail?.paymentDesc}
             </RequestDescription>
           </div>
 
           <div className="flex justify-between">
             <RequestTitle>Request Date:</RequestTitle>
             <RequestDescription>
-              {transactionDetail.requestDate}
+              {transactionDetail?.requestDate}
             </RequestDescription>
           </div>
 
           <div className="flex justify-between">
             <RequestTitle>Pay Date:</RequestTitle>
-            <RequestDescription>{transactionDetail.payDate}</RequestDescription>
+            <RequestDescription>
+              {transactionDetail?.payDate}
+            </RequestDescription>
           </div>
 
           <div className="flex justify-between">
             <RequestTitle>Status:</RequestTitle>
-            <RenderStatus status={transactionDetail.status}>
-              {transactionDetail.status}
-            </RenderStatus>
+            <div
+              className={`border w-fit px-2 py-1 rounded-md capitalize ${
+                transactionDetail?.status === "PAID"
+                  ? "border-approved text-approved"
+                  : "border-pending text-pending"
+              }`}
+            >
+              {transactionDetail?.status}
+            </div>
           </div>
         </div>
       </div>

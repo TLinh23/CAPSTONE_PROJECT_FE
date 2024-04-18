@@ -37,3 +37,8 @@ export const VALUE_DAYS_OF_WEEK = [
   "SAT",
   "SUN",
 ];
+
+export const LIST_TRACSACTION_STATUS = [
+  { id: 1, key: "CREATED", value: "Created" },
+  { id: 2, key: "PAID", value: "Paid" },
+];

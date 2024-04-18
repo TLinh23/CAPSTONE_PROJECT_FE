@@ -1,7 +1,9 @@
 import {
   addSubjectTutorUrl,
+  changePasswordUrl,
   countryUrl,
   deleteSubjectTutorUrl,
+  editProfileUrl,
   employeeDummyUrl,
   exploreTutorUrl,
   profileUrl,
@@ -100,5 +102,19 @@ export const getExploreTutors = (paramsObj) => {
   const queryString = convertObjectToQueryString(paramsObj);
   return requestAPI({
     url: `${exploreTutorUrl}${queryString}`,
+  });
+};
+
+export const editProfileDetail = (newData) => {
+  return putAPI({
+    url: `${editProfileUrl}`,
+    data: newData,
+  });
+};
+
+export const changePasswordAccount = (newData) => {
+  return putAPI({
+    url: `${changePasswordUrl}`,
+    data: newData,
   });
 };

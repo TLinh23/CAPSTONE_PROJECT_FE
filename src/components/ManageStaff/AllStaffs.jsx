@@ -7,21 +7,14 @@ import Pagination from "../common/Pagination";
 import { useMutation, useQueries, useQueryClient } from "react-query";
 import RenderStatus from "../common/RenderStatus";
 import DeniedBtn from "../common/DeniedBtn";
-import {
-  createNewSubject,
-  getListSubjects,
-  updateSubjectDetail,
-} from "src/apis/subject-module";
 import FilterDropDown from "../common/FilterDropDown";
-import { LIST_STATUS_FILTER } from "src/constants/constants";
+import { LIST_CLASS_FILTER } from "src/constants/constants";
 import ShowPasswordIcon from "../icons/ShowPasswordIcon";
 import PopupTemplate from "../common/PopupTemplate";
-import PrimaryInput from "../common/PrimaryInput";
 import PrimaryBtn from "../common/PrimaryBtn";
-import EditIcon from "../icons/EditIcon";
 import SecondaryBtn from "../common/SecondaryBtn";
 import { toast } from "react-toastify";
-import { getAllStaffs } from "src/apis/staff-module";
+import { deleteStaffDetail, getAllStaffs } from "src/apis/staff-module";
 import CreateNewStaff from "./CreateNewStaff";
 import { format } from "date-fns";
 import GarbageIcon from "../icons/GarbageIcon";
@@ -36,13 +29,11 @@ function AllStaffs() {
   const [limit, setLimit] = useState(10);
   const [filterSelected, setFilterSelected] = useState(undefined);
   const [showDialogCreate, setShowDialogCreate] = useState(false);
-  const [subjectDetail, setSubjectDetail] = useState(undefined);
-  const [subjectStatus, setSubjectStatus] = useState(undefined);
 
   useQueries([
     {
       queryKey: [
-        "getListSubjects",
+        "getListStaffs",
         page,
         limit,
         debouncedSearchValue,
@@ -67,55 +58,6 @@ function AllStaffs() {
     },
   ]);
 
-  const cerateMutation = useMutation(
-    async (newData) => {
-      console.log("newData: ", newData);
-      return await createNewSubject(newData);
-    },
-    {
-      onSuccess: (data) => {
-        console.log("Data: ", data);
-        if (data?.status >= 200 && data?.status < 300) {
-          toast.success("Create successfully");
-          setShowDialogCreate(false);
-          queryClient.invalidateQueries("getListSubjects");
-        } else {
-          toast.error(
-            data?.message ||
-              data?.response?.data?.message ||
-              data?.response?.data ||
-              "Oops! Something went wrong..."
-          );
-        }
-      },
-      onError: (err) => {
-        toast.error(
-          // @ts-ignore
-          err?.response?.data?.message || err?.message || "Update error"
-        );
-      },
-    }
-  );
-
-  const handleCreateSubject = async () => {
-    const submitObject = {
-      ...subjectDetail,
-      SubjectId: 1,
-    };
-    if (subjectStatus) {
-      submitObject["Status"] = subjectStatus?.key;
-    }
-    console.log("submitObject: ", submitObject);
-    const formData = new FormData();
-    for (const key in submitObject) {
-      const value = submitObject[key];
-
-      formData.append(key, value);
-    }
-    // @ts-ignore
-    cerateMutation.mutate(formData);
-  };
-
   return (
     <div>
       <Title>Manage List Staff</Title>
@@ -126,7 +68,7 @@ function AllStaffs() {
           value={searchParam || ""}
         />
         <FilterDropDown
-          listDropdown={LIST_STATUS_FILTER}
+          listDropdown={LIST_CLASS_FILTER}
           showing={filterSelected}
           setShowing={setFilterSelected}
           className="md:max-w-[220px]"
@@ -226,13 +168,11 @@ const RenderAction = ({ data }) => {
   const queryClient = useQueryClient();
   const [showDialog, setShowDialog] = useState(false);
   const [showDialogEdit, setShowDialogEdit] = useState(false);
-  const [subjectDetail, setSubjectDetail] = useState(undefined);
-  const [subjectStatus, setSubjectStatus] = useState(undefined);
 
-  const editSubjectMutation = useMutation(
+  const deleteStaffMutation = useMutation(
     async (newData) => {
       console.log("newData: ", newData);
-      return await updateSubjectDetail(newData);
+      return await deleteStaffDetail(newData);
     },
     {
       onSuccess: (data) => {
@@ -240,7 +180,7 @@ const RenderAction = ({ data }) => {
         if (data?.status >= 200 && data?.status < 300) {
           toast.success("Update successfully");
           setShowDialogEdit(false);
-          queryClient.invalidateQueries("getListSubjects");
+          queryClient.invalidateQueries("getListStaffs");
         } else {
           toast.error(
             data?.message ||
@@ -259,23 +199,8 @@ const RenderAction = ({ data }) => {
     }
   );
 
-  const handleEditSubject = async () => {
-    const submitObject = {
-      SubjectId: data?.subjectId,
-      SubjectName: subjectDetail?.SubjectName || data?.subjectName,
-    };
-    if (subjectStatus) {
-      submitObject["Status"] = subjectStatus?.key;
-    }
-    console.log("submitObject: ", submitObject);
-    const formData = new FormData();
-    for (const key in submitObject) {
-      const value = submitObject[key];
-
-      formData.append(key, value);
-    }
-    // @ts-ignore
-    editSubjectMutation.mutate(formData);
+  const handleDeleteStaff = () => {
+    deleteStaffMutation.mutate(data?.personId);
   };
 
   return (
@@ -315,7 +240,7 @@ const RenderAction = ({ data }) => {
           {data?.email}
         </div>
         <div className="flex items-center justify-end gap-5 mt-5">
-          <DeniedBtn onClick={handleEditSubject} className="w-[120px]">
+          <DeniedBtn onClick={handleDeleteStaff} className="w-[120px]">
             Delete
           </DeniedBtn>
           <SecondaryBtn

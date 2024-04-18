@@ -6,9 +6,9 @@ export const countryUrl = `${baseUrl}countries`;
 
 export const uploadImageUrl = `${baseUrl}/Users/UploadImage`;
 
-export const searchFilterPayments = `${baseUrl}/Payment/search-filter-payment`;
+export const searchFilterPaymentsUrl = `${baseUrl}api/Payment/search-filter-payment`;
 
-export const createPayment = `${baseUrl}/Payment/create-payment`;
+export const createPaymentUrl = `${baseUrl}api/Payment/create-payment`;
 
 export const getAllEvaluation = `${baseUrl}/Evaluations/get-all-evaluation-by-classId`;
 
@@ -99,3 +99,13 @@ export const getAllStaffUrl = `${baseUrl}api/Person/get-staffs`;
 export const registerStaffUrl = `${baseUrl}api/Account/register-staff`;
 
 export const getAccountsUrl = `${baseUrl}api/Person/get-accounts`;
+
+export const deleteSTaffUrl = `${baseUrl}api/Person/delete-staff`;
+
+export const editProfileUrl = `${baseUrl}api/Person/edit-profile`;
+
+export const changePasswordUrl = `${baseUrl}api/Account/change-password`;
+
+export const getPaymentDetailUrl = `${baseUrl}api/Payment/get-payment-by-id`;
+
+export const updatePaymentUrl = `${baseUrl}api/Payment/update-payment`;
