@@ -1,0 +1,25 @@
+{
+  "fullName": "Nguyen Hai Nam",
+  "userAvatar": null,
+  "phone": "0855236336",
+  "gender": "NAM",
+  "address": "14 Thai Ha, Dong Da",
+  "dob": "1996-01-30T00:00:00",
+  "subjectTutors": [],
+  "students": [],
+  "tutor": null,
+  "staff": {
+    "personId": 1,
+    "staffType": "STAFF"
+  },
+  "account": {
+    "personId": 1,
+    "roleId": 0,
+    "roleName": "STAFF",
+    "email": "hainam331@gmail.com",
+    "password": "$2a$11$0zkNacrZB46xiacWuFjqPuieNPk4q.Sg6v9DA7Myd1yA3146.JUIG",
+    "createdAt": null,
+    "updatedAt": null,
+    "status": "ACTIVE"
+  }
+}

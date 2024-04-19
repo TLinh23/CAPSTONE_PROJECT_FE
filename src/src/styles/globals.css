@@ -1,0 +1,53 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
+.block-border {
+  @apply border-2 border-[#EFEAFA] rounded-lg px-4 md:px-6 pt-6 pb-8;
+}
+
+.custom-checkbox:checked + div svg {
+  display: block;
+}
+
+.input-hidden {
+  filter: blur(3px);
+  pointer-events: none;
+}
+
+.height-not-found-page {
+  height: calc(100vh - 180px);
+}
+
+.schedule-border {
+  text-align: center;
+  padding: 6px 4px;
+}
+
+.schedule-border-item {
+  text-align: center;
+  padding: 6px 4px;
+  border-bottom: 1px solid gray;
+}
+
+.border-end-line {
+  border-right-width: 1px;
+  border-color: #7f7f7f;
+}
+.border-end-row {
+  border-bottom-width: 1px;
+  border-color: #7f7f7f;
+}
+
+.height-screen-login {
+  height: calc(100vh - 80px);
+}
+
+.truncate-1-line {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
