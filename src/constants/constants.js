@@ -36,13 +36,9 @@ export const TUTOR_MENU = [
     icon: <ScheduleIcon />,
     listActiveRouter: [TUTOR_HREF.SCHEDULE],
   },
-  {
+{
     id: 3,
-<<<<<<< Updated upstream
-    name: "List Transactions",
-=======
     name: "Transactions",
->>>>>>> Stashed changes
     href: TUTOR_HREF.LIST_TRANSACTION,
     icon: <TransactionIcon />,
     listActiveRouter: [TUTOR_HREF.LIST_TRANSACTION],

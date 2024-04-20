@@ -69,6 +69,7 @@ function TutorOrders() {
         const queryObj = {};
         queryObj["PagingRequest.CurrentPage"] = 1;
         queryObj["PagingRequest.PageSize"] = 20;
+        queryObj["Status"] = "CREATED";
 
         const response = await getListSubjects(queryObj);
         setListAllSubjects(response?.data?.data);

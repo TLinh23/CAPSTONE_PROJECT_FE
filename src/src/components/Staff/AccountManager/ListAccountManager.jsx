@@ -8,46 +8,36 @@ import Title from "../../common/Title";
 import useDebounce from "src/hooks/useDebounce";
 import PrimaryBtn from "../../common/PrimaryBtn";
 import DeniedBtn from "../../common/DeniedBtn";
-import axios from "axios";
-import { searchFilterPayments } from "src/constants/APIConfig";
-import RenderStatus from "src/components/common/RenderStatus";
 import ShowDetail from "src/components/common/ShowDetail";
-
+import RenderStatus from "src/components/common/RenderStatus";
 // Dữ liệu giả định
-// const mockData = [
-//   { id: 1, payer: "Trang Pham", requestBy: "Khang Nguyen", amount: "200", reqDate: "10-01-2024",payDate: "10-01-2024", status: "PAID" },
-//   { id: 2, payer: "Trang Pham", requestBy: "Khang Nguyen", amount: "200", reqDate: "10-01-2024", status: "UNPAID" },
+const mockData = [
+  {
+    id: 1,
+    name: "John Doe",
+    role: "Admin",
+    phone: "123-456-7890",
+    status: "Active",
+  },
+  {
+    id: 2,
+    name: "Jane Smith",
+    role: "User",
+    phone: "098-765-4321",
+    status: "Inactive",
+  },
+  // Thêm các bản ghi giả định khác
+];
 
-// ];
-
-function ListTransactionManager() {
+function AccountManager() {
   const [isFilterSelected, setIsFilterSelected] = useState();
   const [searchParam, setSearchParam] = useState("");
   const debouncedSearchValue = useDebounce(searchParam, 500);
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
-  const [data, setData] = useState([]);
-  const searchFilterPayment = async () => {
-    try {
-      const res = await axios.get(searchFilterPayments, {
-        params: {
-          PagingRequest: {
-            CurrentPage: page,
-            PageSize: limit,
-            PageRange: page * limit,
-          },
-          PayerId: 5,
-          RequestId: 0,
-        },
-      });
-      setData(res.data.items);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   // Tính toán dữ liệu hiển thị dựa trên searchParam, page và limit
-  const filteredData = data.filter((account) =>
+  const filteredData = mockData.filter((account) =>
     account.name.toLowerCase().includes(debouncedSearchValue.toLowerCase())
   );
   const paginatedData = filteredData.slice((page - 1) * limit, page * limit);
@@ -55,7 +45,7 @@ function ListTransactionManager() {
   return (
     <Layout>
       <div className="container p-4 mx-auto">
-        <Title>Transaction Management</Title>
+        <Title>Account Management</Title>
         <div className="flex flex-col gap-4 py-5 md:items-center md:flex-row md:justify-end">
           <SearchInput
             placeholder="Search by name or id"
@@ -64,9 +54,8 @@ function ListTransactionManager() {
           />
           <FilterDropDown
             listDropdown={[
-              { id: 1, value: "PAID", name: "PAID" },
-              { id: 2, value: "UNPAID", name: "UNPAID" },
-              // Thêm các bộ lọc khác nếu cần
+              { id: 1, value: "Active", name: "Active" },
+              { id: 2, value: "Inactive", name: "Inactive" },
             ]}
             showing={isFilterSelected}
             setShowing={setIsFilterSelected}
@@ -94,7 +83,7 @@ function ListTransactionManager() {
   );
 }
 
-export default ListTransactionManager;
+export default AccountManager;
 
 const accountColumns = [
   {
@@ -105,24 +94,16 @@ const accountColumns = [
         accessor: "id",
       },
       {
-        Header: "Payer",
+        Header: "Name",
         accessor: "name",
       },
       {
-        Header: "Request by",
-        accessor: "requestBy",
+        Header: "Role",
+        accessor: "role",
       },
       {
-        Header: "Amount",
-        accessor: "amount",
-      },
-      {
-        Header: "Request Date",
-        accessor: "reqDate",
-      },
-      {
-        Header: "Pay Date",
-        accessor: "payDate",
+        Header: "Phone",
+        accessor: "phone",
       },
       {
         Header: "Status",
@@ -131,11 +112,22 @@ const accountColumns = [
         ), // Sử dụng thuộc tính status từ data
       },
       {
+        Header: "Action",
+        accessor: (data) => {
+          return (
+            <div className="flex items-center gap-4">
+              <PrimaryBtn>Active</PrimaryBtn>
+              <DeniedBtn>Inactive</DeniedBtn>
+            </div>
+          );
+        },
+      },
+      {
         Header: " ",
         accessor: (data) => {
           return (
             <div className="flex items-center gap-4">
-              <a href={`/classDetailManager/${data.id}`}>
+              <a href={`/AccountDetail/${data.id}`}>
                 <ShowDetail />
               </a>
             </div>

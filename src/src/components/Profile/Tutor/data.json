@@ -1,0 +1,51 @@
+{
+  "fullName": "Nguyen Quang Hai",
+  "userAvatar": null,
+  "phone": "0322565558",
+  "gender": "NAM",
+  "address": "30 Xuan Thuy, Cau Giay",
+  "dob": "1989-04-03T00:00:00",
+  "subjectTutors": [
+    {
+      "subjectId": 0,
+      "subjectName": "Toan",
+      "level": 3,
+      "status": "CREATED"
+    },
+    {
+      "subjectId": 0,
+      "subjectName": "Toan",
+      "level": 5,
+      "status": "CREATED"
+    },
+    {
+      "subjectId": 2,
+      "subjectName": "Ngu Van ",
+      "level": 5,
+      "status": "CREATED"
+    }
+  ],
+  "students": [],
+  "tutor": {
+    "personId": 5,
+    "cmnd": "325652214584",
+    "frontCmnd": "linkfrontCMND",
+    "backCmnd": "linkbackCMND",
+    "cv": "linkCV",
+    "educationLevel": "DAI HOC",
+    "school": "DAI HOC SU PHAM",
+    "graduationYear": "2021",
+    "about": null
+  },
+  "staff": null,
+  "account": {
+    "personId": 5,
+    "roleId": 1,
+    "roleName": "TUTOR",
+    "email": "quanghai@gmail.com",
+    "password": "$2a$11$0zkNacrZB46xiacWuFjqPuieNPk4q.Sg6v9DA7Myd1yA3146.JUIG",
+    "createdAt": null,
+    "updatedAt": null,
+    "status": "ACTIVE"
+  }
+}

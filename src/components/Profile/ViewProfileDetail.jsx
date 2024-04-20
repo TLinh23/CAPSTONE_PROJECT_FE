@@ -6,15 +6,12 @@ import TutorProfileDetail from "./Tutor/TutorProfileDetail";
 import StaffProfileDetail from "./Staff/StaffProfileDetail";
 import { ROLE_NAME } from "src/constants/constants";
 import { getProfileByIdDetail } from "src/apis/tutor-module";
-import { useAuthContext } from "src/context/AuthContext";
 import AdminProfileDetail from "./Admin/AdminProfileDetail";
 
 function ViewProfileDetail() {
-  const { roleKey } = useAuthContext();
   const { id } = useParams();
   const [dataProfileDetail, setDataProfileDetail] = useState(undefined);
 
-  // Call API here, check role of user after call api and after that render component
   useQueries([
     {
       queryKey: ["getProfile", id],
@@ -28,8 +25,6 @@ function ViewProfileDetail() {
       enabled: !!id,
     },
   ]);
-
-  console.log("dataProfileDetail: ", dataProfileDetail);
 
   return (
     <div>

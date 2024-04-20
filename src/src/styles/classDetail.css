@@ -1,0 +1,19 @@
+.status.active {
+  color: green;
+}
+.status.suspended {
+  color: red;
+}
+.suspend-button {
+  background-color: red;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 16px;
+}
+.parent-list-container {
+  max-height: 200px;
+  overflow-y: auto;
+}
