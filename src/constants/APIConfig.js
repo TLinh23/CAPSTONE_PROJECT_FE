@@ -14,7 +14,7 @@ export const getAllEvaluation = `${baseUrl}/Evaluations/get-all-evaluation-by-cl
 
 export const getDetailEvaluation = `${baseUrl}/Evaluations/get-detail-evaluation`;
 
-export const addEvaluation = `${baseUrl}/Evaluations/add-evaluation`;
+export const addEvaluation = `${baseUrl}api/Evaluations/add-evaluation`;
 
 //Test ccommit
 

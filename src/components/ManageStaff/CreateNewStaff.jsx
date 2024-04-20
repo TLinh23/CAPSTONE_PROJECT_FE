@@ -74,7 +74,7 @@ function CreateNewStaff(props) {
       FullName: "",
       Phone: "",
       Address: "",
-      RoleId: 2,
+      RoleId: 0,
       StaffType: "STAFF",
       Gender: "MALE",
     },

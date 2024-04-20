@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import "./Login.css";
 import axios from "axios";
-import { Link, NavLink, Navigate, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import PrimaryInput from "src/components/common/PrimaryInput";
 import * as Yup from "yup";

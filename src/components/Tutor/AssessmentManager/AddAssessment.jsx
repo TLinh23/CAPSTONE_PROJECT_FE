@@ -1,78 +1,150 @@
 import React, { useState } from "react";
 import Layout from "../../layout/Layout";
 import Title from "../../common/Title";
-import Input from "../../common/PrimaryInput";
 import PrimaryBtn from "../../common/PrimaryBtn";
-import { useNotification } from "src/hooks/useNotification";
-import { addEvaluation } from "src/constants/APIConfig";
-import axios from "axios";
 import FilterDropDown from "src/components/common/FilterDropDown";
 import PrimaryInput from "../../common/PrimaryInput";
 import PrimaryTextArea from "src/components/common/PrimaryTextArea";
+import { useMutation, useQueries } from "react-query";
+import { useAuthContext } from "src/context/AuthContext";
+import { ROLE_NAME } from "src/constants/constants";
+import {
+  addNewEvaluation,
+  getClassByTutor,
+  getClassDetailData,
+} from "src/apis/class-module";
+import ClassNameFilterDropdown from "src/components/common/ClassNameFilterDropdown";
+import { toast } from "react-toastify";
 
 function AddAssessment() {
-  const [transaction, setTransaction] = useState({
-    StudentId: 0,
-    class: 0,
-    subject: "",
-    comment: "",
-  });
-  const { contextHolder, openNotification } = useNotification();
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setTransaction((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
+  const { roleKey, userId } = useAuthContext();
+  const [newTransactionDetail, setNewTransactionDetail] = useState(undefined);
+  const [listClassroom, setListClassroom] = useState(undefined);
+  const [classRoomSelected, setClassRoomSelected] = useState(undefined);
+  const [listStudent, setListStudent] = useState(undefined);
+  const [studentSelected, setStudentSelected] = useState(undefined);
 
-  const handleSubmit = async () => {
-    try {
-      const fetchData = await axios.post(addEvaluation, {
-        StudentId: transaction.StudentId,
-        ClassId: transaction.class,
-        Comment: transaction.comment,
-        Score: 0,
-        Date: Date.now(),
-        createdAt: Date.now(),
-        updatedAt: Date.now(),
-        status: "CREATED",
-      });
+  useQueries([
+    {
+      queryKey: ["getListClassRooms"],
+      queryFn: async () => {
+        if (roleKey === ROLE_NAME.TUTOR) {
+          const queryObj = {};
+          queryObj["PagingRequest.CurrentPage"] = 1;
+          queryObj["PagingRequest.PageSize"] = 99;
+          queryObj["TutorId"] = userId;
+          queryObj["Status"] = "ACTIVE";
+          const response = await getClassByTutor(queryObj);
+          setListClassroom(response?.data?.data);
+          return response?.data;
+        }
+      },
+      enabled: !!userId,
+    },
+    {
+      queryKey: ["getListStudents", classRoomSelected],
+      queryFn: async () => {
+        if (classRoomSelected) {
+          const response = await getClassDetailData(classRoomSelected?.classId);
+          setListStudent(response?.data?.data?.studentInformationDto);
+          return response?.data;
+        }
+      },
+      enabled: !!classRoomSelected,
+    },
+  ]);
 
-      if (fetchData.status == 200) {
-        openNotification("topRight", "success", "create successfully!");
-      }
-    } catch (error) {
-      openNotification("topRight", "error", error);
+  const addEvaluationMutation = useMutation(
+    async (newData) => {
+      console.log("newData: ", newData);
+      return await addNewEvaluation(newData);
+    },
+    {
+      onSuccess: (data) => {
+        console.log("Data: ", data);
+        if (data?.status >= 200 && data?.status < 300) {
+          toast.success("Create successfully");
+        } else {
+          toast.error(
+            data?.message ||
+              data?.response?.data?.message ||
+              data?.response?.data ||
+              "Oops! Something went wrong..."
+          );
+        }
+      },
+      onError: (err) => {
+        toast.error(
+          // @ts-ignore
+          err?.response?.data?.message || err?.message || "Create error"
+        );
+      },
     }
-  };
+  );
 
+  const handleClickCreateAssessment = () => {
+    const queryObj = {};
+    // addEvaluationMutation.mutate(queryObj)
+  };
   return (
     <Layout>
       <div className="bg-white block-border">
         <Title>Add New Assessment</Title>
         <div className="grid grid-cols-37 max-w-[1000px] mt-5 gap-x-5 gap-y-3 items-center">
-          <div>Student</div>
-          <FilterDropDown
-            listDropdown={[1, 2, 3]}
-            showing={undefined}
-            setShowing={undefined}
-            textDefault="Select Student"
-          />
-          <div>Class</div>
-          <FilterDropDown
-            listDropdown={[1, 2, 3]}
-            showing={undefined}
-            setShowing={undefined}
+          <div>
+            Class <span className="text-red-500">*</span>
+          </div>
+          <ClassNameFilterDropdown
+            listDropdown={listClassroom?.items}
+            showing={classRoomSelected}
+            setShowing={setClassRoomSelected}
             textDefault="Select Class"
           />
-          <div>Score</div>
-          <PrimaryInput placeholder="Enter score rate" />
-          <div>Coment</div>
-          <PrimaryTextArea rows={5} placeholder="Enter comment" />
+          <div>
+            Student <span className="text-red-500">*</span>
+          </div>
+          <FilterDropDown
+            listDropdown={listStudent}
+            showing={studentSelected}
+            setShowing={setStudentSelected}
+            textDefault={
+              classRoomSelected ? "Select Student" : "Select class first"
+            }
+          />
+          <div>
+            Score <span className="text-red-500">*</span>
+          </div>
+          <PrimaryInput
+            placeholder="Enter score rate"
+            type="number"
+            onChange={(e) => {
+              setNewTransactionDetail({
+                ...newTransactionDetail,
+                Score: e.target.value,
+              });
+            }}
+            value={newTransactionDetail?.Score || ""}
+          />
+          <div>Comment</div>
+          <PrimaryTextArea
+            rows={5}
+            placeholder="Enter comment"
+            onChange={(e) => {
+              setNewTransactionDetail({
+                ...newTransactionDetail,
+                Comment: e.target.value,
+              });
+            }}
+            value={newTransactionDetail?.Comment || ""}
+          />
         </div>
         <div className="max-w-[1000px] flex justify-center items-center mt-10">
-          <PrimaryBtn className="!w-[200px]">Create</PrimaryBtn>
+          <PrimaryBtn
+            onClick={handleClickCreateAssessment}
+            className="!w-[200px]"
+          >
+            Create
+          </PrimaryBtn>
         </div>
       </div>
     </Layout>

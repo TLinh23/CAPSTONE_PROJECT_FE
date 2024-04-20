@@ -13,23 +13,20 @@ export const createOrderRequest = (queryObj) => {
   });
 };
 
-export const acceptRequestForTutor = (queryObj) => {
+export const acceptRequestForTutor = (requestId) => {
   return putAPI({
-    url: `${acceptRequestUrl}`,
-    data: queryObj,
+    url: `${acceptRequestUrl}?requestId=${requestId}`,
   });
 };
 
-export const declineRequestForTutor = (queryObj) => {
+export const declineRequestForTutor = (requestId) => {
   return putAPI({
-    url: `${declineRequestUrl}`,
-    data: queryObj,
+    url: `${declineRequestUrl}?requestId=${requestId}`,
   });
 };
 
-export const cancelRequestForParent = (queryObj) => {
+export const cancelRequestForParent = (requestId) => {
   return putAPI({
-    url: `${cancelRequestUrl}`,
-    data: queryObj,
+    url: `${cancelRequestUrl}?requestId=${requestId}`,
   });
 };
