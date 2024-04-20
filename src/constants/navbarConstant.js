@@ -2,7 +2,7 @@ export const TUTOR_HREF = {
   CLASSROOM: "/tutor/classrooms",
   CLASSROOM_REQUEST: "/classroom-requests",
   SCHEDULE: "/schedule",
-  LIST_TRANSACTION: "/abcd",
+  LIST_TRANSACTION: "/transactions",
   LIST_CLASSROOMS: "/tutor-classrooms",
   REQUEST: "/classroom-requests",
 };

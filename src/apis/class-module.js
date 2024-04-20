@@ -1,4 +1,5 @@
 import {
+  addEvaluation,
   addStudentIntoClassUrl,
   createClassStudentUrl,
   deleteClassroomForTutorUrl,
@@ -121,5 +122,12 @@ export const getFiteredSchedule = (paramsObj) => {
   const queryString = convertObjectToQueryString(paramsObj);
   return requestAPI({
     url: `${filteredScheduleUrl}${queryString}`,
+  });
+};
+
+export const addNewEvaluation = (queryObj) => {
+  return postAPI({
+    url: `${addEvaluation}`,
+    data: queryObj,
   });
 };

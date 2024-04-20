@@ -36,6 +36,13 @@ export const TUTOR_MENU = [
     icon: <ScheduleIcon />,
     listActiveRouter: [TUTOR_HREF.SCHEDULE],
   },
+{
+    id: 3,
+    name: "Transactions",
+    href: TUTOR_HREF.LIST_TRANSACTION,
+    icon: <TransactionIcon />,
+    listActiveRouter: [TUTOR_HREF.LIST_TRANSACTION],
+  },
 ];
 
 export const PARENT_MENU = [
