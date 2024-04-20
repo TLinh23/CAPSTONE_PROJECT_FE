@@ -42,9 +42,6 @@ function ViewProfileDetail() {
       {dataProfileDetail?.account?.roleName === ROLE_NAME.STAFF && (
         <StaffProfileDetail dataProfileDetail={dataProfileDetail} />
       )}
-      {/* {dataProfileDetail?.roleKey === ROLE_NAME.STUDENT && (
-        <StudentProfileDetail dataProfileDetail={dataProfileDetail} />
-      )} */}
       {dataProfileDetail?.account?.roleName === ROLE_NAME.ADMIN && (
         <AdminProfileDetail dataProfileDetail={dataProfileDetail} />
       )}

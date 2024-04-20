@@ -42,7 +42,13 @@ function CreateNewStaff(props) {
       FullName: "",
       Phone: "",
       Address: "",
+<<<<<<< Updated upstream
       RoleId: 2,
+=======
+      RoleId: 0,
+      StaffType: "STAFF",
+      Gender: "MALE",
+>>>>>>> Stashed changes
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {

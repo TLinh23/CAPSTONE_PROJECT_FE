@@ -15,7 +15,6 @@ import {
   LIST_REQUEST_STATUS_FILTER,
   LIST_REQUEST_TYPE_FILTER,
 } from "src/constants/constants";
-import { getListSubjects } from "src/apis/subject-module";
 import PopupTemplate from "src/components/common/PopupTemplate";
 import SecondaryBtn from "src/components/common/SecondaryBtn";
 import { toast } from "react-toastify";
@@ -26,10 +25,8 @@ import {
 
 function TutorOrders() {
   const [listOrderRequest, setListOrderRequest] = useState(undefined);
-  const [subjectSelected, setSubjectSelected] = useState(undefined);
   const [statusSelected, setStatusSelected] = useState(undefined);
   const [typeSelected, setTypeSelected] = useState(undefined);
-  const [listAllSubjects, setListAllSubjects] = useState(undefined);
 
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
@@ -42,7 +39,6 @@ function TutorOrders() {
         page,
         limit,
         userId,
-        subjectSelected,
         statusSelected,
         typeSelected,
       ],
@@ -53,9 +49,6 @@ function TutorOrders() {
         queryObj["PagingRequest.CurrentPage"] = page;
         queryObj["PagingRequest.PageSize"] = limit;
 
-        if (subjectSelected) {
-          queryObj["SubjectId"] = subjectSelected?.subjectId;
-        }
         if (statusSelected) {
           queryObj["Status"] = statusSelected?.key;
         }
@@ -69,6 +62,7 @@ function TutorOrders() {
       },
       enabled: !!userId,
     },
+<<<<<<< Updated upstream
     {
       queryKey: ["getListSubjects"],
       queryFn: async () => {
@@ -81,37 +75,36 @@ function TutorOrders() {
         return response?.data;
       },
     },
+=======
+>>>>>>> Stashed changes
   ]);
 
   return (
     <div>
       <Title>Manage Classroom Request</Title>
-      <div className="flex items-center gap-4 py-5">
-        <FilterDropDown
-          listDropdown={listAllSubjects?.items || []}
-          showing={subjectSelected}
-          setShowing={setSubjectSelected}
-          textDefault="Select subject"
-        />
-        <FilterDropDown
-          listDropdown={LIST_REQUEST_TYPE_FILTER}
-          showing={typeSelected}
-          setShowing={setTypeSelected}
-          textDefault="Select type"
-        />
-        <FilterDropDown
-          listDropdown={LIST_REQUEST_STATUS_FILTER}
-          showing={statusSelected}
-          setShowing={setStatusSelected}
-          textDefault="Select status"
-        />
+      <div className="flex items-center gap-4 py-5 justfiy-between">
+        <div className="flex items-center w-full gap-4">
+          <FilterDropDown
+            listDropdown={LIST_REQUEST_TYPE_FILTER}
+            showing={typeSelected}
+            setShowing={setTypeSelected}
+            textDefault="Select type"
+            className="max-w-[300px]"
+          />
+          <FilterDropDown
+            listDropdown={LIST_REQUEST_STATUS_FILTER}
+            showing={statusSelected}
+            setShowing={setStatusSelected}
+            textDefault="Select status"
+            className="max-w-[300px]"
+          />
+        </div>
         <DeniedBtn
           onClick={() => {
             setPage(1);
             setLimit(10);
             setStatusSelected(undefined);
             setTypeSelected(undefined);
-            setSubjectSelected(undefined);
           }}
           className="max-w-[150px]"
         >
@@ -231,7 +224,7 @@ const RenderRequestAction = ({ data }) => {
 
   const handleDeleteRequest = () => {
     // @ts-ignore
-    deleteRequestMutation.mutate({ requestId: data?.requestId });
+    deleteRequestMutation.mutate(data?.requestId);
   };
 
   const acceptRequestMutation = useMutation(
@@ -266,7 +259,7 @@ const RenderRequestAction = ({ data }) => {
 
   const handleAcceptRequest = () => {
     // @ts-ignore
-    acceptRequestMutation.mutate({ requestId: data?.requestId });
+    acceptRequestMutation.mutate(data?.requestId);
   };
 
   return data?.status !== "PENDING" ? (

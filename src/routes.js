@@ -40,6 +40,7 @@ import PageIntroduceAllClassrooms from "./pages/PageIntroduceAllClassrooms";
 import PageIntroduceClassroomDetail from "./pages/PageIntroduceClassroomDetail";
 import PageManageAllStaffs from "./pages/ManageStaff/PageManageAllStaffs";
 import PageManageAllAccounts from "./pages/PageManageAllAccounts";
+import PageTutorTransaction from "./pages/PageTutorTransaction";
 
 //list your routes here
 export const routes = [
@@ -96,6 +97,7 @@ export const routes = [
   { path: "/assessesments/create", element: <AddAssessment /> },
 
   { path: "/manage-transactions", element: <Transaction /> },
+  { path: "/transactions", element: <PageTutorTransaction /> },
   { path: "/transactions/:id", element: <TransactionDetail /> },
   { path: "/transactions/create", element: <AddTransaction /> },
 
