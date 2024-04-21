@@ -1,9 +1,12 @@
 import { format } from "date-fns";
 import React, { useState } from "react";
-import { useQueries, useQueryClient } from "react-query";
+import { useMutation, useQueries, useQueryClient } from "react-query";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import { getAllAccountsForStaff } from "src/apis/staff-module";
+import {
+  getAllAccountsForStaff,
+  staffChangeAccountStatus,
+} from "src/apis/staff-module";
 import DeniedBtn from "src/components/common/DeniedBtn";
 import FilterDropDown from "src/components/common/FilterDropDown";
 import Pagination from "src/components/common/Pagination";
@@ -15,25 +18,21 @@ import SecondaryBtn from "src/components/common/SecondaryBtn";
 import ShowDetail from "src/components/common/ShowDetail";
 import Table from "src/components/common/Table";
 import Title from "src/components/common/Title";
-import { LIST_CLASS_FILTER, LIST_STATUS_FILTER } from "src/constants/constants";
+import { LIST_CLASS_FILTER } from "src/constants/constants";
 import useDebounce from "src/hooks/useDebounce";
 
 function StaffManageAllAccounts() {
-  const queryClient = useQueryClient();
   const [listAllStaffs, setListAllStaffs] = useState(undefined);
   const [searchParam, setSearchParam] = useState("");
   const debouncedSearchValue = useDebounce(searchParam, 500);
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [filterSelected, setFilterSelected] = useState(undefined);
-  const [showDialogCreate, setShowDialogCreate] = useState(false);
-  const [subjectDetail, setSubjectDetail] = useState(undefined);
-  const [subjectStatus, setSubjectStatus] = useState(undefined);
 
   useQueries([
     {
       queryKey: [
-        "getListSubjects",
+        "getListAccounts",
         page,
         limit,
         debouncedSearchValue,
@@ -150,9 +149,41 @@ const columns = [
 ];
 
 const RenderAction = ({ data }) => {
-  const [isShowPopupDeleteClassroom, setIsShowPopupDeleteClassroom] =
+  const queryClient = useQueryClient();
+  const [isShowPopupSuspendAccount, setIsShowPopupSuspendAccount] =
     useState(false);
-  const handleDeleteClassroom = () => {};
+  const suspendAccountMutation = useMutation(
+    async (newData) => {
+      console.log("newData: ", newData);
+      return await staffChangeAccountStatus(newData);
+    },
+    {
+      onSuccess: (data) => {
+        console.log("Data: ", data);
+        if (data?.status >= 200 && data?.status < 300) {
+          toast.success("Update successfully");
+          queryClient.invalidateQueries("getListAccounts");
+        } else {
+          toast.error(
+            data?.message ||
+              data?.response?.data?.message ||
+              data?.response?.data ||
+              "Oops! Something went wrong..."
+          );
+        }
+      },
+      onError: (err) => {
+        toast.error(
+          // @ts-ignore
+          err?.response?.data?.message || err?.message || "Update error"
+        );
+      },
+    }
+  );
+
+  const handleSuspendAccount = () => {
+    suspendAccountMutation.mutate(data?.personId);
+  };
   return (
     <div className="flex items-center gap-4">
       <Link to={`/accounts/${data?.personId}`}>
@@ -161,28 +192,28 @@ const RenderAction = ({ data }) => {
       <DeniedBtn
         className="cursor-pointer"
         onClick={() => {
-          setIsShowPopupDeleteClassroom(true);
+          setIsShowPopupSuspendAccount(true);
         }}
       >
         Suspend
       </DeniedBtn>
 
       <PopupTemplate
-        setShowDialog={setIsShowPopupDeleteClassroom}
-        showDialog={isShowPopupDeleteClassroom}
+        setShowDialog={setIsShowPopupSuspendAccount}
+        showDialog={isShowPopupSuspendAccount}
         title="Suspend classroom"
         classNameWrapper="md:!min-w-[486px]"
       >
-        <div>Do you want to suspend this classroom {data?.className}</div>
+        <div>Do you want to suspend this account {data?.fullName}</div>
         <div className="flex items-center gap-5 mt-5">
           <SecondaryBtn
             onClick={() => {
-              setIsShowPopupDeleteClassroom(false);
+              setIsShowPopupSuspendAccount(false);
             }}
           >
             Cancel
           </SecondaryBtn>
-          <DeniedBtn onClick={handleDeleteClassroom}>Suspend</DeniedBtn>
+          <DeniedBtn onClick={handleSuspendAccount}>Suspend</DeniedBtn>
         </div>
       </PopupTemplate>
     </div>

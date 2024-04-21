@@ -1,5 +1,5 @@
 import { format } from "date-fns";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PopupTemplate from "src/components/common/PopupTemplate";
 import PrimaryBtn from "src/components/common/PrimaryBtn";
@@ -164,7 +164,7 @@ function ParentProfileDetail(props) {
 export default ParentProfileDetail;
 
 function StudentItem({ item, roleKey, userId, dataProfileDetail }) {
-  const [studentProfileDetail, setStudentProfileDetail] = useState(item);
+  const [studentProfileDetail, setStudentProfileDetail] = useState(undefined);
   const [isShowPopupEditStudent, setIsShowPopupEditStudent] = useState(false);
   const [isShowPopupDeleteStudent, setIsShowPopupDeleteStudent] =
     useState(false);
@@ -175,6 +175,11 @@ function StudentItem({ item, roleKey, userId, dataProfileDetail }) {
   const handleClickDelete = () => {
     setIsShowPopupDeleteStudent(true);
   };
+  useEffect(() => {
+    if (item) {
+      setStudentProfileDetail(item);
+    }
+  }, [item]);
 
   return (
     <div className="flex items-center justify-between gap-3 px-3 py-2 border-b border-b-gray">

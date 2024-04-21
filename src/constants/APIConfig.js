@@ -74,7 +74,7 @@ export const updateStudentUrl = `${baseUrl}api/Student/update-student`;
 
 export const deleteStudentInParentUrl = `${baseUrl}api/Student/delete-student`;
 
-export const deleteClassroomForTutorUrl = `${baseUrl}api/Class/delete-class`;
+export const deleteClassroomForTutorUrl = `${baseUrl}api/Class/suspend-class`;
 
 export const declineRequestUrl = `${baseUrl}api/Request/decline-request`;
 
@@ -109,3 +109,5 @@ export const changePasswordUrl = `${baseUrl}api/Account/change-password`;
 export const getPaymentDetailUrl = `${baseUrl}api/Payment/get-payment-by-id`;
 
 export const updatePaymentUrl = `${baseUrl}api/Payment/update-payment`;
+
+export const suspendAccountUrl = `${baseUrl}api/Account/suspend-account`;

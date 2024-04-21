@@ -4,6 +4,8 @@ import "./styles/globals.css";
 import "./styles/loading.css";
 import "./styles/table.css";
 import "./styles/add-image.css";
+import "./styles/calendar.css";
+
 import "@reach/dialog/styles.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";

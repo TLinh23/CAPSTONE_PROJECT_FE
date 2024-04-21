@@ -168,7 +168,7 @@ const RenderActionClassroom = ({ data }) => {
   const [isShowPopupDeleteClassroom, setIsShowPopupDeleteClassroom] =
     useState(false);
   const queryClient = useQueryClient();
-  const deleteStudentMutation = useMutation(
+  const suspendClassroomMutation = useMutation(
     async (newData) => {
       console.log("newData: ", newData);
       return await deleteClassroomByTutor(newData);
@@ -179,6 +179,7 @@ const RenderActionClassroom = ({ data }) => {
         if (data?.status >= 200 && data?.status < 300) {
           toast.success("Delete classroom successfully");
           queryClient.invalidateQueries("getListClass");
+          setIsShowPopupDeleteClassroom(false);
         } else {
           toast.error(
             data?.message ||
@@ -199,7 +200,7 @@ const RenderActionClassroom = ({ data }) => {
 
   const handleDeleteClassroom = () => {
     // @ts-ignore
-    deleteStudentMutation.mutate(data?.classId);
+    suspendClassroomMutation.mutate(data?.classId);
   };
 
   return (
@@ -222,7 +223,10 @@ const RenderActionClassroom = ({ data }) => {
         title="Suspend classroom"
         classNameWrapper="md:!min-w-[486px]"
       >
-        <div>Do you want to suspend this classroom {data?.className}</div>
+        <div>
+          Do you want to suspend this classroom {data?.className} -{" "}
+          {data?.tutorName}
+        </div>
         <div className="flex items-center gap-5 mt-5">
           <SecondaryBtn
             onClick={() => {

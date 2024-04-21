@@ -41,6 +41,8 @@ export default function Login() {
           data?.data?.data?.roleName?.toString().toUpperCase()
         );
         localStorage.setItem("userId", data?.data?.data?.userId);
+        localStorage.setItem("fullName", data?.data?.data?.fullName);
+        localStorage.setItem("userAvatar", data?.data?.data?.userAvatar);
         checkRoleKey();
         checkUserId();
         toast.success("Login successful!");

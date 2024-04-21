@@ -11,11 +11,15 @@ const AuthContext = createContext({
   checkRoleKey: () => null,
   userId: "",
   checkUserId: () => null,
+  fullName: "",
+  userAvatar: "",
 });
 
 function AuthProvider({ children }) {
   const [roleKey, setRoleKey] = useState("");
   const [userId, setUserId] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [userAvatar, setUserAvatar] = useState("");
 
   const checkRoleKey = () => {
     const roleKey = localStorage?.getItem("roleKey");
@@ -23,6 +27,10 @@ function AuthProvider({ children }) {
   };
   const checkUserId = () => {
     const userId = localStorage?.getItem("userId");
+    const fullName = localStorage?.getItem("fullName");
+    const userAvatar = localStorage?.getItem("userAvatar");
+    setUserAvatar(userAvatar);
+    setFullName(fullName);
     setUserId(userId);
   };
 
@@ -37,8 +45,10 @@ function AuthProvider({ children }) {
       checkRoleKey,
       userId,
       checkUserId,
+      fullName,
+      userAvatar,
     }),
-    [roleKey, userId]
+    [roleKey, userId, fullName, userAvatar]
   );
 
   return (

@@ -41,6 +41,7 @@ import PageIntroduceClassroomDetail from "./pages/PageIntroduceClassroomDetail";
 import PageManageAllStaffs from "./pages/ManageStaff/PageManageAllStaffs";
 import PageManageAllAccounts from "./pages/PageManageAllAccounts";
 import PageTutorTransaction from "./pages/PageTutorTransaction";
+import PageTest from "./pages/PageTest";
 
 //list your routes here
 export const routes = [
@@ -54,6 +55,7 @@ export const routes = [
   { path: "/collections/:slug", element: <CollectionPage /> },
   { path: "/manage-classrooms", element: <PageOpenedClassRooms /> },
   { path: "/schedule", element: <PageSchedule /> },
+  { path: "/schedule/:id", element: <PageSchedule /> },
   { path: "/tutor-classrooms/:id", element: <PageTutorClassroomDetail /> },
   {
     path: "/tutor-classrooms/:id/edit",
@@ -101,6 +103,11 @@ export const routes = [
   { path: "/transactions", element: <PageTutorTransaction /> },
   { path: "/transactions/:id", element: <TransactionDetail /> },
   { path: "/transactions/create", element: <AddTransaction /> },
+
+  {
+    path: "/test",
+    element: <PageTest />,
+  },
 
   { path: "/accountManager", element: <AccountManager /> },
   { path: "/AccountDetail/:id", element: <AccountDetail /> },

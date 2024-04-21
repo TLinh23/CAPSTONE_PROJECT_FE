@@ -32,12 +32,16 @@ function PageIntroduceAllTutor() {
       },
     },
     {
-      queryKey: ["getExploreTutors", page, limit, subjectSelected],
+      queryKey: ["getExploreTutors", page, limit, subjectSelected?.subjectName],
       queryFn: async () => {
         const queryObj = {};
         queryObj["PagingRequest.CurrentPage"] = page;
         queryObj["PagingRequest.PageSize"] = limit;
-        if (subjectSelected) {
+
+        if (
+          subjectSelected?.subjectName &&
+          subjectSelected?.subjectName !== "All Subject"
+        ) {
           queryObj["subjectName"] = subjectSelected?.subjectName;
         }
 
@@ -49,7 +53,6 @@ function PageIntroduceAllTutor() {
     },
   ]);
 
-  console.log("listExplores: ", listExplores);
   return (
     <Layout>
       <div className="flex items-center justify-between gap-5">
@@ -60,6 +63,7 @@ function PageIntroduceAllTutor() {
           showing={subjectSelected}
           setShowing={setSubjectSelected}
           textDefault="Select subject"
+          type="subject"
         />
       </div>
       <div className="mt-5 mb-5 bg-white block-border">

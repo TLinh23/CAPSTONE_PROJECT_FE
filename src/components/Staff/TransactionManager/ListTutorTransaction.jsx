@@ -13,10 +13,11 @@ import { useQueries } from "react-query";
 import { format } from "date-fns";
 import { LIST_TRACSACTION_STATUS } from "src/constants/enumConstant";
 import { useAuthContext } from "src/context/AuthContext";
+import DeniedBtn from "src/components/common/DeniedBtn";
 
 function ListTutorTransaction() {
   const [listAllTransactions, setListAllTransactions] = useState(undefined);
-  const [isFilterSelected, setIsFilterSelected] = useState(false);
+  const [isFilterSelected, setIsFilterSelected] = useState(undefined);
   const [searchParam, setSearchParam] = useState("");
   const debouncedSearchValue = useDebounce(searchParam, 500);
   const [page, setPage] = useState(1);
@@ -31,6 +32,7 @@ function ListTutorTransaction() {
         limit,
         debouncedSearchValue,
         userId,
+        isFilterSelected,
       ],
       queryFn: async () => {
         if (userId) {
@@ -40,6 +42,9 @@ function ListTutorTransaction() {
           queryObj["PayerId"] = userId;
           if (debouncedSearchValue) {
             queryObj["SearchWord"] = debouncedSearchValue;
+          }
+          if (isFilterSelected) {
+            queryObj["Status"] = isFilterSelected?.key;
           }
           const response = await getListTransactions(queryObj);
           setListAllTransactions(response?.data?.data);
@@ -70,7 +75,19 @@ function ListTutorTransaction() {
             textDefault="Select Status"
           />
         </div>
-
+        <div className="flex justify-end pb-5">
+          <DeniedBtn
+            onClick={() => {
+              setPage(1);
+              setLimit(10);
+              setSearchParam("");
+              setIsFilterSelected(undefined);
+            }}
+            className="max-w-[150px]"
+          >
+            Remove Filter
+          </DeniedBtn>
+        </div>
         <div className="bg-white table-style block-border">
           <Table
             pageSizePagination={limit}

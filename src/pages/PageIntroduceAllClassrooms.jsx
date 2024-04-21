@@ -19,6 +19,7 @@ function PageIntroduceAllClassrooms() {
   const debouncedSearchValue = useDebounce(searchParam, 500);
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(6);
+  const [subjectSelected, setSubjectSelected] = useState(undefined);
 
   useQueries([
     {
@@ -35,7 +36,13 @@ function PageIntroduceAllClassrooms() {
       },
     },
     {
-      queryKey: ["getListClassroom", page, limit, debouncedSearchValue],
+      queryKey: [
+        "getListClassroom",
+        page,
+        limit,
+        debouncedSearchValue,
+        subjectSelected,
+      ],
       queryFn: async () => {
         const queryObj = {};
         queryObj["PagingRequest.CurrentPage"] = page;
@@ -43,6 +50,9 @@ function PageIntroduceAllClassrooms() {
         queryObj["Status"] = "ACTIVE";
         if (debouncedSearchValue) {
           queryObj["SearchWord"] = debouncedSearchValue;
+        }
+        if (subjectSelected?.subjectId) {
+          queryObj["SubjectId"] = subjectSelected?.subjectId;
         }
         const response = await getListClass(queryObj);
         setListAllClass(response?.data?.data);
@@ -56,6 +66,14 @@ function PageIntroduceAllClassrooms() {
     <Layout>
       <div className="flex items-center justify-between gap-5">
         <Title>Explore All Classrooms</Title>
+        <FilterDropDown
+          className="!w-[250px]"
+          listDropdown={listAllSubjects?.items || []}
+          showing={subjectSelected}
+          setShowing={setSubjectSelected}
+          textDefault="Select subject"
+          type="subject"
+        />
       </div>
       <div className="mt-5">
         <SearchInput

@@ -8,6 +8,7 @@ import { useQueries } from "react-query";
 import { getClassDetailData } from "src/apis/class-module";
 import { DAYS_OF_WEEK } from "src/constants/enumConstant";
 import { getValueFromKey, slideFromEnd } from "src/libs";
+import PrimaryBtn from "../common/PrimaryBtn";
 
 function TutorClassroomDetail() {
   const [classRoomDetail, setClassRoomDetail] = useState(undefined);
@@ -39,16 +40,12 @@ function TutorClassroomDetail() {
         <div>{classRoomDetail?.className}</div>
         <div>Schedule:</div>
         <div className="flex flex-col gap-2">
-          {classRoomDetail?.schedules?.map((item) => (
-            <div>
-              From:{" "}
-              <span className="mr-5">
-                {slideFromEnd(item?.sessionStart, -3)}
-              </span>
-              To: <span>{slideFromEnd(item?.sessionEnd, -3)}</span> On{" "}
-              {getValueFromKey(item?.dayOfWeek, DAYS_OF_WEEK)}
-            </div>
-          ))}
+          <Link
+            to={`/schedule/${classRoomDetail?.classId}`}
+            className="w-[200px]"
+          >
+            <PrimaryBtn>View Schedule</PrimaryBtn>
+          </Link>
         </div>
         <div>Date Started:</div>
         <div>

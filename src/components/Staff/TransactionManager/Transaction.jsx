@@ -19,10 +19,11 @@ import { useMutation, useQueries, useQueryClient } from "react-query";
 import { format } from "date-fns";
 import { LIST_TRACSACTION_STATUS } from "src/constants/enumConstant";
 import { toast } from "react-toastify";
+import DeniedBtn from "src/components/common/DeniedBtn";
 
 function ListTransactionManager() {
   const [listAllTransactions, setListAllTransactions] = useState(undefined);
-  const [isFilterSelected, setIsFilterSelected] = useState(false);
+  const [isFilterSelected, setIsFilterSelected] = useState(undefined);
   const [searchParam, setSearchParam] = useState("");
   const debouncedSearchValue = useDebounce(searchParam, 500);
   const [page, setPage] = useState(1);
@@ -30,13 +31,22 @@ function ListTransactionManager() {
 
   useQueries([
     {
-      queryKey: ["getListTransactions", page, limit, debouncedSearchValue],
+      queryKey: [
+        "getListTransactions",
+        page,
+        limit,
+        debouncedSearchValue,
+        isFilterSelected,
+      ],
       queryFn: async () => {
         const queryObj = {};
         queryObj["PagingRequest.CurrentPage"] = page;
         queryObj["PagingRequest.PageSize"] = limit;
         if (debouncedSearchValue) {
           queryObj["SearchWord"] = debouncedSearchValue;
+        }
+        if (isFilterSelected) {
+          queryObj["Status"] = isFilterSelected?.key;
         }
         const response = await getListTransactions(queryObj);
         setListAllTransactions(response?.data?.data);
@@ -55,6 +65,7 @@ function ListTransactionManager() {
             <PrimaryBtn className="!w-[260px]">Add New Transaction</PrimaryBtn>
           </Link>
         </div>
+
         <div className="flex flex-col gap-4 py-5 md:items-center md:flex-row md:justify-end">
           <SearchInput
             placeholder="Search by payer name or id"
@@ -68,6 +79,19 @@ function ListTransactionManager() {
             className="md:max-w-[220px]"
             textDefault="Select Status"
           />
+        </div>
+        <div className="flex justify-end pb-5">
+          <DeniedBtn
+            onClick={() => {
+              setPage(1);
+              setLimit(10);
+              setSearchParam("");
+              setIsFilterSelected(undefined);
+            }}
+            className="max-w-[150px]"
+          >
+            Remove Filter
+          </DeniedBtn>
         </div>
 
         <div className="bg-white table-style block-border">

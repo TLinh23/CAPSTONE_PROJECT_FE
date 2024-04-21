@@ -130,6 +130,15 @@ function FilterDropDown({
               type={type}
             />
           )}
+          {type === "subject" && (
+            <DropDownItem
+              data={{ subjectName: "All Subject" }}
+              setShowing={setShowing}
+              showing={showing}
+              toggleOpen={toggleOpen}
+              type={type}
+            />
+          )}
           {listDropdown?.map((i, index) => (
             <DropDownItem
               key={index}
