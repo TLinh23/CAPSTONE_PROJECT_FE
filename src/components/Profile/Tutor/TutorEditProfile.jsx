@@ -1,9 +1,12 @@
 import { format } from "date-fns";
 import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { toast } from "react-toastify";
-import { changePasswordAccount } from "src/apis/tutor-module";
+import {
+  changePasswordAccount,
+  editProfileDetail,
+} from "src/apis/tutor-module";
 import FilterDropDown from "src/components/common/FilterDropDown";
 import PrimaryBtn from "src/components/common/PrimaryBtn";
 import PrimaryInput from "src/components/common/PrimaryInput";
@@ -15,14 +18,18 @@ import {
   passwordValidation,
   requileValidation,
 } from "src/constants/validations";
+import { useAuthContext } from "src/context/AuthContext";
 import useUploadImage from "src/hooks/useUploadImage";
 import * as Yup from "yup";
+import ProfileHeader from "../ProfileHeader";
 
 function TutorEditProfile(props) {
   const { profileData } = props;
   const [dataProfileDetail, setDataProfileDetail] = useState(null);
   const { handleUploadImage, imageUpload } = useUploadImage();
-  const [gender, setGender] = useState();
+  const [gender, setGender] = useState(undefined);
+  const queryClient = useQueryClient();
+  const { checkUserId } = useAuthContext();
 
   useEffect(() => {
     if (profileData) {
@@ -30,15 +37,87 @@ function TutorEditProfile(props) {
         ...profileData,
         ...profileData?.tutor,
       });
+      localStorage.setItem("fullName", profileData?.fullName);
+      localStorage.setItem("userAvatar", profileData?.userAvatar);
+      checkUserId();
     }
   }, [profileData]);
 
-  console.log("dataProfileDetail: ", dataProfileDetail);
+  const updateProfileMutation = useMutation(
+    async (newData) => {
+      return await editProfileDetail(newData);
+    },
+    {
+      onSuccess: (data) => {
+        console.log("Data: ", data);
+        if (data?.status >= 200 && data?.status < 300) {
+          toast.success("Edit profile successfully");
+          queryClient.invalidateQueries("getProfile");
+        } else {
+          toast.error(
+            data?.message ||
+              data?.response?.data?.message ||
+              data?.response?.data ||
+              "Oops! Something went wrong..."
+          );
+        }
+      },
+      onError: (err) => {
+        toast.error(
+          // @ts-ignore
+          err?.response?.data?.message || err?.message || "Update error"
+        );
+      },
+    }
+  );
+
+  const handleClickEditProfile = () => {
+    const queryObj = {
+      FullName: dataProfileDetail?.fullName,
+      Phone: dataProfileDetail?.phone,
+      Gender: dataProfileDetail?.gender,
+      Address: dataProfileDetail?.address,
+      Dob: dataProfileDetail?.dob,
+    };
+    queryObj["Tutor.Cmnd"] = dataProfileDetail?.cmnd;
+    queryObj["Tutor.FrontCmnd"] = dataProfileDetail?.frontCmnd;
+    queryObj["Tutor.BackCmnd"] = dataProfileDetail?.backCmnd;
+    queryObj["Tutor.Cv"] = dataProfileDetail?.cv;
+    queryObj["Tutor.EducationLevel"] = dataProfileDetail?.educationLevel;
+    queryObj["Tutor.School"] = dataProfileDetail?.school;
+    queryObj["Tutor.GraduationYear"] = dataProfileDetail?.graduationYear;
+    queryObj["Tutor.About"] = dataProfileDetail?.about;
+    queryObj["Staff.StaffType"] = "";
+    if (imageUpload) {
+      queryObj["Avatar"] = imageUpload;
+    }
+    if (gender) {
+      queryObj["Gender"] = gender?.value;
+    }
+    if (dataProfileDetail?.Cv) {
+      queryObj["Tutor.Cv"] = dataProfileDetail?.Cv;
+    }
+    if (dataProfileDetail?.FrontCmnd) {
+      queryObj["Tutor.FrontCmnd"] = dataProfileDetail?.FrontCmnd;
+    }
+    if (dataProfileDetail?.BackCmnd) {
+      queryObj["Tutor.BackCmnd"] = dataProfileDetail?.BackCmnd;
+    }
+    console.log("Send Obj: ", queryObj);
+    const formData = new FormData();
+    for (const key in queryObj) {
+      const value = queryObj[key];
+
+      formData.append(key, value);
+    }
+    // @ts-ignore
+    updateProfileMutation.mutate(formData);
+  };
 
   return (
     <div>
       <div className="bg-[#ffffff] block-border">
-        <Title>Update personal information</Title>
+        <ProfileHeader title="Update personal information" />
         <div className="grid grid-cols-1 gap-4 mt-5 md:grid-cols-37">
           <div className="w-full h-auto">
             <div className="flex flex-col items-center justify-between">
@@ -186,18 +265,72 @@ function TutorEditProfile(props) {
             </div>
             <div className="grid items-center gap-x-4 gap-y-2 grid-cols-2575">
               <PrimarySmallTitle>CV</PrimarySmallTitle>
-              <input type="file" />
+              <div>
+                <input
+                  type="file"
+                  onChange={(e) => {
+                    setDataProfileDetail({
+                      ...dataProfileDetail,
+                      Cv: e.target.files[0],
+                    });
+                  }}
+                />
+                <a
+                  className="underline hover:text-primary smooth-transform"
+                  href={dataProfileDetail?.tutor?.cv}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  View CV Now
+                </a>
+              </div>
               <PrimarySmallTitle>Identify Card Front</PrimarySmallTitle>
-              <input type="file" />
+              <div>
+                <input
+                  type="file"
+                  onChange={(e) => {
+                    setDataProfileDetail({
+                      ...dataProfileDetail,
+                      FrontCmnd: e.target.files[0],
+                    });
+                  }}
+                />
+                <a
+                  className="underline hover:text-primary smooth-transform"
+                  href={dataProfileDetail?.tutor?.frontCmnd}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  View Front
+                </a>
+              </div>
               <PrimarySmallTitle>Identify Card Back</PrimarySmallTitle>
-              <input type="file" />
+              <div>
+                <input
+                  type="file"
+                  onChange={(e) => {
+                    setDataProfileDetail({
+                      ...dataProfileDetail,
+                      BackCmnd: e.target.files[0],
+                    });
+                  }}
+                />
+                <a
+                  className="underline hover:text-primary smooth-transform"
+                  href={dataProfileDetail?.tutor?.backCmnd}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  View Back
+                </a>
+              </div>
             </div>
           </div>
         </div>
         <div className="flex items-center justify-end gap-4 mt-6">
           <PrimaryBtn
             className="md:max-w-[222px]"
-            // onClick={() => handleEditProfile()}
+            onClick={handleClickEditProfile}
           >
             Save
           </PrimaryBtn>

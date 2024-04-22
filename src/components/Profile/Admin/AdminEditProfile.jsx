@@ -1,8 +1,7 @@
 import { format } from "date-fns";
 import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
-import { useMutation } from "react-query";
-import { useNavigate } from "react-router-dom";
+import { useMutation, useQueryClient } from "react-query";
 import { toast } from "react-toastify";
 import {
   changePasswordAccount,
@@ -19,18 +18,25 @@ import {
   passwordValidation,
   requileValidation,
 } from "src/constants/validations";
+import { useAuthContext } from "src/context/AuthContext";
 import useUploadImage from "src/hooks/useUploadImage";
 import * as Yup from "yup";
+import ProfileHeader from "../ProfileHeader";
 
 function AdminEditProfile(props) {
   const { profileData } = props;
   const [staffAccountObject, setStaffAccountObject] = useState(profileData);
   const { handleUploadImage, imageUpload } = useUploadImage();
-  const [gender, setGender] = useState();
+  const [gender, setGender] = useState(undefined);
+  const queryClient = useQueryClient();
+  const { checkUserId } = useAuthContext();
 
   useEffect(() => {
     if (profileData) {
       setStaffAccountObject(profileData);
+      localStorage.setItem("fullName", profileData?.fullName);
+      localStorage.setItem("userAvatar", profileData?.userAvatar);
+      checkUserId();
     }
   }, [profileData]);
 
@@ -44,6 +50,7 @@ function AdminEditProfile(props) {
         console.log("Data: ", data);
         if (data?.status >= 200 && data?.status < 300) {
           toast.success("Edit profile successfully");
+          queryClient.invalidateQueries("getProfile");
         } else {
           toast.error(
             data?.message ||
@@ -70,13 +77,21 @@ function AdminEditProfile(props) {
       Address: staffAccountObject?.address,
       Dob: staffAccountObject?.dob,
     };
+    queryObj["Tutor.Cmnd"] = "";
+    queryObj["Tutor.FrontCmnd"] = "";
+    queryObj["Tutor.BackCmnd"] = "";
+    queryObj["Tutor.Cv"] = "";
+    queryObj["Tutor.EducationLevel"] = "";
+    queryObj["Tutor.School"] = "";
+    queryObj["Tutor.GraduationYear"] = "";
+    queryObj["Tutor.About"] = "";
+    queryObj["Staff.StaffType"] = "";
     if (imageUpload) {
       queryObj["Avatar"] = imageUpload;
     }
     if (gender) {
-      queryObj["Gender"] = gender;
+      queryObj["Gender"] = gender?.value;
     }
-    queryObj["Staff.StaffType"] = "ADMIN";
     console.log("Send Obj: ", queryObj);
     const formData = new FormData();
     for (const key in queryObj) {
@@ -91,7 +106,7 @@ function AdminEditProfile(props) {
   return (
     <div>
       <div className="bg-[#ffffff] block-border">
-        <Title>Update personal information</Title>
+        <ProfileHeader title="Update personal information" />
         <div className="grid grid-cols-1 gap-4 mt-5 md:grid-cols-37">
           <div className="w-full h-auto">
             <div className="flex flex-col items-center justify-between">

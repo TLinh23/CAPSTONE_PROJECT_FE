@@ -107,6 +107,20 @@ function TutorCreateClassroomInfor(props) {
           }}
           value={classRoomDetail?.maxCapacity || ""}
         />
+        <div>
+          Number of Session <span className="text-dangerous">*</span>
+        </div>
+        <PrimaryInput
+          type="number"
+          placeholder="Enter slot number"
+          onChange={(e) => {
+            setClassRoomDetail({
+              ...classRoomDetail,
+              numOfSession: Number(e.target.value),
+            });
+          }}
+          value={classRoomDetail?.numOfSession || ""}
+        />
       </div>
       <div className="max-w-[1200px] flex gap-5 justify-center items-center mt-10">
         <PrimaryBtn

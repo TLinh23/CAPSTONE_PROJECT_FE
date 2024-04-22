@@ -26,7 +26,7 @@ function AdminProfileDetail(props) {
                 <img
                   className="object-cover w-full h-full rounded"
                   src={
-                    dataProfileDetail?.userAvater || "/images/logo-default.png"
+                    dataProfileDetail?.userAvatar || "/images/logo-default.png"
                   }
                   alt=""
                 />

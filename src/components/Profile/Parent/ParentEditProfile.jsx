@@ -1,9 +1,12 @@
 import { format } from "date-fns";
 import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { toast } from "react-toastify";
-import { changePasswordAccount } from "src/apis/tutor-module";
+import {
+  changePasswordAccount,
+  editProfileDetail,
+} from "src/apis/tutor-module";
 import FilterDropDown from "src/components/common/FilterDropDown";
 import PrimaryBtn from "src/components/common/PrimaryBtn";
 import PrimaryInput from "src/components/common/PrimaryInput";
@@ -15,25 +18,93 @@ import {
   passwordValidation,
   requileValidation,
 } from "src/constants/validations";
+import { useAuthContext } from "src/context/AuthContext";
 import useUploadImage from "src/hooks/useUploadImage";
 import * as Yup from "yup";
+import ProfileHeader from "../ProfileHeader";
 
 function ParentEditProfile(props) {
   const { profileData } = props;
+  const queryClient = useQueryClient();
   const [dataProfileDetail, setDataProfileDetail] = useState(profileData);
   const { handleUploadImage, imageUpload } = useUploadImage();
-  const [gender, setGender] = useState();
+  const [gender, setGender] = useState(undefined);
+  const { checkUserId } = useAuthContext();
 
   useEffect(() => {
     if (profileData) {
       setDataProfileDetail(profileData);
+      localStorage.setItem("fullName", profileData?.fullName);
+      localStorage.setItem("userAvatar", profileData?.userAvatar);
+      checkUserId();
     }
   }, [profileData]);
 
+  const updateProfileMutation = useMutation(
+    async (newData) => {
+      return await editProfileDetail(newData);
+    },
+    {
+      onSuccess: (data) => {
+        console.log("Data: ", data);
+        if (data?.status >= 200 && data?.status < 300) {
+          toast.success("Edit profile successfully");
+          queryClient.invalidateQueries("getProfile");
+        } else {
+          toast.error(
+            data?.message ||
+              data?.response?.data?.message ||
+              data?.response?.data ||
+              "Oops! Something went wrong..."
+          );
+        }
+      },
+      onError: (err) => {
+        toast.error(
+          // @ts-ignore
+          err?.response?.data?.message || err?.message || "Update error"
+        );
+      },
+    }
+  );
+
+  const handleUpdateParentProfile = () => {
+    const queryObj = {
+      Gender: dataProfileDetail?.gender,
+      Phone: dataProfileDetail?.phone,
+      Address: dataProfileDetail?.address,
+      Dob: dataProfileDetail?.dob,
+      FullName: dataProfileDetail?.fullName,
+    };
+    queryObj["Tutor.Cmnd"] = "";
+    queryObj["Tutor.FrontCmnd"] = "";
+    queryObj["Tutor.BackCmnd"] = "";
+    queryObj["Tutor.Cv"] = "";
+    queryObj["Tutor.EducationLevel"] = "";
+    queryObj["Tutor.School"] = "";
+    queryObj["Tutor.GraduationYear"] = "";
+    queryObj["Tutor.About"] = "";
+    queryObj["Staff.StaffType"] = "";
+    if (gender) {
+      queryObj["Gender"] = gender?.value;
+    }
+    if (imageUpload) {
+      queryObj["Avatar"] = imageUpload;
+    }
+    const formData = new FormData();
+    for (const key in queryObj) {
+      const value = queryObj[key];
+
+      formData.append(key, value);
+    }
+    console.log("Edit profile data: ", queryObj);
+    // @ts-ignore
+    updateProfileMutation.mutate(formData);
+  };
   return (
     <div>
       <div className="bg-[#ffffff] block-border">
-        <Title>Update personal information</Title>
+        <ProfileHeader title="Update personal information" />
         <div className="grid grid-cols-1 gap-4 mt-5 md:grid-cols-37">
           <div className="w-full h-auto">
             <div className="flex flex-col items-center justify-between">
@@ -137,7 +208,7 @@ function ParentEditProfile(props) {
         <div className="flex items-center justify-end gap-4 mt-6">
           <PrimaryBtn
             className="md:max-w-[222px]"
-            // onClick={() => handleChangeProfile()}
+            onClick={handleUpdateParentProfile}
           >
             Save
           </PrimaryBtn>

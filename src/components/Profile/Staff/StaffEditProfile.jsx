@@ -1,7 +1,7 @@
 import { format } from "date-fns";
 import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { toast } from "react-toastify";
 import {
   changePasswordAccount,
@@ -18,6 +18,7 @@ import {
   passwordValidation,
   requileValidation,
 } from "src/constants/validations";
+import { useAuthContext } from "src/context/AuthContext";
 import useUploadImage from "src/hooks/useUploadImage";
 import * as Yup from "yup";
 
@@ -25,11 +26,16 @@ function StaffEditProfile(props) {
   const { profileData } = props;
   const [staffAccountObject, setStaffAccountObject] = useState(profileData);
   const { handleUploadImage, imageUpload } = useUploadImage();
-  const [gender, setGender] = useState();
+  const [gender, setGender] = useState(undefined);
+  const queryClient = useQueryClient();
+  const { checkUserId } = useAuthContext();
 
   useEffect(() => {
     if (profileData) {
       setStaffAccountObject(profileData);
+      localStorage.setItem("fullName", profileData?.fullName);
+      localStorage.setItem("userAvatar", profileData?.userAvatar);
+      checkUserId();
     }
   }, [profileData]);
 
@@ -43,6 +49,7 @@ function StaffEditProfile(props) {
         console.log("Data: ", data);
         if (data?.status >= 200 && data?.status < 300) {
           toast.success("Edit profile successfully");
+          queryClient.invalidateQueries("getProfile");
         } else {
           toast.error(
             data?.message ||
@@ -69,13 +76,22 @@ function StaffEditProfile(props) {
       Address: staffAccountObject?.address,
       Dob: staffAccountObject?.dob,
     };
+    queryObj["Tutor.Cmnd"] = "";
+    queryObj["Tutor.FrontCmnd"] = "";
+    queryObj["Tutor.BackCmnd"] = "";
+    queryObj["Tutor.Cv"] = "";
+    queryObj["Tutor.EducationLevel"] = "";
+    queryObj["Tutor.School"] = "";
+    queryObj["Tutor.GraduationYear"] = "";
+    queryObj["Tutor.About"] = "";
+    queryObj["Staff.StaffType"] = "STAFF";
     if (imageUpload) {
       queryObj["Avatar"] = imageUpload;
     }
     if (gender) {
-      queryObj["Gender"] = gender;
+      queryObj["Gender"] = gender?.value;
     }
-    queryObj["Staff.StaffType"] = "STAFF";
+
     console.log("Send Obj: ", queryObj);
     const formData = new FormData();
     for (const key in queryObj) {

@@ -6,8 +6,6 @@ import SecondaryBtn from "../common/SecondaryBtn";
 import { Link, useParams } from "react-router-dom";
 import { useQueries } from "react-query";
 import { getClassDetailData } from "src/apis/class-module";
-import { DAYS_OF_WEEK } from "src/constants/enumConstant";
-import { getValueFromKey, slideFromEnd } from "src/libs";
 import PrimaryBtn from "../common/PrimaryBtn";
 
 function TutorClassroomDetail() {
@@ -55,8 +53,13 @@ function TutorClassroomDetail() {
         </div>
         <div>Subject:</div>
         <div>{classRoomDetail?.subjectName}</div>
+        <div>Price:</div>
+        <div>{classRoomDetail?.price}</div>
         <div>Grade:</div>
         <div>{classRoomDetail?.classLevel}</div>
+        <div>Number of Session:</div>
+        <div>{classRoomDetail?.numOfSession}</div>
+
         <Link className="max-w-[200px]" to={`/tutor-classrooms/${id}/students`}>
           <SecondaryBtn>List of Students</SecondaryBtn>
         </Link>

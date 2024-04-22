@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import ArrowDownIcon from "../icons/ArrowDownIcon";
 
-function FilterDropDown({
+function YearTimeDropDown({
   title = "",
   listDropdown,
   showing,
@@ -10,9 +10,9 @@ function FilterDropDown({
   textDefault = "",
   className = "",
   required = "",
-  type = "",
   classNameDropdown = "",
   disabled = false,
+  handleSelectItem = undefined,
 }) {
   const node = useRef();
   const [isOpen, toggleOpen] = useState(false);
@@ -87,19 +87,7 @@ function FilterDropDown({
           }`}
         >
           <div className="flex items-center gap-1">
-            {type === "className" ? (
-              <p className="text-[#000000]">
-                {showing?.className || textDefault}
-              </p>
-            ) : (
-              <p className="text-[#000000]">
-                {showing?.name ||
-                  showing?.value ||
-                  showing?.subjectName ||
-                  showing?.fullName ||
-                  textDefault}
-              </p>
-            )}
+            <p className="text-[#000000]">{showing || textDefault}</p>
           </div>
           <ArrowDownIcon color="#373737" />
         </div>
@@ -114,31 +102,13 @@ function FilterDropDown({
           borderRadius: 5,
           backgroundColor: "#ECF1F4",
           transformOrigin: "50% -30px",
-          zIndex: 1,
+          zIndex: 9999,
         }}
       >
         <div
           id="list-dropdown"
           className={`smooth-transform z-9999 flex w-full flex-col gap-1 rounded-b-xl  bg-[#fff] py-3  max-h-[250px] overflow-y-auto ${classNameDropdown}`}
         >
-          {type === "className" && (
-            <DropDownItem
-              data={{ className: "All Class" }}
-              setShowing={setShowing}
-              showing={showing}
-              toggleOpen={toggleOpen}
-              type={type}
-            />
-          )}
-          {type === "subject" && (
-            <DropDownItem
-              data={{ subjectName: "All Subject" }}
-              setShowing={setShowing}
-              showing={showing}
-              toggleOpen={toggleOpen}
-              type={type}
-            />
-          )}
           {listDropdown?.map((i, index) => (
             <DropDownItem
               key={index}
@@ -146,7 +116,7 @@ function FilterDropDown({
               setShowing={setShowing}
               showing={showing}
               toggleOpen={toggleOpen}
-              type={type}
+              handleSelectItem={handleSelectItem}
             />
           ))}
         </div>
@@ -155,9 +125,15 @@ function FilterDropDown({
   );
 }
 
-export default FilterDropDown;
+export default YearTimeDropDown;
 
-function DropDownItem({ data, showing, setShowing, toggleOpen, type }) {
+function DropDownItem({
+  data,
+  showing,
+  setShowing,
+  toggleOpen,
+  handleSelectItem,
+}) {
   const isSelected = showing === data;
 
   return (
@@ -165,19 +141,15 @@ function DropDownItem({ data, showing, setShowing, toggleOpen, type }) {
       onClick={() => {
         setShowing(data);
         toggleOpen(false);
+        if (handleSelectItem) {
+          handleSelectItem(data);
+        }
       }}
       className={`flex items-center w-full px-4 py-3 text-sm cursor-pointer bg-opacity-20 hover:bg-[#2F8DE415] smooth-transform ${
         isSelected ? "bg-[#2F8DE4] text-black" : ""
       }`}
     >
-      {type === "className" ? (
-        <p>{data?.className}</p>
-      ) : (
-        <p>
-          {data?.name || data?.value || data?.subjectName || data?.fullName}
-        </p>
-      )}
-
+      <p>{data}</p>
       {isSelected && <span className="ml-1">✓</span>}
     </div>
   );

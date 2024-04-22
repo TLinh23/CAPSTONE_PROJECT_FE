@@ -26,10 +26,16 @@ export const INITIAL_EVENTS = [
     id: createEventId(),
     title: "Toan lop 5",
     start: todayStr + "T16:00:00",
+    end: todayStr + "T18:00:00",
     description: "Attendant",
   },
 ];
 
 export function createEventId() {
   return String(eventGuid++);
+}
+
+export function getValueFromId(key, list) {
+  const dayOfWeek = list?.find((day) => day.id === key);
+  return dayOfWeek ? dayOfWeek.value : null;
 }

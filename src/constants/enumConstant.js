@@ -42,3 +42,9 @@ export const LIST_TRACSACTION_STATUS = [
   { id: 2, key: "UNPAID", value: "Unpaid" },
   { id: 3, key: "PAID", value: "Paid" },
 ];
+
+export const LIST_ATTEND_STATUS = [
+  { id: 1, key: "ATTENDED", value: "Attended" },
+  { id: 2, key: "ABSENT", value: "Absent" },
+  { id: 3, key: "NOT YET", value: "Not Yet" },
+];

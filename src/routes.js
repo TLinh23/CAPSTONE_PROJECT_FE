@@ -42,6 +42,7 @@ import PageManageAllStaffs from "./pages/ManageStaff/PageManageAllStaffs";
 import PageManageAllAccounts from "./pages/PageManageAllAccounts";
 import PageTutorTransaction from "./pages/PageTutorTransaction";
 import PageTest from "./pages/PageTest";
+import PageAttenDantDetail from "./pages/PageAttenDantDetail";
 
 //list your routes here
 export const routes = [
@@ -103,6 +104,10 @@ export const routes = [
   { path: "/transactions", element: <PageTutorTransaction /> },
   { path: "/transactions/:id", element: <TransactionDetail /> },
   { path: "/transactions/create", element: <AddTransaction /> },
+  {
+    path: "/classrooms/attendant/:id",
+    element: <PageAttenDantDetail />,
+  },
 
   {
     path: "/test",

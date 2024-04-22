@@ -1,67 +1,157 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import FullCalendar from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import timeGridPlugin from "@fullcalendar/timegrid";
+import interactionPlugin from "@fullcalendar/interaction";
+import listPlugin from "@fullcalendar/list";
+
+import { INITIAL_EVENTS } from "src/libs";
+import { format } from "date-fns";
 import Title from "../common/Title";
-import FilterDropDown from "../common/FilterDropDown";
-import { VALUE_DAYS_OF_WEEK } from "src/constants/enumConstant";
+import { getWeeksInYear, getYearsRange } from "src/libs/getWeekInYear";
+import YearTimeDropDown from "../common/YearTimeDropDown";
 import { Link } from "react-router-dom";
-import { slideEndItem } from "src/libs";
 
 function TutorSchedule(props) {
-  const {
-    scheduleDetail,
-    listClassroom,
-    classRoomSelected,
-    setClassRoomSelected,
-  } = props;
+  const { scheduleDetail } = props;
+  const [listWeekInYear, setListWeekInYear] = useState(undefined);
+  const LIST_YEAR = getYearsRange();
+  const currentYear = new Date().getFullYear();
+  const calendarRef = useRef(null);
+  const [yearSelected, setYearSelected] = useState(currentYear);
+  const [weekSelected, setWeekSelected] = useState(undefined);
+
+  useEffect(() => {
+    if (yearSelected) {
+      const listWeek = getWeeksInYear(yearSelected);
+      setListWeekInYear(listWeek);
+    }
+  }, [yearSelected]);
+
+  const calendarApi = calendarRef.current?.getApi();
+  const endDate = calendarApi?.view?.activeEnd
+    ? new Date(calendarApi?.view?.activeEnd)
+    : new Date();
+  endDate.setDate(endDate.getDate() - 1);
+
+  const defaultSelectedDWeek = `${
+    calendarApi?.view?.activeStart &&
+    format(new Date(calendarApi?.view?.activeStart), "dd/MM")
+  } To 
+  ${endDate && format(new Date(endDate), "dd/MM")}
+  `;
+
+  const handleSelectItem = (data) => {
+    let calendarApi = calendarRef.current.getApi();
+    const weekStart = data.split(" ")[0];
+    const [day, month] = weekStart.split("/");
+    const targetDate = new Date(`${month}-${day}-${yearSelected}`);
+    calendarApi.gotoDate(targetDate);
+  };
+  const events = scheduleDetail?.map((event) => ({
+    id: event?.id,
+    title: event?.className,
+    start: event?.date
+      ? new Date(event?.date).toISOString().replace(/T.*$/, "") +
+        `T${event?.sessionStart}`
+      : new Date(),
+    end: event?.date
+      ? new Date(event?.date).toISOString().replace(/T.*$/, "") +
+        `T${event?.sessionEnd}`
+      : new Date(),
+    extendedProps: {
+      status: event?.status,
+      classId: event?.classId,
+      studentName: event?.studentName,
+      attendent: event?.attendent,
+    },
+  }));
 
   return (
     <div className="bg-[#ffffff] block-border">
-      <Title>My Schedule</Title>
-
-      <div className="flex justify-end gap-5">
-        <FilterDropDown
-          listDropdown={listClassroom?.items}
-          showing={classRoomSelected}
-          setShowing={setClassRoomSelected}
-          className="max-w-[240px]"
-          textDefault="Select classroom"
-          type="className"
-        />
+      <div className="flex items-center justify-between gap-5">
+        <Title>My Schedule</Title>
+        <div className="flex items-center gap-3">
+          <YearTimeDropDown
+            listDropdown={listWeekInYear || []}
+            showing={weekSelected}
+            setShowing={setWeekSelected}
+            className="!w-[240px]"
+            textDefault={defaultSelectedDWeek}
+            handleSelectItem={handleSelectItem}
+          />
+          <YearTimeDropDown
+            listDropdown={LIST_YEAR}
+            showing={yearSelected}
+            setShowing={setYearSelected}
+            className="!w-[120px]"
+          />
+        </div>
       </div>
-
-      <div className="grid grid-cols-7 gap-2 mt-5 border">
-        <div className="schedule-border">Mon</div>
-        <div className="schedule-border">Tue</div>
-        <div className="schedule-border">Wed</div>
-        <div className="schedule-border">Thu</div>
-        <div className="schedule-border">Fri</div>
-        <div className="schedule-border">Sat</div>
-        <div className="schedule-border">Sun</div>
-
-        {scheduleDetail &&
-          VALUE_DAYS_OF_WEEK.map((day) => (
-            <div key={day}>
-              {scheduleDetail
-                ?.filter((item) => item?.dayOfWeek === day)
-                ?.map((item) => (
-                  <div className="schedule-border-item" key={item?.id}>
-                    <Link to={`/classrooms/${item?.classId}`}>
-                      <span className="underline truncate-1-line">
-                        {item?.className}
-                      </span>
-                    </Link>
-                    <div className="mt-2">
-                      {`${slideEndItem(item?.sessionStart, 3)} - ${slideEndItem(
-                        item?.sessionEnd,
-                        3
-                      )}`}
-                    </div>
-                  </div>
-                ))}
-            </div>
-          ))}
+      <div className="mt-5 bg-white demo-app">
+        <div className="demo-app-main">
+          {events && (
+            <FullCalendar
+              ref={calendarRef}
+              plugins={[
+                dayGridPlugin,
+                timeGridPlugin,
+                interactionPlugin,
+                listPlugin,
+              ]}
+              headerToolbar={{
+                left: "prev,next today",
+                center: "title",
+                right: "timeGridWeek,timeGridDay,listWeek",
+              }}
+              initialView="timeGridWeek"
+              selectable={true}
+              selectMirror={true}
+              dayMaxEvents={true}
+              initialEvents={INITIAL_EVENTS}
+              events={events}
+              eventContent={renderEventContent} // custom render function
+              firstDay={1}
+              height={600}
+              eventTimeFormat={{
+                hour: "2-digit",
+                minute: "2-digit",
+                meridiem: false,
+                hour12: false,
+              }}
+              slotLabelFormat={{
+                hour: "numeric",
+                minute: "2-digit",
+                hour12: false,
+              }}
+              allDaySlot={false}
+              dayHeaderContent={(args) => {
+                return format(args.date, "iii - dd/MM");
+              }}
+            />
+          )}
+        </div>
       </div>
     </div>
   );
 }
 
 export default TutorSchedule;
+
+function renderEventContent(eventInfo) {
+  return (
+    <div>
+      <div className="text-base">
+        <b>{eventInfo.timeText}</b>
+      </div>
+      <Link to={`/classrooms/${eventInfo.event?.extendedProps?.classId}`}>
+        <div className="text-sm underline truncate-1-line">
+          <i>{eventInfo.event.title}</i>
+        </div>
+      </Link>
+      <Link to={`/classrooms/attendant/${eventInfo.event?.id}`}>
+        <div className="text-sm">Take attendance</div>
+      </Link>
+    </div>
+  );
+}

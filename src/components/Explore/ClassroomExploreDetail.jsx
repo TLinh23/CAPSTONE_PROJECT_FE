@@ -61,8 +61,13 @@ function ClassroomExploreDetail() {
         </div>
         <div>Subject:</div>
         <div>{classRoomDetail?.subjectName}</div>
+        <div>Price:</div>
+        <div>{classRoomDetail?.price}</div>
         <div>Grade:</div>
         <div>{classRoomDetail?.classLevel}</div>
+        <div>Number of Session:</div>
+        <div>{classRoomDetail?.numOfSession}</div>
+
         {roleKey === ROLE_NAME.PARENT && (
           <Link
             className="max-w-[200px]"

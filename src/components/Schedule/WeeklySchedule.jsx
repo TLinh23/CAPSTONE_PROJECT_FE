@@ -66,7 +66,12 @@ function WeeklySchedule() {
           setClassRoomSelected={setClassRoomSelected}
         />
       )}
-      {roleKey === ROLE_NAME.PARENT && <ParentSchedule />}
+      {roleKey === ROLE_NAME.PARENT && (
+        <ParentSchedule
+          scheduleDetail={scheduleDetail}
+          listClassroom={listClassroom}
+        />
+      )}
     </div>
   );
 }
