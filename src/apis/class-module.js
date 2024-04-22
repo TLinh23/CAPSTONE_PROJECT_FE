@@ -5,6 +5,7 @@ import {
   deleteClassroomForTutorUrl,
   deleteStudentUrl,
   filteredScheduleUrl,
+  getAttendStudentsUrl,
   getClassDetailUrl,
   getClassUrl,
   getParentClassUrl,
@@ -14,6 +15,7 @@ import {
   requestForParentUrl,
   requestForTutorUrl,
   scheduleUrl,
+  updateAttendStudentsUrl,
   updateClassStudentUrl,
 } from "src/constants/APIConfig";
 import {
@@ -128,6 +130,19 @@ export const getFiteredSchedule = (paramsObj) => {
 export const addNewEvaluation = (queryObj) => {
   return postAPI({
     url: `${addEvaluation}`,
+    data: queryObj,
+  });
+};
+
+export const getAttendStudents = (scheduleId) => {
+  return requestAPI({
+    url: `${getAttendStudentsUrl}?scheduleId=${scheduleId}`,
+  });
+};
+
+export const updateAttendStudents = (queryObj) => {
+  return putAPI({
+    url: `${updateAttendStudentsUrl}`,
     data: queryObj,
   });
 };

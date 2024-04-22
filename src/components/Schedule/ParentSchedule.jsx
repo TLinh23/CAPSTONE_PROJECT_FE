@@ -21,6 +21,7 @@ function ParentSchedule(props) {
   const calendarRef = useRef(null);
   const [yearSelected, setYearSelected] = useState(currentYear);
   const [weekSelected, setWeekSelected] = useState(undefined);
+  const [defaultSelectedWeek, setDefaultSelectedWeek] = useState(undefined);
 
   useEffect(() => {
     if (yearSelected) {
@@ -28,19 +29,6 @@ function ParentSchedule(props) {
       setListWeekInYear(listWeek);
     }
   }, [yearSelected]);
-
-  const calendarApi = calendarRef.current?.getApi();
-  const endDate = calendarApi?.view?.activeEnd
-    ? new Date(calendarApi?.view?.activeEnd)
-    : new Date();
-  endDate.setDate(endDate.getDate() - 1);
-
-  const defaultSelectedDWeek = `${
-    calendarApi?.view?.activeStart &&
-    format(new Date(calendarApi?.view?.activeStart), "dd/MM")
-  } To 
-  ${endDate && format(new Date(endDate), "dd/MM")}
-  `;
 
   const handleSelectItem = (data) => {
     let calendarApi = calendarRef.current.getApi();
@@ -53,12 +41,10 @@ function ParentSchedule(props) {
     id: event?.id,
     title: event?.className,
     start: event?.date
-      ? new Date(event?.date).toISOString().replace(/T.*$/, "") +
-        `T${event?.sessionStart}`
+      ? new Date(`${event?.date.split("T")[0]}T${event?.sessionStart}`)
       : new Date(),
     end: event?.date
-      ? new Date(event?.date).toISOString().replace(/T.*$/, "") +
-        `T${event?.sessionEnd}`
+      ? new Date(`${event?.date.split("T")[0]}T${event?.sessionEnd}`)
       : new Date(),
     extendedProps: {
       status: event?.status,
@@ -78,7 +64,7 @@ function ParentSchedule(props) {
             showing={weekSelected}
             setShowing={setWeekSelected}
             className="!w-[240px]"
-            textDefault={defaultSelectedDWeek}
+            textDefault={defaultSelectedWeek}
             handleSelectItem={handleSelectItem}
           />
           <YearTimeDropDown
@@ -128,6 +114,18 @@ function ParentSchedule(props) {
               allDaySlot={false}
               dayHeaderContent={(args) => {
                 return format(args.date, "iii - dd/MM");
+              }}
+              datesSet={(args) => {
+                const startDate = args?.start
+                  ? new Date(args?.start)
+                  : new Date();
+                const endDate = args?.end ? new Date(args?.end) : new Date();
+                endDate.setDate(endDate.getDate() - 1);
+                setDefaultSelectedWeek(
+                  `${startDate && format(new Date(startDate), "dd/MM")} To ${
+                    endDate && format(new Date(endDate), "dd/MM")
+                  }`
+                );
               }}
             />
           )}

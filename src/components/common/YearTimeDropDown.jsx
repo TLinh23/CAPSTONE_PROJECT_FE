@@ -117,6 +117,7 @@ function YearTimeDropDown({
               showing={showing}
               toggleOpen={toggleOpen}
               handleSelectItem={handleSelectItem}
+              textDefault={textDefault}
             />
           ))}
         </div>
@@ -133,9 +134,9 @@ function DropDownItem({
   setShowing,
   toggleOpen,
   handleSelectItem,
+  textDefault = "",
 }) {
-  const isSelected = showing === data;
-
+  const isSelected = showing === data || textDefault === data;
   return (
     <div
       onClick={() => {

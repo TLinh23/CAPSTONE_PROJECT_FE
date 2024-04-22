@@ -15,6 +15,9 @@ import {
 } from "src/apis/class-module";
 import ClassNameFilterDropdown from "src/components/common/ClassNameFilterDropdown";
 import { toast } from "react-toastify";
+import { format } from "date-fns";
+import HeaderDetail from "src/components/common/HeaderDetail";
+import ProfileHeader from "src/components/Profile/ProfileHeader";
 
 function AddAssessment() {
   const { roleKey, userId } = useAuthContext();
@@ -83,13 +86,19 @@ function AddAssessment() {
   );
 
   const handleClickCreateAssessment = () => {
-    const queryObj = {};
-    // addEvaluationMutation.mutate(queryObj)
+    const queryObj = {
+      ClassId: classRoomSelected?.classId,
+      StudentId: studentSelected?.studentId,
+      Status: "CREATED",
+      ...newTransactionDetail,
+    };
+    console.log("queryObj: ", queryObj);
+    addEvaluationMutation.mutate(queryObj);
   };
   return (
     <Layout>
       <div className="bg-white block-border">
-        <Title>Add New Assessment</Title>
+        <ProfileHeader title="Add New Assessment" />
         <div className="grid grid-cols-37 max-w-[1000px] mt-5 gap-x-5 gap-y-3 items-center">
           <div>
             Class <span className="text-red-500">*</span>
@@ -120,11 +129,36 @@ function AddAssessment() {
             onChange={(e) => {
               setNewTransactionDetail({
                 ...newTransactionDetail,
-                Score: e.target.value,
+                Score: Number(e.target.value),
               });
             }}
             value={newTransactionDetail?.Score || ""}
           />
+          {/* <div>Date</div>
+          <PrimaryInput
+            placeholder="Enter score rate"
+            type="date"
+            value={
+              newTransactionDetail?.Date
+                ? format(new Date(newTransactionDetail?.Date), "yyyy-MM-dd")
+                : ""
+            }
+            onChange={(e) => {
+              const selectedDate = e.target.value;
+              const currentDate = new Date().toISOString().slice(0, 10);
+              if (selectedDate > currentDate) {
+                setNewTransactionDetail({
+                  ...newTransactionDetail,
+                  Date: currentDate,
+                });
+              } else {
+                setNewTransactionDetail({
+                  ...newTransactionDetail,
+                  Date: selectedDate,
+                });
+              }
+            }}
+          /> */}
           <div>Comment</div>
           <PrimaryTextArea
             rows={5}
@@ -140,6 +174,11 @@ function AddAssessment() {
         </div>
         <div className="max-w-[1000px] flex justify-center items-center mt-10">
           <PrimaryBtn
+            disabled={
+              !classRoomSelected ||
+              !studentSelected ||
+              !newTransactionDetail?.Score
+            }
             onClick={handleClickCreateAssessment}
             className="!w-[200px]"
           >

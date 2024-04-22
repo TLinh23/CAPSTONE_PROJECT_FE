@@ -10,7 +10,7 @@ export const TUTOR_HREF = {
 export const PARENT_HREF = {
   REQUEST: "/classroom-requests",
   CLASSROOM: "/parent-classrooms",
-  ASSESMENTS: "/assessesments",
+  ASSESMENTS: "/assessments",
   SCHEDULE: "/schedule",
 };
 

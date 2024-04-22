@@ -4,36 +4,35 @@ import Table from "../../common/Table";
 import Title from "../../common/Title";
 import PrimaryBtn from "src/components/common/PrimaryBtn";
 import RenderStatus from "src/components/common/RenderStatus";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import ShowPasswordIcon from "src/components/icons/ShowPasswordIcon";
 import PopupTemplate from "src/components/common/PopupTemplate";
 import PrimaryInput from "src/components/common/PrimaryInput";
 import PrimaryTextArea from "src/components/common/PrimaryTextArea";
 import { useQueries } from "react-query";
-import { getAllEvaluation } from "src/apis/evaluation-module";
+import { getParentEvaluation } from "src/apis/evaluation-module";
+import { useAuthContext } from "src/context/AuthContext";
 
-function ListAssessmentManager() {
+function ListParentAssessments() {
   const [listAssessment, setListAssessment] = useState(undefined);
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
-  const location = useLocation();
-  const params = new URLSearchParams(location.search);
-  const classId = params.get("id");
+  const { userId } = useAuthContext();
 
   useQueries([
     {
-      queryKey: ["getClassDetail", page, limit, classId],
+      queryKey: ["getClassDetail", page, limit, userId],
       queryFn: async () => {
         const queryObj = {};
         queryObj["PagingRequest.CurrentPage"] = page;
         queryObj["PagingRequest.PageSize"] = limit;
-        queryObj["ClassId"] = classId;
+        queryObj["ParentId"] = userId;
 
-        const response = await getAllEvaluation(queryObj);
+        const response = await getParentEvaluation(queryObj);
         setListAssessment(response?.data?.data);
         return response?.data;
       },
-      enabled: !!classId,
+      enabled: !!userId,
     },
   ]);
 
@@ -41,9 +40,6 @@ function ListAssessmentManager() {
     <div className="p-4 mx-auto">
       <div className="flex items-center justify-between gap-3">
         <Title>Class Assessment</Title>
-        <Link to={`/assessesments/create`}>
-          <PrimaryBtn className="!w-[220px]">Create Assessment</PrimaryBtn>
-        </Link>
       </div>
 
       <div className="mt-5 bg-white table-style block-border">
@@ -65,7 +61,7 @@ function ListAssessmentManager() {
   );
 }
 
-export default ListAssessmentManager;
+export default ListParentAssessments;
 
 const transactionColumns = [
   {

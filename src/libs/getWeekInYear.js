@@ -11,12 +11,14 @@ export const getWeeksInYear = (year) => {
       startDate.getDate() + 6
     );
 
-    const formattedStartDate = `${weekStartDate.getDate()}/${
-      weekStartDate.getMonth() + 1
-    }`;
-    const formattedEndDate = `${weekEndDate.getDate()}/${
-      weekEndDate.getMonth() + 1
-    }`;
+    const formattedStartDate = `${String(weekStartDate.getDate()).padStart(
+      2,
+      "0"
+    )}/${String(weekStartDate.getMonth() + 1).padStart(2, "0")}`;
+    const formattedEndDate = `${String(weekEndDate.getDate()).padStart(
+      2,
+      "0"
+    )}/${String(weekEndDate.getMonth() + 1).padStart(2, "0")}`;
 
     weeks.push(`${formattedStartDate} To ${formattedEndDate}`);
 

@@ -20,6 +20,7 @@ import { toast } from "react-toastify";
 import { getValueFromKey } from "src/libs";
 import PrimaryBtn from "../common/PrimaryBtn";
 import { useAuthContext } from "src/context/AuthContext";
+import { format } from "date-fns";
 
 const TOAST_EDIT_CLASSROOM = "toast-edit-classroom-id";
 
@@ -36,10 +37,7 @@ function EditTutorClassroomDetail() {
   const [studentLevelSelected, setStudentLevelSelected] = useState(undefined);
   const [listAllSubject, setListAllSubject] = useState(undefined);
   const [subjectSelected, setSubjectSelected] = useState(undefined);
-  const [sessionStart, setSessionStart] = useState("");
-  const [sessionEnd, setSessionEnd] = useState("");
   const [listLevels, setListLevels] = useState([]);
-  const [dayOfWeek, setDayOfWeek] = useState(undefined);
   const { userId } = useAuthContext();
   const navigate = useNavigate();
   useQueries([
@@ -86,28 +84,6 @@ function EditTutorClassroomDetail() {
       });
     }
   }, [subjectSelected]);
-
-  const handleAddNewLevel = () => {
-    if (sessionStart && sessionEnd && dayOfWeek) {
-      if (sessionStart > sessionEnd) {
-        toast.error("Session end must be greater than sesstion start");
-        return;
-      }
-      setListLevels([
-        ...listLevels,
-        {
-          sessionStart: sessionStart,
-          sessionEnd: sessionEnd,
-          dayOfWeek: dayOfWeek?.key,
-          dayValue: dayOfWeek?.value,
-          status: "CREATED",
-        },
-      ]);
-      setSessionEnd("");
-      setSessionStart("");
-      setDayOfWeek(undefined);
-    }
-  };
 
   const editClassroomMutation = useMutation(
     async (newData) => {
@@ -219,16 +195,6 @@ function EditTutorClassroomDetail() {
             ))}
           </div>
         )}
-        <AdditionLevelRow
-          handleAddNewLevel={handleAddNewLevel}
-          sessionStart={sessionStart}
-          sessionEnd={sessionEnd}
-          setSessionStart={setSessionStart}
-          setSessionEnd={setSessionEnd}
-          dayOfWeek={dayOfWeek}
-          setDayOfWeek={setDayOfWeek}
-          scheduleNumber={listLevels?.length + 1}
-        />
       </div>
     </div>
   );
@@ -236,91 +202,63 @@ function EditTutorClassroomDetail() {
 
 export default EditTutorClassroomDetail;
 
-function AdditionLevelRow({
-  handleAddNewLevel,
-  sessionStart,
-  sessionEnd,
-  setSessionStart,
-  setSessionEnd,
-  dayOfWeek,
-  setDayOfWeek,
-  scheduleNumber,
-}) {
-  return (
-    <div className="grid items-end gap-3 mt-3 grid-cols-3530305">
-      <div className="flex items-center gap-3">
-        <h1>Schedule {scheduleNumber}:</h1>
-        <FilterDropDown
-          textDefault="Select date"
-          className="!w-[200px]"
-          listDropdown={DAYS_OF_WEEK}
-          showing={dayOfWeek}
-          setShowing={setDayOfWeek}
-        />
-      </div>
-      <div className="flex items-center gap-3">
-        <p>Start time</p>
-        <input
-          type="time"
-          value={sessionStart || ""}
-          onChange={(e) => {
-            setSessionStart(e.target.value);
-          }}
-        />
-      </div>
-      <div className="flex items-center gap-3">
-        <p>End time</p>
-        <input
-          type="time"
-          value={sessionEnd || ""}
-          onChange={(e) => {
-            setSessionEnd(e.target.value);
-          }}
-        />
-      </div>
-      <div className="h-[46px] flex items-center justify-center cursor-pointer">
-        <SecondaryBtn
-          className="!w-10 !h-10 !px-0 !py-0 rounded"
-          onClick={handleAddNewLevel}
-        >
-          <AddPlusIcon />
-        </SecondaryBtn>
-      </div>
-    </div>
-  );
-}
-
 function TableLevelRow({ data, listLevels, setListLevels, itemIndex }) {
-  const handleRemoveLevel = () => {
-    const listRemove = listLevels.filter((i, index) => index !== itemIndex);
-    setListLevels(listRemove);
+  const handleDateChange = (e) => {
+    const newDate = e.target.value;
+    const currentDate = new Date().toISOString().split("T")[0];
+
+    const selectedDate = new Date(newDate);
+    const currentDateTime = new Date(currentDate);
+    const newListLevels = [...listLevels];
+    if (selectedDate < currentDateTime) {
+      newListLevels[itemIndex].date = currentDate;
+    } else {
+      newListLevels[itemIndex].date = newDate;
+    }
+    setListLevels(newListLevels);
+  };
+
+  const handleStartTimeChange = (e) => {
+    const newListLevels = [...listLevels];
+    newListLevels[itemIndex].sessionStart = e.target.value;
+    setListLevels(newListLevels);
+  };
+
+  const handleEndTimeChange = (e) => {
+    const newListLevels = [...listLevels];
+    newListLevels[itemIndex].sessionEnd = e.target.value;
+    setListLevels(newListLevels);
   };
 
   return (
-    <div className="grid items-end gap-3 mt-3 grid-cols-3530305">
+    <div className="grid items-end gap-3 mt-3 grid-cols-502525">
       <div className="flex items-center gap-3">
         <h1>Schedule {itemIndex + 1}:</h1>
-        <FilterDropDown
-          textDefault={getValueFromKey(data?.dayOfWeek, DAYS_OF_WEEK)}
-          className="!w-[200px]"
-          listDropdown={DAYS_OF_WEEK}
-          showing={undefined}
-          setShowing={undefined}
-          disabled
+        <input
+          type="date"
+          value={data?.date ? format(new Date(data?.date), "yyyy-MM-dd") : ""}
+          onChange={handleDateChange}
+          min={new Date().toISOString().split("T")[0]}
+          disabled={new Date(data?.date).getTime() < new Date().getTime()}
         />
       </div>
       <div className="flex items-center gap-3">
         <p>Start time</p>
-        <input type="time" value={data?.sessionStart || ""} readOnly />
+        <input
+          type="time"
+          value={data?.sessionStart || ""}
+          onChange={handleStartTimeChange}
+          disabled={new Date(data?.date).getTime() < new Date().getTime()}
+        />
       </div>
       <div className="flex items-center gap-3">
         <p>End time</p>
-        <input type="time" value={data?.sessionEnd || ""} readOnly />
-      </div>
-      <div className="h-[46px] flex items-center justify-center cursor-pointer">
-        <div onClick={handleRemoveLevel}>
-          <GarbageIcon />
-        </div>
+        <input
+          type="time"
+          value={data?.sessionEnd || ""}
+          onChange={handleEndTimeChange}
+          disabled={new Date(data?.date).getTime() < new Date().getTime()}
+        />
       </div>
     </div>
   );

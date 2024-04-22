@@ -9,6 +9,7 @@ import {
   getFiteredSchedule,
   getScheduleByClass,
 } from "src/apis/class-module";
+import { useLocation } from "react-router-dom";
 
 function WeeklySchedule() {
   const { roleKey, userId } = useAuthContext();

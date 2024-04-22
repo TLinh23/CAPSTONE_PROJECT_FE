@@ -7,6 +7,8 @@ import { Link, useParams } from "react-router-dom";
 import { useQueries } from "react-query";
 import { getClassDetailData } from "src/apis/class-module";
 import PrimaryBtn from "../common/PrimaryBtn";
+import { getValueFromKey, slideFromEnd } from "src/libs";
+import { DAYS_OF_WEEK } from "src/constants/enumConstant";
 
 function TutorClassroomDetail() {
   const [classRoomDetail, setClassRoomDetail] = useState(undefined);
@@ -37,13 +39,27 @@ function TutorClassroomDetail() {
         <div>Classroom Name:</div>
         <div>{classRoomDetail?.className}</div>
         <div>Schedule:</div>
-        <div className="flex flex-col gap-2">
+        {/* <div className="flex flex-col gap-2">
           <Link
-            to={`/schedule/${classRoomDetail?.classId}`}
+            to={`/schedule/${classRoomDetail?.classId}?classId=${classRoomDetail?.classId}`}
             className="w-[200px]"
           >
             <PrimaryBtn>View Schedule</PrimaryBtn>
           </Link>
+        </div> */}
+        <div className="flex flex-col gap-2 max-h-[200px] overflow-auto">
+          {classRoomDetail?.schedules?.map((item) => (
+            <div>
+              From:{" "}
+              <span className="mr-5">
+                {slideFromEnd(item?.sessionStart, -3)}
+              </span>
+              To:{" "}
+              <span className="mr-5">{slideFromEnd(item?.sessionEnd, -3)}</span>{" "}
+              On {getValueFromKey(item?.dayOfWeek, DAYS_OF_WEEK)}{" "}
+              {item?.date ? format(new Date(item?.date), "dd-MM-yyyy") : ""}
+            </div>
+          ))}
         </div>
         <div>Date Started:</div>
         <div>

@@ -41,15 +41,17 @@ function ClassroomExploreDetail() {
         <div>Classroom Name:</div>
         <div>{classRoomDetail?.className}</div>
         <div>Schedule:</div>
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 max-h-[200px] overflow-auto">
           {classRoomDetail?.schedules?.map((item) => (
             <div>
               From:{" "}
               <span className="mr-5">
                 {slideFromEnd(item?.sessionStart, -3)}
               </span>
-              To: <span>{slideFromEnd(item?.sessionEnd, -3)}</span> On{" "}
-              {getValueFromKey(item?.dayOfWeek, DAYS_OF_WEEK)}
+              To:{" "}
+              <span className="mr-5">{slideFromEnd(item?.sessionEnd, -3)}</span>{" "}
+              On {getValueFromKey(item?.dayOfWeek, DAYS_OF_WEEK)}{" "}
+              {item?.date ? format(new Date(item?.date), "dd-MM-yyyy") : ""}
             </div>
           ))}
         </div>

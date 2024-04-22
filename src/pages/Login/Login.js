@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./Login.css";
 import axios from "axios";
 import { Link, NavLink, useNavigate } from "react-router-dom";
@@ -21,7 +21,7 @@ const validationSchema = Yup.object({
 
 export default function Login() {
   const navigate = useNavigate();
-  const { checkRoleKey, checkUserId } = useAuthContext();
+  const { roleKey, checkRoleKey, checkUserId } = useAuthContext();
 
   const loginMutation = useMutation(
     (loginData) => {
@@ -77,6 +77,12 @@ export default function Login() {
       }
     },
   });
+
+  useEffect(() => {
+    if (roleKey) {
+      navigate("/");
+    }
+  }, [roleKey]);
 
   return (
     <div>

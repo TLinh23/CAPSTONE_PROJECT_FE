@@ -18,7 +18,6 @@ import AddAssessment from "./components/Tutor/AssessmentManager/AddAssessment";
 
 import AccountDetail from "./pages/PageAccountDetail";
 import TransactionDetail from "./pages/PageTransactionDetail";
-import ListAllClass from "./pages/ListAllClass";
 import TutorFee from "./pages/TutorFee";
 
 import PageOpenedClassRooms from "./pages/PageOpenedClassRooms";
@@ -34,7 +33,6 @@ import PageListTutorClassroom from "./pages/PageListTutorClassroom";
 import PageTutorCreateClassroom from "./pages/PageTutorCreateClassroom";
 import PageEditTutorClassroomDetail from "./pages/PageEditTutorClassroomDetail";
 import PageListParentClassroom from "./pages/PageListParentClassroom";
-import PageAssessDetail from "./pages/PageAssessDetail";
 import PageListAssessment from "./pages/PageListAssessment";
 import PageIntroduceAllClassrooms from "./pages/PageIntroduceAllClassrooms";
 import PageIntroduceClassroomDetail from "./pages/PageIntroduceClassroomDetail";
@@ -43,6 +41,7 @@ import PageManageAllAccounts from "./pages/PageManageAllAccounts";
 import PageTutorTransaction from "./pages/PageTutorTransaction";
 import PageTest from "./pages/PageTest";
 import PageAttenDantDetail from "./pages/PageAttenDantDetail";
+import PageParentAssesMent from "./pages/PageParentAssesMent";
 
 //list your routes here
 export const routes = [
@@ -97,7 +96,8 @@ export const routes = [
   { path: "/accounts/:id", element: <ProfilePage /> },
 
   { path: "/assessesments", element: <PageListAssessment /> },
-  { path: "/assessesments/:id", element: <PageAssessDetail /> },
+  { path: "/assessments", element: <PageParentAssesMent /> },
+
   { path: "/assessesments/create", element: <AddAssessment /> },
 
   { path: "/manage-transactions", element: <Transaction /> },
@@ -116,7 +116,6 @@ export const routes = [
 
   { path: "/accountManager", element: <AccountManager /> },
   { path: "/AccountDetail/:id", element: <AccountDetail /> },
-  { path: "/lissAllClass", element: <ListAllClass /> },
   { path: "/tutorFee", element: <TutorFee /> },
   { path: "/addAssess", element: <AddAssessment /> },
 
