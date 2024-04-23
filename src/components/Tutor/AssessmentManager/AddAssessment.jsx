@@ -18,6 +18,7 @@ import { toast } from "react-toastify";
 import { format } from "date-fns";
 import HeaderDetail from "src/components/common/HeaderDetail";
 import ProfileHeader from "src/components/Profile/ProfileHeader";
+import { useNavigate } from "react-router-dom";
 
 function AddAssessment() {
   const { roleKey, userId } = useAuthContext();
@@ -57,6 +58,7 @@ function AddAssessment() {
     },
   ]);
 
+  const navigate = useNavigate();
   const addEvaluationMutation = useMutation(
     async (newData) => {
       console.log("newData: ", newData);
@@ -67,6 +69,7 @@ function AddAssessment() {
         console.log("Data: ", data);
         if (data?.status >= 200 && data?.status < 300) {
           toast.success("Create successfully");
+          navigate(-1);
         } else {
           toast.error(
             data?.message ||
@@ -89,11 +92,16 @@ function AddAssessment() {
     const queryObj = {
       ClassId: classRoomSelected?.classId,
       StudentId: studentSelected?.studentId,
-      Status: "CREATED",
       ...newTransactionDetail,
     };
     console.log("queryObj: ", queryObj);
-    addEvaluationMutation.mutate(queryObj);
+    const formData = new FormData();
+    for (const key in queryObj) {
+      const value = queryObj[key];
+      formData.append(key, value);
+    }
+    // @ts-ignore
+    addEvaluationMutation.mutate(formData);
   };
   return (
     <Layout>
