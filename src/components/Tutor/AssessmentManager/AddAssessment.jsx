@@ -142,7 +142,7 @@ function AddAssessment() {
             }}
             value={newTransactionDetail?.Score || ""}
           />
-          {/* <div>Date</div>
+          <div>Date</div>
           <PrimaryInput
             placeholder="Enter score rate"
             type="date"
@@ -153,20 +153,12 @@ function AddAssessment() {
             }
             onChange={(e) => {
               const selectedDate = e.target.value;
-              const currentDate = new Date().toISOString().slice(0, 10);
-              if (selectedDate > currentDate) {
-                setNewTransactionDetail({
-                  ...newTransactionDetail,
-                  Date: currentDate,
-                });
-              } else {
-                setNewTransactionDetail({
-                  ...newTransactionDetail,
-                  Date: selectedDate,
-                });
-              }
+              setNewTransactionDetail({
+                ...newTransactionDetail,
+                Date: selectedDate,
+              });
             }}
-          /> */}
+          />
           <div>Comment</div>
           <PrimaryTextArea
             rows={5}

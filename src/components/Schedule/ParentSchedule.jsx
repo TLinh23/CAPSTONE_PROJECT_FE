@@ -12,9 +12,14 @@ import { getWeeksInYear, getYearsRange } from "src/libs/getWeekInYear";
 import YearTimeDropDown from "../common/YearTimeDropDown";
 import { Link } from "react-router-dom";
 import { LIST_ATTEND_STATUS } from "src/constants/enumConstant";
+import PrimaryInput from "../common/PrimaryInput";
+import { useQueries } from "react-query";
+import { useAuthContext } from "src/context/AuthContext";
+import { getProfileByIdDetail } from "src/apis/tutor-module";
+import FilterDropDown from "../common/FilterDropDown";
 
 function ParentSchedule(props) {
-  const { scheduleDetail } = props;
+  const { scheduleDetail, childrenName, setChildrenName } = props;
   const [listWeekInYear, setListWeekInYear] = useState(undefined);
   const LIST_YEAR = getYearsRange();
   const currentYear = new Date().getFullYear();
@@ -22,6 +27,22 @@ function ParentSchedule(props) {
   const [yearSelected, setYearSelected] = useState(currentYear);
   const [weekSelected, setWeekSelected] = useState(undefined);
   const [defaultSelectedWeek, setDefaultSelectedWeek] = useState(undefined);
+  const { userId } = useAuthContext();
+  const [dataProfileDetail, setDataProfileDetail] = useState(undefined);
+
+  useQueries([
+    {
+      queryKey: ["getProfile", userId],
+      queryFn: async () => {
+        if (userId) {
+          const response = await getProfileByIdDetail(userId);
+          setDataProfileDetail(response?.data?.data);
+          return response?.data;
+        }
+      },
+      enabled: !!userId,
+    },
+  ]);
 
   useEffect(() => {
     if (yearSelected) {
@@ -56,9 +77,21 @@ function ParentSchedule(props) {
 
   return (
     <div className="bg-[#ffffff] block-border">
-      <div className="flex items-center justify-between gap-5">
-        <Title>My Schedule</Title>
-        <div className="flex items-center gap-3">
+      <div className="grid items-center gap-5 grid-cols-2080">
+        <Title className="text-4xl whitespace-nowrap">My Schedule</Title>
+        <div className="flex items-center justify-end w-full gap-3">
+          <FilterDropDown
+            textDefault={
+              dataProfileDetail?.students?.length !== 0
+                ? "Select student"
+                : "No student available"
+            }
+            listDropdown={dataProfileDetail?.students || []}
+            showing={childrenName}
+            setShowing={setChildrenName}
+            className="!w-[240px]"
+            type="student"
+          />
           <YearTimeDropDown
             listDropdown={listWeekInYear || []}
             showing={weekSelected}
@@ -113,7 +146,7 @@ function ParentSchedule(props) {
               }}
               allDaySlot={false}
               dayHeaderContent={(args) => {
-                return format(args.date, "iii - dd/MM");
+                return format(new Date(args?.date), "iii - dd/MM");
               }}
               datesSet={(args) => {
                 const startDate = args?.start

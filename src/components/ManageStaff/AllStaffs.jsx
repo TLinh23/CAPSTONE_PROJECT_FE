@@ -147,7 +147,7 @@ const columns = [
       {
         Header: "Birth Date",
         accessor: (data) => (
-          <p>{data?.dob ? format(data?.dob, "dd-MM-yyyy") : "---"}</p>
+          <p>{data?.dob ? format(new Date(data?.dob), "dd-MM-yyyy") : "---"}</p>
         ),
       },
       {

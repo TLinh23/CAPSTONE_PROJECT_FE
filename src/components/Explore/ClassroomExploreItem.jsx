@@ -43,7 +43,9 @@ function ClassroomExploreItem(props) {
         <div className="grid mt-5 grid-cols-3367 gap-x-3 gap-y-1">
           <div className="text-left">Start Date:</div>
           <div className="text-right">
-            {item?.startDate ? format(item?.startDate, "dd-MM-yyyy") : "---"}
+            {item?.startDate
+              ? format(new Date(item?.startDate), "dd-MM-yyyy")
+              : "---"}
           </div>
           <div className="text-left">Price:</div>
           <div className="font-semibold text-right">{item?.price || "---"}</div>

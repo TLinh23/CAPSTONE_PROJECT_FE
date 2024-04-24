@@ -121,6 +121,16 @@ function FilterDropDown({
           id="list-dropdown"
           className={`smooth-transform z-9999 flex w-full flex-col gap-1 rounded-b-xl  bg-[#fff] py-3  max-h-[250px] overflow-y-auto ${classNameDropdown}`}
         >
+          {type === "student" && (
+            <DropDownItem
+              data={{ name: "All Student" }}
+              setShowing={setShowing}
+              showing={showing}
+              toggleOpen={toggleOpen}
+              type={type}
+            />
+          )}
+
           {type === "className" && (
             <DropDownItem
               data={{ className: "All Class" }}

@@ -171,3 +171,30 @@ export const LIST_REQUEST_STATUS_FILTER = [
   { id: 3, key: "REJECTED", value: "Rejected" },
   { id: 4, key: "CANCELLED", value: "Cancelled" },
 ];
+
+export const MODAL_DIRECTION = {
+  LEFT: "left-0",
+  RIGHT: "right-0",
+};
+
+export const DROPDOWN_SUBMENU_ANIMATE = {
+  enter: {
+    opacity: 1,
+    rotateX: 0,
+    transition: {
+      duration: 0.2,
+    },
+    display: "block",
+  },
+  exit: {
+    opacity: 0,
+    rotateX: -15,
+    transition: {
+      duration: 0.2,
+      delay: 0.05,
+    },
+    transitionEnd: {
+      display: "none",
+    },
+  },
+};

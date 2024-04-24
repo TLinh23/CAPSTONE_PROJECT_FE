@@ -12,21 +12,52 @@ import PrimaryTextArea from "src/components/common/PrimaryTextArea";
 import { useQueries } from "react-query";
 import { getParentEvaluation } from "src/apis/evaluation-module";
 import { useAuthContext } from "src/context/AuthContext";
+import DateRangePickerModal from "src/components/common/DateRangePickerModal";
+import FilterDropDown from "src/components/common/FilterDropDown";
+import DeniedBtn from "src/components/common/DeniedBtn";
+import { getProfileByIdDetail } from "src/apis/tutor-module";
+import { format } from "date-fns";
 
 function ListParentAssessments() {
   const [listAssessment, setListAssessment] = useState(undefined);
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const { userId } = useAuthContext();
+  const [studentSelected, setStudentSelected] = useState(undefined);
+  const initialDateRange = {
+    key: "selection",
+  };
+  const [dateRange, setDateRange] = useState([initialDateRange]);
+  const [dataProfileDetail, setDataProfileDetail] = useState(undefined);
 
   useQueries([
     {
-      queryKey: ["getClassDetail", page, limit, userId],
+      queryKey: [
+        "getListAssesment",
+        page,
+        limit,
+        userId,
+        studentSelected,
+        dateRange,
+      ],
       queryFn: async () => {
         const queryObj = {};
         queryObj["PagingRequest.CurrentPage"] = page;
         queryObj["PagingRequest.PageSize"] = limit;
         queryObj["ParentId"] = userId;
+        if (studentSelected) {
+          queryObj["StudentId"] = studentSelected?.studentId;
+        }
+        if (dateRange && dateRange[0]?.startDate) {
+          queryObj["StartDate"] = format(
+            new Date(dateRange[0]?.startDate),
+            "MM-dd-yyyy"
+          );
+          queryObj["EndDate"] = format(
+            new Date(dateRange[0]?.endDate),
+            "MM-dd-yyyy"
+          );
+        }
 
         const response = await getParentEvaluation(queryObj);
         setListAssessment(response?.data?.data);
@@ -34,12 +65,55 @@ function ListParentAssessments() {
       },
       enabled: !!userId,
     },
+    {
+      queryKey: ["getProfile", userId],
+      queryFn: async () => {
+        if (userId) {
+          const response = await getProfileByIdDetail(userId);
+          setDataProfileDetail(response?.data?.data);
+          return response?.data;
+        }
+      },
+      enabled: !!userId,
+    },
   ]);
+
+  console.log("dataProfileDetail: ", dataProfileDetail);
 
   return (
     <div className="p-4 mx-auto">
       <div className="flex items-center justify-between gap-3">
         <Title>Class Assessment</Title>
+      </div>
+      <div className="flex items-center justify-between gap-5 mt-5">
+        <div className="flex items-center gap-5">
+          <DateRangePickerModal
+            dateRange={dateRange}
+            setDateRange={setDateRange}
+          />
+          <FilterDropDown
+            textDefault={
+              dataProfileDetail?.students?.length !== 0
+                ? "Select student"
+                : "No student available"
+            }
+            listDropdown={dataProfileDetail?.students || []}
+            showing={studentSelected}
+            setShowing={setStudentSelected}
+            className="!w-[240px]"
+          />
+        </div>
+        <DeniedBtn
+          onClick={() => {
+            setPage(1);
+            setLimit(10);
+            setStudentSelected(undefined);
+            setDateRange([initialDateRange]);
+          }}
+          className="max-w-[150px]"
+        >
+          Remove Filter
+        </DeniedBtn>
       </div>
 
       <div className="mt-5 bg-white table-style block-border">
@@ -85,7 +159,17 @@ const transactionColumns = [
       },
       {
         Header: "Comment",
-        accessor: "comment",
+        accessor: (data) => (
+          <div className="truncate-2-line">{data?.comment || "---"}</div>
+        ),
+      },
+      {
+        Header: "Date",
+        accessor: (data) => (
+          <div>
+            {data?.date ? format(new Date(data?.date), "dd-MM-yyyy") : "---"}
+          </div>
+        ),
       },
       {
         Header: "Status",
@@ -127,7 +211,15 @@ const RenderAction = ({ data }) => {
             value={data?.score || ""}
             readOnly
           />
-          <div>Coment</div>
+          <div>Date</div>
+          <PrimaryInput
+            placeholder="Enter score rate"
+            value={
+              data?.date ? format(new Date(data?.date), "dd-MM-yyyy") : "---"
+            }
+            readOnly
+          />
+          <div>Comment</div>
           <PrimaryTextArea
             rows={5}
             placeholder="Enter comment"

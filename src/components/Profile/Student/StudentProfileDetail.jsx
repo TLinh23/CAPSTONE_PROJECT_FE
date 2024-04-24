@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import ProfileHeader from "../ProfileHeader";
 import PrimaryInput from "src/components/common/PrimaryInput";
-import PrimarySmallTitle from "src/components/common/PrimarySmallTitle";
-import { format } from "date-fns";
 
 function StudentProfileDetail(props) {
   const { dataProfileDetail } = props;

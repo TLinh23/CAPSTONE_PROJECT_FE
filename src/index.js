@@ -7,6 +7,9 @@ import "./styles/add-image.css";
 import "./styles/calendar.css";
 
 import "@reach/dialog/styles.css";
+import "react-date-range/dist/styles.css";
+import "react-date-range/dist/theme/default.css";
+
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import "react-toastify/dist/ReactToastify.css";

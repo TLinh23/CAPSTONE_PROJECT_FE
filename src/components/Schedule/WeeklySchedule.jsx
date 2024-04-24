@@ -10,12 +10,14 @@ import {
   getScheduleByClass,
 } from "src/apis/class-module";
 import { useLocation } from "react-router-dom";
+import useDebounce from "src/hooks/useDebounce";
 
 function WeeklySchedule() {
   const { roleKey, userId } = useAuthContext();
   const [listClassroom, setListClassroom] = useState(undefined);
   const [classRoomSelected, setClassRoomSelected] = useState(undefined);
   const [scheduleDetail, setScheduleDetail] = useState(undefined);
+  const [childrenName, setChildrenName] = useState(undefined);
 
   useQueries([
     {
@@ -35,7 +37,7 @@ function WeeklySchedule() {
       enabled: !!userId,
     },
     {
-      queryKey: ["getSchedule", classRoomSelected],
+      queryKey: ["getSchedule", classRoomSelected, childrenName],
       queryFn: async () => {
         let queryObj = {
           personId: userId,
@@ -47,6 +49,9 @@ function WeeklySchedule() {
           queryObj = {
             personId: userId,
           };
+        }
+        if (childrenName?.fullName) {
+          queryObj["studentName"] = childrenName?.fullName;
         }
 
         const response = await getFiteredSchedule(queryObj);
@@ -71,6 +76,8 @@ function WeeklySchedule() {
         <ParentSchedule
           scheduleDetail={scheduleDetail}
           listClassroom={listClassroom}
+          childrenName={childrenName}
+          setChildrenName={setChildrenName}
         />
       )}
     </div>

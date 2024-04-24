@@ -129,7 +129,7 @@ function TutorSchedule(props) {
               }}
               allDaySlot={false}
               dayHeaderContent={(args) => {
-                return format(args.date, "iii - dd/MM");
+                return format(new Date(args?.date), "iii - dd/MM");
               }}
               datesSet={(args) => {
                 const startDate = args?.start
