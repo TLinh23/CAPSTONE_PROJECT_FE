@@ -11,7 +11,7 @@ import FilterDropDown from "src/components/common/FilterDropDown";
 import ProfileHeader from "src/components/Profile/ProfileHeader";
 import { getClassDetailData } from "src/apis/class-module";
 import { getProfileByIdDetail, getProfileDetail } from "src/apis/tutor-module";
-import { getListSubjects } from "src/apis/subject-module";
+import { getListSubjects, getSubjectForTutor } from "src/apis/subject-module";
 import { CLASS_REQUEST_TYPE, STUDENT_LEVEL } from "src/constants/enumConstant";
 import { useAuthContext } from "src/context/AuthContext";
 
@@ -58,17 +58,15 @@ function CreateOrderRequest() {
       enabled: !!tutorId,
     },
     {
-      queryKey: ["getListSubjects"],
+      queryKey: ["getListSubjects", tutorId],
       queryFn: async () => {
-        const queryObj = {};
-        queryObj["PagingRequest.CurrentPage"] = 1;
-        queryObj["PagingRequest.PageSize"] = 99;
-        queryObj["Status"] = "CREATED";
-
-        const response = await getListSubjects(queryObj);
-        setListAllSubjects(response?.data?.data);
-        return response?.data;
+        if (tutorId) {
+          const response = await getSubjectForTutor(tutorId);
+          setListAllSubjects(response?.data?.data);
+          return response?.data;
+        }
       },
+      enabled: !!tutorId,
     },
     {
       queryKey: ["getStudentsData"],
@@ -204,7 +202,7 @@ function CreateOrderRequest() {
               Subject <span className="text-dangerous">*</span>
             </div>
             <FilterDropDown
-              listDropdown={listAllSubjects?.items || []}
+              listDropdown={listAllSubjects || []}
               showing={subjectRequestSelected}
               setShowing={setSubjectRequestSelected}
               textDefault={
@@ -212,6 +210,7 @@ function CreateOrderRequest() {
                 "Select the subject you want to open"
               }
               disabled={requestType === CLASS_REQUEST_TYPE.JOIN}
+              isDistinc
             />
             <div>
               Student <span className="text-dangerous">*</span>
@@ -221,6 +220,7 @@ function CreateOrderRequest() {
               showing={studentSelected}
               setShowing={setStudentSelected}
               textDefault="Select your student"
+              emptyWarning="No student available"
             />
             <div>Request Type</div>
             <PrimaryInput value={requestType} readOnly />

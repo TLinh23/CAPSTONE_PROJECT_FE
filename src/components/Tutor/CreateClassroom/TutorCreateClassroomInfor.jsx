@@ -1,31 +1,31 @@
 import React, { useEffect, useState } from "react";
 import { useQueries } from "react-query";
-import { getListSubjects } from "src/apis/subject-module";
+import { getListSubjects, getSubjectForTutor } from "src/apis/subject-module";
 import FilterDropDown from "src/components/common/FilterDropDown";
 import PrimaryBtn from "src/components/common/PrimaryBtn";
 import PrimaryInput from "src/components/common/PrimaryInput";
 import SmallTitle from "src/components/common/SmallTitle";
 import { STUDENT_LEVEL } from "src/constants/enumConstant";
+import { useAuthContext } from "src/context/AuthContext";
 
 function TutorCreateClassroomInfor(props) {
   const { setActiveTab, classRoomDetail, setClassRoomDetail } = props;
   const [studentLevelSelected, setStudentLevelSelected] = useState(undefined);
   const [listAllSubject, setListAllSubject] = useState(undefined);
   const [subjectSelected, setSubjectSelected] = useState(undefined);
+  const { userId } = useAuthContext();
 
   useQueries([
     {
-      queryKey: ["getListSubjects"],
+      queryKey: ["getListSubjects", userId],
       queryFn: async () => {
-        const queryObj = {};
-        queryObj["PagingRequest.CurrentPage"] = 1;
-        queryObj["PagingRequest.PageSize"] = 20;
-        queryObj["Status"] = "CREATED";
-
-        const response = await getListSubjects(queryObj);
-        setListAllSubject(response?.data?.data);
-        return response?.data;
+        if (userId) {
+          const response = await getSubjectForTutor(userId);
+          setListAllSubject(response?.data?.data);
+          return response?.data;
+        }
       },
+      enabled: !!userId,
     },
   ]);
 
@@ -70,9 +70,10 @@ function TutorCreateClassroomInfor(props) {
         </div>
         <FilterDropDown
           textDefault={classRoomDetail?.subjectName || "Select subject"}
-          listDropdown={listAllSubject?.items}
+          listDropdown={listAllSubject}
           showing={subjectSelected}
           setShowing={setSubjectSelected}
+          isDistinc
         />
         <div>
           Level <span className="text-dangerous">*</span>

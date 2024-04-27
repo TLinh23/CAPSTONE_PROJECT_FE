@@ -11,7 +11,6 @@ import Title from "../common/Title";
 import { getWeeksInYear, getYearsRange } from "src/libs/getWeekInYear";
 import YearTimeDropDown from "../common/YearTimeDropDown";
 import { Link } from "react-router-dom";
-import FilterDropDown from "../common/FilterDropDown";
 
 function TutorSchedule(props) {
   const {
@@ -137,11 +136,15 @@ function TutorSchedule(props) {
                   : new Date();
                 const endDate = args?.end ? new Date(args?.end) : new Date();
                 endDate.setDate(endDate.getDate() - 1);
-                setDefaultSelectedWeek(
-                  `${startDate && format(new Date(startDate), "dd/MM")} To ${
-                    endDate && format(new Date(endDate), "dd/MM")
-                  }`
-                );
+                const defaultSelected = `${
+                  startDate && format(new Date(startDate), "dd/MM")
+                } To ${endDate && format(new Date(endDate), "dd/MM")}`;
+                setDefaultSelectedWeek(defaultSelected);
+                const element = document.getElementById(defaultSelected);
+                console.log("Run hree: ", element);
+                if (element) {
+                  element.scrollIntoView({ behavior: "smooth" });
+                }
               }}
             />
           )}

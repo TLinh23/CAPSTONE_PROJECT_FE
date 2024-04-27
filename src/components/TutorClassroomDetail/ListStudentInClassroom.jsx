@@ -15,6 +15,7 @@ import PrimaryInput from "../common/PrimaryInput";
 import SecondaryBtn from "../common/SecondaryBtn";
 import { toast } from "react-toastify";
 import { STUDENT_STATUS } from "src/constants/constants";
+import RenderStatus from "../common/RenderStatus";
 
 function ListStudentInClassroom() {
   const [classRoomDetail, setClassRoomDetail] = useState(undefined);
@@ -29,11 +30,6 @@ function ListStudentInClassroom() {
       },
     },
   ]);
-  const filteredValue = classRoomDetail?.studentInformationDto?.filter(
-    (item) => {
-      return item?.statusClassMember === STUDENT_STATUS.CREATED;
-    }
-  );
 
   return (
     <div>
@@ -46,9 +42,9 @@ function ListStudentInClassroom() {
 
       <div className="mt-5 bg-white table-style block-border">
         <Table
-          pageSizePagination={20}
+          pageSizePagination={100}
           columns={columns}
-          data={filteredValue || []}
+          data={classRoomDetail?.studentInformationDto || []}
         />
       </div>
     </div>
@@ -80,6 +76,14 @@ const columns = [
       {
         Header: "Address",
         accessor: (data) => <p>{data?.address}</p>,
+      },
+      {
+        Header: "Status",
+        accessor: (data) => (
+          <RenderStatus status={data?.statusClassMember}>
+            {data?.statusClassMember === "CREATED" ? "Created" : "Suspended"}
+          </RenderStatus>
+        ),
       },
       {
         Header: "Action",

@@ -13,12 +13,14 @@ function FilterDropDown({
   type = "",
   classNameDropdown = "",
   disabled = false,
+  isDistinc = false,
+  emptyWarning = "No data available",
 }) {
   const node = useRef();
   const [isOpen, toggleOpen] = useState(false);
 
   const toggleOpenMenu = () => {
-    if (listDropdown?.length > 0 && !disabled) {
+    if (!disabled) {
       toggleOpen(!isOpen);
     }
   };
@@ -149,16 +151,38 @@ function FilterDropDown({
               type={type}
             />
           )}
-          {listDropdown?.map((i, index) => (
-            <DropDownItem
-              key={index}
-              data={i}
-              setShowing={setShowing}
-              showing={showing}
-              toggleOpen={toggleOpen}
-              type={type}
-            />
-          ))}
+          {isDistinc
+            ? listDropdown
+                ?.filter(
+                  (item, index, array) =>
+                    array.findIndex(
+                      (elem) => elem.subjectId === item.subjectId
+                    ) === index
+                )
+                ?.map((i, index) => (
+                  <DropDownItem
+                    key={index}
+                    data={i}
+                    setShowing={setShowing}
+                    showing={showing}
+                    toggleOpen={toggleOpen}
+                    type={type}
+                  />
+                ))
+            : listDropdown?.map((i, index) => (
+                <DropDownItem
+                  key={index}
+                  data={i}
+                  setShowing={setShowing}
+                  showing={showing}
+                  toggleOpen={toggleOpen}
+                  type={type}
+                />
+              ))}
+          {listDropdown === undefined ||
+            (listDropdown?.length === 0 && (
+              <div className="px-4 py-3">{emptyWarning}</div>
+            ))}
         </div>
       </motion.div>
     </motion.div>

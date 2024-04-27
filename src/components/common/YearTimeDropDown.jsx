@@ -15,6 +15,7 @@ function YearTimeDropDown({
   handleSelectItem = undefined,
 }) {
   const node = useRef();
+  const listRef = useRef();
   const [isOpen, toggleOpen] = useState(false);
 
   const toggleOpenMenu = () => {
@@ -106,6 +107,7 @@ function YearTimeDropDown({
         }}
       >
         <div
+          ref={listRef}
           id="list-dropdown"
           className={`smooth-transform z-9999 flex w-full flex-col gap-1 rounded-b-xl  bg-[#fff] py-3  max-h-[250px] overflow-y-auto ${classNameDropdown}`}
         >
@@ -149,6 +151,7 @@ function DropDownItem({
       className={`flex items-center w-full px-4 py-3 text-sm cursor-pointer bg-opacity-20 hover:bg-[#2F8DE415] smooth-transform ${
         isSelected ? "bg-[#2F8DE4] text-black" : ""
       }`}
+      id={data}
     >
       <p>{data}</p>
       {isSelected && <span className="ml-1">✓</span>}

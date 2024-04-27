@@ -57,10 +57,6 @@ function TutorCreateClassroomConfirm(props) {
       toast.error("Please fill classroom name");
       return;
     }
-    if (!classRoomDetail?.subjectId) {
-      toast.error("Please fill classroom subject");
-      return;
-    }
     if (!classRoomDetail?.classLevel) {
       toast.error("Please fill classroom level");
       return;

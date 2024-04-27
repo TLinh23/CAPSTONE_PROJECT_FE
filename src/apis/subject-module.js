@@ -1,6 +1,7 @@
 import {
   createSubjectUrl,
   deleteSubjectUrl,
+  getSubjectTutorUrl,
   subjectUrl,
   updateSubjectUrl,
 } from "src/constants/APIConfig";
@@ -37,4 +38,8 @@ export const createNewSubject = (paramsObj) => {
     url: `${createSubjectUrl}`,
     data: paramsObj,
   });
+};
+
+export const getSubjectForTutor = (id) => {
+  return requestAPI({ url: `${getSubjectTutorUrl}/${id}` });
 };

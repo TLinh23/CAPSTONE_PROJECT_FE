@@ -63,6 +63,12 @@ function TutorOrderDetail() {
               </RequestDescription>
             </RequestTitle>
             <RequestTitle>
+              Parent Phone:{" "}
+              <RequestDescription>
+                {orderRequestDetail?.parentPhone || "---"}
+              </RequestDescription>
+            </RequestTitle>
+            <RequestTitle>
               Grade:{" "}
               <RequestDescription>
                 {orderRequestDetail?.level}

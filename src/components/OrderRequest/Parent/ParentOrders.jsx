@@ -139,6 +139,10 @@ const columns = [
         accessor: (data) => <p>{data?.parentName}</p>,
       },
       {
+        Header: "Parent Phone",
+        accessor: (data) => <p>{data?.parentPhone || "---"}</p>,
+      },
+      {
         Header: "Student Name",
         accessor: (data) => <p>{data?.studentName}</p>,
       },

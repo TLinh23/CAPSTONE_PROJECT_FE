@@ -117,3 +117,5 @@ export const suspendAccountUrl = `${baseUrl}api/Account/suspend-account`;
 export const getAttendStudentsUrl = `${baseUrl}api/Attendent/get-attend-students`;
 
 export const updateAttendStudentsUrl = `${baseUrl}api/Attendent/update-attend-students`;
+
+export const getSubjectTutorUrl = `${baseUrl}api/Subject/get-subjects-tutor`;
