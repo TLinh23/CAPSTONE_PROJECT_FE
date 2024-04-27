@@ -6,7 +6,6 @@ import { getClassByParent } from "src/apis/class-module";
 import DeniedBtn from "src/components/common/DeniedBtn";
 import FilterDropDown from "src/components/common/FilterDropDown";
 import Pagination from "src/components/common/Pagination";
-import PrimaryBtn from "src/components/common/PrimaryBtn";
 import RenderStatus from "src/components/common/RenderStatus";
 import SearchInput from "src/components/common/SearchInput";
 import Table from "src/components/common/Table";

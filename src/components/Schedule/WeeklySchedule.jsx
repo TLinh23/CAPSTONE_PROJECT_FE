@@ -5,12 +5,10 @@ import TutorSchedule from "./TutorSchedule";
 import ParentSchedule from "./ParentSchedule";
 import { useQueries } from "react-query";
 import {
+  getClassByParent,
   getClassByTutor,
   getFiteredSchedule,
-  getScheduleByClass,
 } from "src/apis/class-module";
-import { useLocation } from "react-router-dom";
-import useDebounce from "src/hooks/useDebounce";
 
 function WeeklySchedule() {
   const { roleKey, userId } = useAuthContext();
@@ -21,14 +19,14 @@ function WeeklySchedule() {
 
   useQueries([
     {
-      queryKey: ["getListClassroom"],
+      queryKey: ["getListClassroom", userId],
       queryFn: async () => {
         if (roleKey === ROLE_NAME.TUTOR) {
           const queryObj = {};
           queryObj["PagingRequest.CurrentPage"] = 1;
           queryObj["PagingRequest.PageSize"] = 99;
           queryObj["TutorId"] = userId;
-
+          queryObj["status"] = "ACTIVE";
           const response = await getClassByTutor(queryObj);
           setListClassroom(response?.data?.data);
           return response?.data;
@@ -60,6 +58,22 @@ function WeeklySchedule() {
       },
       enabled: !!userId,
     },
+    {
+      queryKey: ["getListClass", userId],
+      queryFn: async () => {
+        if (roleKey === ROLE_NAME.PARENT) {
+          const queryObj = {};
+          queryObj["PagingRequest.CurrentPage"] = 1;
+          queryObj["PagingRequest.PageSize"] = 99;
+          queryObj["ParentId"] = userId;
+          queryObj["Status"] = "ACTIVE";
+          const response = await getClassByParent(queryObj);
+          setListClassroom(response?.data?.data);
+          return response?.data;
+        }
+      },
+      enabled: !!userId,
+    },
   ]);
 
   return (
@@ -78,6 +92,8 @@ function WeeklySchedule() {
           listClassroom={listClassroom}
           childrenName={childrenName}
           setChildrenName={setChildrenName}
+          classRoomSelected={classRoomSelected}
+          setClassRoomSelected={setClassRoomSelected}
         />
       )}
     </div>

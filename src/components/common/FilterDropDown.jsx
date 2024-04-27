@@ -116,7 +116,7 @@ function FilterDropDown({
           borderRadius: 5,
           backgroundColor: "#ECF1F4",
           transformOrigin: "50% -30px",
-          zIndex: 1,
+          zIndex: 9999,
         }}
       >
         <div

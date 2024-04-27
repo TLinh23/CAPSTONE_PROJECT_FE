@@ -1,14 +1,15 @@
 import React, { useState } from "react";
-import ProfileHeader from "../Profile/ProfileHeader";
 import RenderStatus from "../common/RenderStatus";
 import { format } from "date-fns";
 import SecondaryBtn from "../common/SecondaryBtn";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useQueries } from "react-query";
 import { getClassDetailData } from "src/apis/class-module";
-import PrimaryBtn from "../common/PrimaryBtn";
 import { getValueFromKey, slideFromEnd } from "src/libs";
 import { DAYS_OF_WEEK } from "src/constants/enumConstant";
+import SmallTitle from "../common/SmallTitle";
+import Title from "../common/Title";
+import ArrowLeftIcon from "../icons/ArrowLeftIcon";
 
 function TutorClassroomDetail() {
   const [classRoomDetail, setClassRoomDetail] = useState(undefined);
@@ -24,11 +25,21 @@ function TutorClassroomDetail() {
       },
     },
   ]);
-
+  const navigate = useNavigate();
   return (
     <div className="bg-[#ffffff] block-border">
       <div className="flex items-center gap-4">
-        <ProfileHeader title="Classroom detail" />
+        <div
+          className="flex items-center gap-3 cursor-pointer w-fit"
+          onClick={() => {
+            navigate("/tutor-classrooms");
+          }}
+        >
+          <div className="cursor-pointer">
+            <ArrowLeftIcon />
+          </div>
+          <Title>Classroom detail</Title>
+        </div>
         <RenderStatus status={classRoomDetail?.status}>
           {classRoomDetail?.status}
         </RenderStatus>
@@ -38,29 +49,6 @@ function TutorClassroomDetail() {
         <div>{id}</div>
         <div>Classroom Name:</div>
         <div>{classRoomDetail?.className}</div>
-        <div>Schedule:</div>
-        {/* <div className="flex flex-col gap-2">
-          <Link
-            to={`/schedule/${classRoomDetail?.classId}?classId=${classRoomDetail?.classId}`}
-            className="w-[200px]"
-          >
-            <PrimaryBtn>View Schedule</PrimaryBtn>
-          </Link>
-        </div> */}
-        <div className="flex flex-col gap-2 max-h-[200px] overflow-auto">
-          {classRoomDetail?.schedules?.map((item) => (
-            <div>
-              From:{" "}
-              <span className="mr-5">
-                {slideFromEnd(item?.sessionStart, -3)}
-              </span>
-              To:{" "}
-              <span className="mr-5">{slideFromEnd(item?.sessionEnd, -3)}</span>{" "}
-              On {getValueFromKey(item?.dayOfWeek, DAYS_OF_WEEK)}{" "}
-              {item?.date ? format(new Date(item?.date), "dd-MM-yyyy") : ""}
-            </div>
-          ))}
-        </div>
         <div>Date Started:</div>
         <div>
           {classRoomDetail?.startDate
@@ -75,10 +63,42 @@ function TutorClassroomDetail() {
         <div>{classRoomDetail?.classLevel}</div>
         <div>Number of Session:</div>
         <div>{classRoomDetail?.numOfSession}</div>
-
-        <Link className="max-w-[200px]" to={`/tutor-classrooms/${id}/students`}>
+      </div>
+      <div className="flex items-center gap-5 mt-5">
+        <Link className="w-[200px]" to={`/tutor-classrooms/${id}/students`}>
           <SecondaryBtn>List of Students</SecondaryBtn>
         </Link>
+        <Link className="max-w-[200px]" to={`/assessesments?id=${id}`}>
+          <SecondaryBtn>List Assessments</SecondaryBtn>
+        </Link>
+      </div>
+      <div className="mt-5">
+        <SmallTitle>Schedule</SmallTitle>
+        <div className="flex flex-col gap-2 max-h-[200px] overflow-auto mt-5">
+          {classRoomDetail?.schedules?.map((item, index) => (
+            <div className="grid gap-3 grid-cols-2020202020" key={index}>
+              <div>
+                From: <span>{slideFromEnd(item?.sessionStart, -3)}</span>
+              </div>
+              <div>
+                To:{" "}
+                <span className="mr-12">
+                  {slideFromEnd(item?.sessionEnd, -3)}
+                </span>
+              </div>
+              <div>
+                On {getValueFromKey(item?.dayOfWeek, DAYS_OF_WEEK)}{" "}
+                {item?.date ? format(new Date(item?.date), "dd-MM-yyyy") : ""}
+              </div>
+              {/* classrooms/attendant/5?classId=0&date=2024-04-23T00:00:00&start=19:10:00&end=21:10:00 */}
+              <Link
+                to={`/classrooms/attendant/${item?.id}?classId=${id}&date=${item?.date}&start=${item?.sessionStart}&end=${item?.sessionEnd}`}
+              >
+                <div className="underline text-blue">Take Attendance</div>
+              </Link>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

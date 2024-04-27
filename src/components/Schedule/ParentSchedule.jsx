@@ -12,14 +12,21 @@ import { getWeeksInYear, getYearsRange } from "src/libs/getWeekInYear";
 import YearTimeDropDown from "../common/YearTimeDropDown";
 import { Link } from "react-router-dom";
 import { LIST_ATTEND_STATUS } from "src/constants/enumConstant";
-import PrimaryInput from "../common/PrimaryInput";
 import { useQueries } from "react-query";
 import { useAuthContext } from "src/context/AuthContext";
 import { getProfileByIdDetail } from "src/apis/tutor-module";
 import FilterDropDown from "../common/FilterDropDown";
+import DeniedBtn from "../common/DeniedBtn";
 
 function ParentSchedule(props) {
-  const { scheduleDetail, childrenName, setChildrenName } = props;
+  const {
+    scheduleDetail,
+    childrenName,
+    setChildrenName,
+    listClassroom,
+    classRoomSelected,
+    setClassRoomSelected,
+  } = props;
   const [listWeekInYear, setListWeekInYear] = useState(undefined);
   const LIST_YEAR = getYearsRange();
   const currentYear = new Date().getFullYear();
@@ -82,6 +89,18 @@ function ParentSchedule(props) {
         <div className="flex items-center justify-end w-full gap-3">
           <FilterDropDown
             textDefault={
+              listClassroom?.items?.length !== 0
+                ? "Select classs"
+                : "No class available"
+            }
+            listDropdown={listClassroom?.items || []}
+            showing={classRoomSelected}
+            setShowing={setClassRoomSelected}
+            className="!w-[240px]"
+            type="className"
+          />
+          <FilterDropDown
+            textDefault={
               dataProfileDetail?.students?.length !== 0
                 ? "Select student"
                 : "No student available"
@@ -92,21 +111,32 @@ function ParentSchedule(props) {
             className="!w-[240px]"
             type="student"
           />
-          <YearTimeDropDown
-            listDropdown={listWeekInYear || []}
-            showing={weekSelected}
-            setShowing={setWeekSelected}
-            className="!w-[240px]"
-            textDefault={defaultSelectedWeek}
-            handleSelectItem={handleSelectItem}
-          />
-          <YearTimeDropDown
-            listDropdown={LIST_YEAR}
-            showing={yearSelected}
-            setShowing={setYearSelected}
-            className="!w-[120px]"
-          />
+          <DeniedBtn
+            onClick={() => {
+              setChildrenName(undefined);
+              setClassRoomSelected(undefined);
+            }}
+            className="max-w-[150px]"
+          >
+            Remove Filter
+          </DeniedBtn>
         </div>
+      </div>
+      <div className="flex items-center justify-end gap-5 mt-3">
+        <YearTimeDropDown
+          listDropdown={listWeekInYear || []}
+          showing={weekSelected}
+          setShowing={setWeekSelected}
+          className="!w-[240px]"
+          textDefault={defaultSelectedWeek}
+          handleSelectItem={handleSelectItem}
+        />
+        <YearTimeDropDown
+          listDropdown={LIST_YEAR}
+          showing={yearSelected}
+          setShowing={setYearSelected}
+          className="!w-[120px]"
+        />
       </div>
       <div className="mt-5 bg-white demo-app">
         <div className="demo-app-main">

@@ -11,6 +11,7 @@ import Title from "../common/Title";
 import { getWeeksInYear, getYearsRange } from "src/libs/getWeekInYear";
 import YearTimeDropDown from "../common/YearTimeDropDown";
 import { Link } from "react-router-dom";
+import FilterDropDown from "../common/FilterDropDown";
 
 function TutorSchedule(props) {
   const {
@@ -66,14 +67,14 @@ function TutorSchedule(props) {
       <div className="flex items-center justify-between gap-5">
         <Title>My Schedule</Title>
         <div className="flex items-center gap-3">
-          {/* <FilterDropDown
+          <FilterDropDown
             type="className"
             listDropdown={listClassroom?.items}
             showing={classRoomSelected}
             setShowing={setClassRoomSelected}
             textDefault="Select Class"
             className="!w-[240px]"
-          /> */}
+          />
           <YearTimeDropDown
             listDropdown={listWeekInYear || []}
             showing={weekSelected}
