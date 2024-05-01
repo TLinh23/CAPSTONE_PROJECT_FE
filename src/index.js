@@ -5,6 +5,7 @@ import "./styles/loading.css";
 import "./styles/table.css";
 import "./styles/add-image.css";
 import "./styles/calendar.css";
+import "./styles/assesment-table.css";
 
 import "@reach/dialog/styles.css";
 import "react-date-range/dist/styles.css";

@@ -149,7 +149,7 @@ const columns = [
         Header: " ",
         accessor: (data) => (
           <div>
-            <Link to={`/classrooms/${data?.classId}`}>
+            <Link to={`/parent-classrooms/${data?.classId}`}>
               <ShowPasswordIcon className="cursor-pointer" />
             </Link>
           </div>

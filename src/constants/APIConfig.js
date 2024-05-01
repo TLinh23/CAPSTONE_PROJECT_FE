@@ -10,9 +10,9 @@ export const searchFilterPaymentsUrl = `${baseUrl}api/Payment/search-filter-paym
 
 export const createPaymentUrl = `${baseUrl}api/Payment/create-payment`;
 
-export const getAllEvaluationUrl = `${baseUrl}api/Evaluations/get-all-evaluation-by-classId`;
+export const getAllEvaluationUrl = `${baseUrl}api/Evaluations/get-all-evaluation-by-classId-no-paging`;
 
-export const parentEvaluationUrl = `${baseUrl}api/Evaluations/get-evaluation-for-parent`;
+export const parentEvaluationUrl = `${baseUrl}api/Evaluations/get-evaluation-for-parent-no-paging`;
 
 export const getDetailEvaluationUrl = `${baseUrl}api/Evaluations/get-detail-evaluation`;
 
@@ -119,3 +119,5 @@ export const getAttendStudentsUrl = `${baseUrl}api/Attendent/get-attend-students
 export const updateAttendStudentsUrl = `${baseUrl}api/Attendent/update-attend-students`;
 
 export const getSubjectTutorUrl = `${baseUrl}api/Subject/get-subjects-tutor`;
+
+export const getParentClassDetailUrl = `${baseUrl}api/Class/get-parent-class-details`;

@@ -8,6 +8,7 @@ import {
   getAttendStudentsUrl,
   getClassDetailUrl,
   getClassUrl,
+  getParentClassDetailUrl,
   getParentClassUrl,
   getStudentsClassUrl,
   getTutorClassUrl,
@@ -42,6 +43,12 @@ export const getClassByTutor = (paramsObj) => {
 export const getClassDetailData = (id) => {
   return requestAPI({
     url: `${getClassDetailUrl}/${id}`,
+  });
+};
+
+export const getParentClassDetailData = (id) => {
+  return requestAPI({
+    url: `${getParentClassDetailUrl}/${id}`,
   });
 };
 

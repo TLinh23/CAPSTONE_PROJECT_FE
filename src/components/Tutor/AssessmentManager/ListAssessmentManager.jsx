@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import Pagination from "../../common/Pagination";
+import React, { useEffect, useState } from "react";
 import Table from "../../common/Table";
 import Title from "../../common/Title";
 import PrimaryBtn from "src/components/common/PrimaryBtn";
@@ -20,8 +19,6 @@ import DateRangePickerModal from "src/components/common/DateRangePickerModal";
 function ListAssessmentManager() {
   const [listAssessment, setListAssessment] = useState(undefined);
   const [classDetail, setClassDetail] = useState(undefined);
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const classId = params.get("id");
@@ -30,21 +27,14 @@ function ListAssessmentManager() {
     key: "selection",
   };
   const [dateRange, setDateRange] = useState([initialDateRange]);
+  const [listHeader, setListHeader] = useState(undefined);
+  const [listFormattedData, setListFormattedData] = useState(undefined);
 
   useQueries([
     {
-      queryKey: [
-        "getAssessmentClass",
-        page,
-        limit,
-        classId,
-        studentSelected,
-        dateRange,
-      ],
+      queryKey: ["getAssessmentClass", classId, studentSelected, dateRange],
       queryFn: async () => {
         const queryObj = {};
-        queryObj["PagingRequest.CurrentPage"] = page;
-        queryObj["PagingRequest.PageSize"] = limit;
         queryObj["ClassId"] = classId;
         if (studentSelected) {
           queryObj["StudentId"] = studentSelected?.studentId;
@@ -60,6 +50,8 @@ function ListAssessmentManager() {
           );
         }
         const response = await getAllEvaluation(queryObj);
+        setListHeader(undefined);
+        setListFormattedData(undefined);
         setListAssessment(response?.data?.data);
         return response?.data;
       },
@@ -75,6 +67,24 @@ function ListAssessmentManager() {
       enabled: !!classId,
     },
   ]);
+
+  useEffect(() => {
+    if (listAssessment?.length > 0) {
+      // @ts-ignore
+      const uniqueDates = [...new Set(listAssessment.map((item) => item.date))];
+      setListHeader(uniqueDates);
+      const formattedData = {};
+      listAssessment.forEach((item) => {
+        if (!formattedData[item.studentId]) {
+          formattedData[item.studentId] = {
+            name: item.studentName,
+          };
+        }
+        formattedData[item.studentId][item.date || "-"] = item;
+      });
+      setListFormattedData(formattedData);
+    }
+  }, [listAssessment]);
 
   return (
     <div className="p-4 mx-auto">
@@ -100,8 +110,6 @@ function ListAssessmentManager() {
         </div>
         <DeniedBtn
           onClick={() => {
-            setPage(1);
-            setLimit(10);
             setStudentSelected(undefined);
             setDateRange([initialDateRange]);
           }}
@@ -111,85 +119,74 @@ function ListAssessmentManager() {
         </DeniedBtn>
       </div>
 
-      <div className="mt-5 bg-white table-style block-border">
-        <Table
-          pageSizePagination={limit}
-          columns={transactionColumns}
-          data={listAssessment?.items}
-        />
+      <div className="flex items-center justify-center mt-5 bg-white block-border">
+        {listHeader && listFormattedData ? (
+          <div className="table-referral-style max-w-[968px] xl:max-w-[1060px] 2xl:max-w-[1280px] overflow-auto">
+            <table>
+              <thead>
+                <tr />
+                <tr>
+                  <td />
+                  {listHeader &&
+                    listHeader?.map((item, index) => (
+                      <td key={index} className="text-center whitespace-nowrap">
+                        {item ? format(new Date(item), "dd/MM") : "---"}
+                      </td>
+                    ))}
+                </tr>
+              </thead>
+              <tbody>
+                {listFormattedData &&
+                  Object.values(listFormattedData)?.map((item, index) => (
+                    <TableSection
+                      item={item}
+                      key={index}
+                      listHeader={listHeader}
+                    />
+                  ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <div>No data</div>
+        )}
       </div>
-
-      <Pagination
-        pageSize={limit}
-        setPageSize={setLimit}
-        currentPage={page}
-        setCurrentPage={setPage}
-        totalItems={10}
-      />
     </div>
   );
 }
 
 export default ListAssessmentManager;
 
-const transactionColumns = [
-  {
-    Header: " ",
-    columns: [
-      {
-        Header: "No",
-        accessor: "evaluationId",
-      },
-      {
-        Header: "Student",
-        accessor: "studentName",
-      },
-      {
-        Header: "Class",
-        accessor: "className",
-      },
-      {
-        Header: "Score",
-        accessor: "score",
-      },
-      {
-        Header: "Comment",
-        accessor: (data) => (
-          <div className="truncate-2-line">{data?.comment}</div>
-        ),
-      },
-      {
-        Header: "Date",
-        accessor: (data) => (
-          <div>
-            {data?.date ? format(new Date(data?.date), "dd-MM-yyyy") : "---"}
-          </div>
-        ),
-      },
-      {
-        Header: "Status",
-        accessor: (data) => (
-          <RenderStatus status={data.status}>{data.status}</RenderStatus>
-        ),
-      },
-      {
-        Header: " ",
-        accessor: (data) => <RenderAction data={data} />,
-      },
-    ],
-  },
-];
-
-const RenderAction = ({ data }) => {
+const TableSection = ({ item, listHeader }) => {
   const [showDialog, setShowDialog] = useState(false);
+  const [showingData, setShowingData] = useState(undefined);
   return (
-    <div>
-      <ShowPasswordIcon
-        className="cursor-pointer"
-        onClick={() => {
-          setShowDialog(true);
-        }}
-      />
+    <>
+      <tr>
+        <td className="">{item?.name || "---"}</td>
+        {listHeader.map((date, index) => {
+          const dataForDate = item[date];
+          return (
+            <>
+              <td key={index} className="text-center whitespace-nowrap">
+                {dataForDate ? (
+                  <div
+                    className="cursor-pointer"
+                    onClick={() => {
+                      setShowDialog(!showDialog);
+                      setShowingData(dataForDate);
+                    }}
+                  >
+                    <p>{dataForDate?.score}</p>
+                  </div>
+                ) : (
+                  "-"
+                )}
+              </td>
+            </>
+          );
+        })}
+      </tr>
       <PopupTemplate
         title="Assessment Detail"
         setShowDialog={setShowDialog}
@@ -197,20 +194,22 @@ const RenderAction = ({ data }) => {
       >
         <div className="grid grid-cols-37 max-w-[1000px] mt-5 gap-x-5 gap-y-3 items-center">
           <div>Student</div>
-          <PrimaryInput value={data?.studentName || ""} readOnly />
+          <PrimaryInput value={showingData?.studentName || ""} readOnly />
           <div>Class</div>
-          <PrimaryInput value={data?.className || ""} readOnly />
+          <PrimaryInput value={showingData?.className || ""} readOnly />
           <div>Score</div>
           <PrimaryInput
             placeholder="Enter score rate"
-            value={data?.score || ""}
+            value={showingData?.score || ""}
             readOnly
           />
           <div>Date</div>
           <PrimaryInput
             placeholder="Enter score rate"
             value={
-              data?.date ? format(new Date(data?.date), "dd-MM-yyyy") : "---"
+              showingData?.date
+                ? format(new Date(showingData?.date), "dd-MM-yyyy")
+                : "---"
             }
             readOnly
           />
@@ -218,11 +217,11 @@ const RenderAction = ({ data }) => {
           <PrimaryTextArea
             rows={5}
             placeholder="Enter comment"
-            value={data?.comment}
+            value={showingData?.comment}
             readOnly
           />
         </div>
       </PopupTemplate>
-    </div>
+    </>
   );
 };

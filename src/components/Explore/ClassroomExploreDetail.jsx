@@ -10,6 +10,7 @@ import { CLASS_REQUEST_TYPE, DAYS_OF_WEEK } from "src/constants/enumConstant";
 import { getValueFromKey, slideFromEnd } from "src/libs";
 import { useAuthContext } from "src/context/AuthContext";
 import { ROLE_NAME } from "src/constants/constants";
+import SmallTitle from "../common/SmallTitle";
 
 function ClassroomExploreDetail() {
   const [classRoomDetail, setClassRoomDetail] = useState(undefined);
@@ -40,21 +41,6 @@ function ClassroomExploreDetail() {
         <div>{id}</div>
         <div>Classroom Name:</div>
         <div>{classRoomDetail?.className}</div>
-        <div>Schedule:</div>
-        <div className="flex flex-col gap-2 max-h-[200px] overflow-auto">
-          {classRoomDetail?.schedules?.map((item) => (
-            <div>
-              From:{" "}
-              <span className="mr-5">
-                {slideFromEnd(item?.sessionStart, -3)}
-              </span>
-              To:{" "}
-              <span className="mr-5">{slideFromEnd(item?.sessionEnd, -3)}</span>{" "}
-              On {getValueFromKey(item?.dayOfWeek, DAYS_OF_WEEK)}{" "}
-              {item?.date ? format(new Date(item?.date), "dd-MM-yyyy") : ""}
-            </div>
-          ))}
-        </div>
         <div>Date Started:</div>
         <div>
           {classRoomDetail?.startDate
@@ -69,15 +55,38 @@ function ClassroomExploreDetail() {
         <div>{classRoomDetail?.classLevel}</div>
         <div>Number of Session:</div>
         <div>{classRoomDetail?.numOfSession}</div>
-
+      </div>
+      <div className="flex items-center gap-5 mt-5">
         {roleKey === ROLE_NAME.PARENT && (
           <Link
-            className="max-w-[200px]"
+            className="w-[200px]"
             to={`/classroom-requests/create?tutorId=${classRoomDetail?.tutorId}&classId=${classRoomDetail?.classId}&requestType=${CLASS_REQUEST_TYPE.JOIN}`}
           >
             <SecondaryBtn>Join</SecondaryBtn>
           </Link>
         )}
+      </div>
+      <div className="mt-5">
+        <SmallTitle>Schedule:</SmallTitle>
+        <div className="flex flex-col gap-2 max-h-[200px] overflow-auto mt-5">
+          {classRoomDetail?.schedules?.map((item, index) => (
+            <div className="grid gap-3 grid-cols-2020202020" key={index}>
+              <div>
+                From: <span>{slideFromEnd(item?.sessionStart, -3)}</span>
+              </div>
+              <div>
+                To:{" "}
+                <span className="mr-12">
+                  {slideFromEnd(item?.sessionEnd, -3)}
+                </span>
+              </div>
+              <div>
+                On {getValueFromKey(item?.dayOfWeek, DAYS_OF_WEEK)}{" "}
+                {item?.date ? format(new Date(item?.date), "dd-MM-yyyy") : ""}
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

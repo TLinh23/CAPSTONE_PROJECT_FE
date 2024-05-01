@@ -46,13 +46,13 @@ export const TUTOR_MENU = [
 ];
 
 export const PARENT_MENU = [
-  {
-    id: 1,
-    name: "List Classroom",
-    href: PARENT_HREF.CLASSROOM,
-    icon: <RequestIcon />,
-    listActiveRouter: [PARENT_HREF.CLASSROOM],
-  },
+  // {
+  //   id: 1,
+  //   name: "List Classroom",
+  //   href: PARENT_HREF.CLASSROOM,
+  //   icon: <RequestIcon />,
+  //   listActiveRouter: [PARENT_HREF.CLASSROOM],
+  // },
   {
     id: 2,
     name: "List Request",
@@ -60,13 +60,13 @@ export const PARENT_MENU = [
     icon: <ProfileIcon />,
     listActiveRouter: [PARENT_HREF.REQUEST],
   },
-  {
-    id: 3,
-    name: "List Assessment",
-    href: PARENT_HREF.ASSESMENTS,
-    icon: <AssetIcon />,
-    listActiveRouter: [PARENT_HREF.ASSESMENTS],
-  },
+  // {
+  //   id: 3,
+  //   name: "List Assessment",
+  //   href: PARENT_HREF.ASSESMENTS,
+  //   icon: <AssetIcon />,
+  //   listActiveRouter: [PARENT_HREF.ASSESMENTS],
+  // },
   {
     id: 4,
     name: "Schedule",

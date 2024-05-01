@@ -1,0 +1,74 @@
+/* style for referral table */
+
+.table-referral-style {
+  width: 100%;
+  overflow: auto;
+}
+
+.table-referral-style table {
+  width: 100%;
+  border-radius: 4px;
+  border-collapse: separate;
+  border-spacing: 0 0px;
+  font-size: 14px;
+  .text-right {
+    text-align: right;
+  }
+  .text-center {
+    text-align: center;
+  }
+}
+
+.table-referral-style table thead {
+  background: #2f8de415;
+}
+
+.table-referral-style table thead tr:first-child {
+  display: none;
+  visibility: hidden;
+}
+
+.table-referral-style table thead td {
+  padding-bottom: 12px;
+  padding-top: 12px;
+  font-size: 16px;
+  line-height: 18px;
+  color: #7f7f7f;
+}
+
+.table-referral-style table tbody tr td {
+  /* background: rgba(142, 89, 255, 0.5); */
+  font-size: 14px;
+  line-height: 24px;
+  color: #343434;
+  font-style: normal;
+  border-bottom: 1px solid #00345290;
+}
+
+.table-referral-style table tbody tr:hover td {
+  background-color: #2f8de415;
+  transition: all 0.2s ease;
+}
+
+.table-referral-style table td {
+  margin: 0;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.table-referral-style table td:first-child {
+  text-align: left;
+}
+
+.table-referral-style table tbody tr.odd {
+  background: rgba(34, 34, 35, 0.04);
+}
+
+/* end section for referral table */
+
+.padding-zero {
+  padding: 0px !important;
+  transition: all 0.2s ease;
+}

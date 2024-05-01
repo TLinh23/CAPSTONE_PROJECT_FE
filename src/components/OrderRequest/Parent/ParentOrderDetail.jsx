@@ -65,7 +65,7 @@ function ParentOrderDetail() {
             <RequestTitle>
               Parent Phone:{" "}
               <RequestDescription>
-                {orderRequestDetail?.parentPhone || "---"}
+                {orderRequestDetail?.phone || "---"}
               </RequestDescription>
             </RequestTitle>
             <RequestTitle>

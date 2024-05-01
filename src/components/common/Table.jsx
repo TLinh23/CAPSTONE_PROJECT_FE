@@ -12,6 +12,7 @@ function Table({
   pageSizePagination,
   headerTextAlignRight = [],
   headerTextAlignCenter = [],
+  isAuto = false,
 }) {
   const {
     getTableProps,
@@ -45,7 +46,7 @@ function Table({
   const firstPageRows = rows.slice(0, pageSizePagination);
 
   return (
-    <div className="w-full overflow-hidden">
+    <div className={`w-full ${isAuto ? "overflow-auto" : "overflow-hidden"}`}>
       <table className="w-full" {...getTableProps()}>
         <thead>
           {headerGroups.map((headerGroup, index) => (

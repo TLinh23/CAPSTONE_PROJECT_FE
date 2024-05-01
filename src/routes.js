@@ -11,15 +11,11 @@ import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 import ChangePassword from "./pages/Changepassword/Changepassword";
 import PageOrderRequestDetail from "./pages/PageOrderRequestDetail";
 import PageCreateOrderRequest from "./pages/PageCreateOrderRequest";
-import AccountManager from "./components/Staff/AccountManager/ListAccountManager";
 import Transaction from "./components/Staff/TransactionManager/Transaction";
 import AddTransaction from "./components/Staff/TransactionManager/AddTransaction";
 import AddAssessment from "./components/Tutor/AssessmentManager/AddAssessment";
 
-import AccountDetail from "./pages/PageAccountDetail";
 import TransactionDetail from "./pages/PageTransactionDetail";
-import TutorFee from "./pages/TutorFee";
-
 import PageOpenedClassRooms from "./pages/PageOpenedClassRooms";
 import PageSchedule from "./pages/PageSchedule";
 import PageManageSubjects from "./pages/PageManageSubjects";
@@ -42,6 +38,7 @@ import PageTutorTransaction from "./pages/PageTutorTransaction";
 import PageTest from "./pages/PageTest";
 import PageAttenDantDetail from "./pages/PageAttenDantDetail";
 import PageParentAssesMent from "./pages/PageParentAssesMent";
+import PageParentClassroomDetail from "./pages/PageParentClassroomDetail";
 
 //list your routes here
 export const routes = [
@@ -78,6 +75,10 @@ export const routes = [
     path: "/classrooms/:id",
     element: <PageIntroduceClassroomDetail />,
   },
+  {
+    path: "/parent-classrooms/:id",
+    element: <PageParentClassroomDetail />,
+  },
 
   { path: "/register-parent", element: <PageRegisterAsParent /> },
   { path: "/tutor-classrooms", element: <PageListTutorClassroom /> },
@@ -113,11 +114,6 @@ export const routes = [
     path: "/test",
     element: <PageTest />,
   },
-
-  { path: "/accountManager", element: <AccountManager /> },
-  { path: "/AccountDetail/:id", element: <AccountDetail /> },
-  { path: "/tutorFee", element: <TutorFee /> },
-  { path: "/addAssess", element: <AddAssessment /> },
 
   { path: "/", element: <NewHomePage /> },
   { path: "*", element: <NotFound /> },

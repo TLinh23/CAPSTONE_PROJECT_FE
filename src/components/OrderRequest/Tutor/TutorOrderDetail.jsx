@@ -65,7 +65,7 @@ function TutorOrderDetail() {
             <RequestTitle>
               Parent Phone:{" "}
               <RequestDescription>
-                {orderRequestDetail?.parentPhone || "---"}
+                {orderRequestDetail?.phone || "---"}
               </RequestDescription>
             </RequestTitle>
             <RequestTitle>

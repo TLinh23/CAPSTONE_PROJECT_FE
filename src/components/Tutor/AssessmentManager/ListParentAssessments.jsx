@@ -1,14 +1,6 @@
-import React, { useState } from "react";
-import Pagination from "../../common/Pagination";
-import Table from "../../common/Table";
+import React, { useEffect, useState } from "react";
 import Title from "../../common/Title";
-import PrimaryBtn from "src/components/common/PrimaryBtn";
-import RenderStatus from "src/components/common/RenderStatus";
-import { Link } from "react-router-dom";
-import ShowPasswordIcon from "src/components/icons/ShowPasswordIcon";
-import PopupTemplate from "src/components/common/PopupTemplate";
-import PrimaryInput from "src/components/common/PrimaryInput";
-import PrimaryTextArea from "src/components/common/PrimaryTextArea";
+import { useLocation } from "react-router-dom";
 import { useQueries } from "react-query";
 import { getParentEvaluation } from "src/apis/evaluation-module";
 import { useAuthContext } from "src/context/AuthContext";
@@ -17,33 +9,41 @@ import FilterDropDown from "src/components/common/FilterDropDown";
 import DeniedBtn from "src/components/common/DeniedBtn";
 import { getProfileByIdDetail } from "src/apis/tutor-module";
 import { format } from "date-fns";
+import PopupTemplate from "src/components/common/PopupTemplate";
+import PrimaryInput from "src/components/common/PrimaryInput";
+import PrimaryTextArea from "src/components/common/PrimaryTextArea";
+import { getClassByParent } from "src/apis/class-module";
+import ClassNameFilterDropdown from "src/components/common/ClassNameFilterDropdown";
 
 function ListParentAssessments() {
   const [listAssessment, setListAssessment] = useState(undefined);
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
   const { userId } = useAuthContext();
   const [studentSelected, setStudentSelected] = useState(undefined);
+  const [listClassroom, setListClassroom] = useState(undefined);
+  const [classSelected, setClassSelected] = useState(undefined);
   const initialDateRange = {
     key: "selection",
   };
   const [dateRange, setDateRange] = useState([initialDateRange]);
   const [dataProfileDetail, setDataProfileDetail] = useState(undefined);
+  const [listHeader, setListHeader] = useState(undefined);
+  const [listFormattedData, setListFormattedData] = useState(undefined);
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const classId = params.get("id");
 
   useQueries([
     {
       queryKey: [
-        "getListAssesment",
-        page,
-        limit,
-        userId,
+        "getAssessmentClass",
+        classId,
         studentSelected,
         dateRange,
+        classSelected,
       ],
       queryFn: async () => {
         const queryObj = {};
-        queryObj["PagingRequest.CurrentPage"] = page;
-        queryObj["PagingRequest.PageSize"] = limit;
+        queryObj["ClassId"] = classId;
         queryObj["ParentId"] = userId;
         if (studentSelected) {
           queryObj["StudentId"] = studentSelected?.studentId;
@@ -58,12 +58,16 @@ function ListParentAssessments() {
             "MM-dd-yyyy"
           );
         }
-
+        if (classSelected) {
+          queryObj["ClassId"] = classSelected?.classId;
+        }
         const response = await getParentEvaluation(queryObj);
+        setListHeader(undefined);
+        setListFormattedData(undefined);
         setListAssessment(response?.data?.data);
         return response?.data;
       },
-      enabled: !!userId,
+      enabled: !!classId && !!userId,
     },
     {
       queryKey: ["getProfile", userId],
@@ -76,9 +80,49 @@ function ListParentAssessments() {
       },
       enabled: !!userId,
     },
+    {
+      queryKey: ["getListParentClassAssest"],
+      queryFn: async () => {
+        const queryObj = {};
+        queryObj["PagingRequest.CurrentPage"] = 1;
+        queryObj["PagingRequest.PageSize"] = 99;
+        queryObj["ParentId"] = userId;
+        queryObj["Status"] = "ACTIVE";
+        const response = await getClassByParent(queryObj);
+        setListClassroom(response?.data?.data);
+        return response?.data;
+      },
+      enabled: !!userId,
+    },
   ]);
 
-  console.log("dataProfileDetail: ", dataProfileDetail);
+  useEffect(() => {
+    if (listAssessment?.length > 0) {
+      // @ts-ignore
+      const uniqueDates = [...new Set(listAssessment.map((item) => item.date))];
+      setListHeader(uniqueDates);
+      const formattedData = {};
+      listAssessment.forEach((item) => {
+        if (!formattedData[item.studentId]) {
+          formattedData[item.studentId] = {
+            name: item.studentName,
+          };
+        }
+        formattedData[item.studentId][item.date || "-"] = item;
+      });
+      setListFormattedData(formattedData);
+    }
+  }, [listAssessment]);
+
+  const [defaultClassObject, setDefaultClassObject] = useState(undefined);
+  useEffect(() => {
+    if (listClassroom?.items?.length > 0) {
+      const default1 = listClassroom?.items?.find(
+        (item) => item?.classId?.toString() === classId.toString()
+      );
+      setDefaultClassObject(default1);
+    }
+  }, [listClassroom, classId]);
 
   return (
     <div className="p-4 mx-auto">
@@ -102,12 +146,18 @@ function ListParentAssessments() {
             setShowing={setStudentSelected}
             className="!w-[240px]"
           />
+          <ClassNameFilterDropdown
+            textDefault={defaultClassObject?.className || "Select class"}
+            listDropdown={listClassroom?.items || []}
+            showing={classSelected}
+            setShowing={setClassSelected}
+            className="!w-[240px]"
+          />
         </div>
         <DeniedBtn
           onClick={() => {
-            setPage(1);
-            setLimit(10);
             setStudentSelected(undefined);
+            setClassSelected(undefined);
             setDateRange([initialDateRange]);
           }}
           className="max-w-[150px]"
@@ -116,85 +166,74 @@ function ListParentAssessments() {
         </DeniedBtn>
       </div>
 
-      <div className="mt-5 bg-white table-style block-border">
-        <Table
-          pageSizePagination={limit}
-          columns={transactionColumns}
-          data={listAssessment?.items}
-        />
+      <div className="flex items-center justify-center mt-5 bg-white block-border">
+        {listHeader && listFormattedData ? (
+          <div className="table-referral-style max-w-[968px] xl:max-w-[1060px] 2xl:max-w-[1280px] overflow-auto">
+            <table>
+              <thead>
+                <tr />
+                <tr>
+                  <td />
+                  {listHeader &&
+                    listHeader?.map((item, index) => (
+                      <td key={index} className="text-center whitespace-nowrap">
+                        {item ? format(new Date(item), "dd/MM") : "---"}
+                      </td>
+                    ))}
+                </tr>
+              </thead>
+              <tbody>
+                {listFormattedData &&
+                  Object.values(listFormattedData)?.map((item, index) => (
+                    <TableSection
+                      item={item}
+                      key={index}
+                      listHeader={listHeader}
+                    />
+                  ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <div>No data</div>
+        )}
       </div>
-
-      <Pagination
-        pageSize={limit}
-        setPageSize={setLimit}
-        currentPage={page}
-        setCurrentPage={setPage}
-        totalItems={10}
-      />
     </div>
   );
 }
 
 export default ListParentAssessments;
 
-const transactionColumns = [
-  {
-    Header: " ",
-    columns: [
-      {
-        Header: "No",
-        accessor: "evaluationId",
-      },
-      {
-        Header: "Student",
-        accessor: "studentName",
-      },
-      {
-        Header: "Class",
-        accessor: "className",
-      },
-      {
-        Header: "Score",
-        accessor: "score",
-      },
-      {
-        Header: "Comment",
-        accessor: (data) => (
-          <div className="truncate-2-line">{data?.comment || "---"}</div>
-        ),
-      },
-      {
-        Header: "Date",
-        accessor: (data) => (
-          <div>
-            {data?.date ? format(new Date(data?.date), "dd-MM-yyyy") : "---"}
-          </div>
-        ),
-      },
-      {
-        Header: "Status",
-        accessor: (data) => (
-          <RenderStatus status={data.status}>{data.status}</RenderStatus>
-        ),
-      },
-      {
-        Header: " ",
-        accessor: (data) => <RenderAction data={data} />,
-      },
-    ],
-  },
-];
-
-const RenderAction = ({ data }) => {
+const TableSection = ({ item, listHeader }) => {
   const [showDialog, setShowDialog] = useState(false);
+  const [showingData, setShowingData] = useState(undefined);
   return (
-    <div>
-      <ShowPasswordIcon
-        className="cursor-pointer"
-        onClick={() => {
-          setShowDialog(true);
-        }}
-      />
+    <>
+      <tr>
+        <td className="">{item?.name || "---"}</td>
+        {listHeader.map((date, index) => {
+          const dataForDate = item[date];
+          return (
+            <>
+              <td key={index} className="text-center whitespace-nowrap">
+                {dataForDate ? (
+                  <div
+                    className="cursor-pointer"
+                    onClick={() => {
+                      setShowDialog(!showDialog);
+                      setShowingData(dataForDate);
+                    }}
+                  >
+                    <p>{dataForDate?.score}</p>
+                  </div>
+                ) : (
+                  "-"
+                )}
+              </td>
+            </>
+          );
+        })}
+      </tr>
       <PopupTemplate
         title="Assessment Detail"
         setShowDialog={setShowDialog}
@@ -202,20 +241,22 @@ const RenderAction = ({ data }) => {
       >
         <div className="grid grid-cols-37 max-w-[1000px] mt-5 gap-x-5 gap-y-3 items-center">
           <div>Student</div>
-          <PrimaryInput value={data?.studentName || ""} readOnly />
+          <PrimaryInput value={showingData?.studentName || ""} readOnly />
           <div>Class</div>
-          <PrimaryInput value={data?.className || ""} readOnly />
+          <PrimaryInput value={showingData?.className || ""} readOnly />
           <div>Score</div>
           <PrimaryInput
             placeholder="Enter score rate"
-            value={data?.score || ""}
+            value={showingData?.score || ""}
             readOnly
           />
           <div>Date</div>
           <PrimaryInput
             placeholder="Enter score rate"
             value={
-              data?.date ? format(new Date(data?.date), "dd-MM-yyyy") : "---"
+              showingData?.date
+                ? format(new Date(showingData?.date), "dd-MM-yyyy")
+                : "---"
             }
             readOnly
           />
@@ -223,11 +264,11 @@ const RenderAction = ({ data }) => {
           <PrimaryTextArea
             rows={5}
             placeholder="Enter comment"
-            value={data?.comment}
+            value={showingData?.comment}
             readOnly
           />
         </div>
       </PopupTemplate>
-    </div>
+    </>
   );
 };

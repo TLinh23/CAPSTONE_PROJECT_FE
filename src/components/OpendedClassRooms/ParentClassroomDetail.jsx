@@ -1,45 +1,42 @@
 import React, { useState } from "react";
+import ProfileHeader from "../Profile/ProfileHeader";
 import RenderStatus from "../common/RenderStatus";
 import { format } from "date-fns";
 import SecondaryBtn from "../common/SecondaryBtn";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useQueries } from "react-query";
-import { getClassDetailData } from "src/apis/class-module";
-import { getValueFromKey, slideFromEnd } from "src/libs";
-import { DAYS_OF_WEEK } from "src/constants/enumConstant";
+import { getParentClassDetailData } from "src/apis/class-module";
+import {
+  CLASS_REQUEST_TYPE,
+  DAYS_OF_WEEK,
+  LIST_ATTEND_STATUS,
+} from "src/constants/enumConstant";
+import { getValueFromId, getValueFromKey, slideFromEnd } from "src/libs";
+import { useAuthContext } from "src/context/AuthContext";
+import { ROLE_NAME } from "src/constants/constants";
 import SmallTitle from "../common/SmallTitle";
-import Title from "../common/Title";
-import ArrowLeftIcon from "../icons/ArrowLeftIcon";
 
-function TutorClassroomDetail() {
+function ParentClassroomDetail() {
   const [classRoomDetail, setClassRoomDetail] = useState(undefined);
   const { id } = useParams();
+  const { roleKey } = useAuthContext();
 
   useQueries([
     {
       queryKey: ["getClassDetail", id],
       queryFn: async () => {
-        const response = await getClassDetailData(id);
+        const response = await getParentClassDetailData(id);
         setClassRoomDetail(response?.data?.data);
         return response?.data;
       },
+      enabled: !!id,
     },
   ]);
-  const navigate = useNavigate();
+
   return (
     <div className="bg-[#ffffff] block-border">
       <div className="flex items-center gap-4">
-        <div
-          className="flex items-center gap-3 cursor-pointer w-fit"
-          onClick={() => {
-            navigate("/tutor-classrooms");
-          }}
-        >
-          <div className="cursor-pointer">
-            <ArrowLeftIcon />
-          </div>
-          <Title>Classroom detail</Title>
-        </div>
+        <ProfileHeader title="Classroom detail" />
         <RenderStatus status={classRoomDetail?.status}>
           {classRoomDetail?.status}
         </RenderStatus>
@@ -65,18 +62,28 @@ function TutorClassroomDetail() {
         <div>{classRoomDetail?.numOfSession}</div>
       </div>
       <div className="flex items-center gap-5 mt-5">
-        <Link className="w-[200px]" to={`/tutor-classrooms/${id}/students`}>
-          <SecondaryBtn>List of Students</SecondaryBtn>
-        </Link>
-        <Link className="max-w-[200px]" to={`/assessesments?id=${id}`}>
-          <SecondaryBtn>List Assessments</SecondaryBtn>
-        </Link>
+        {roleKey === ROLE_NAME.PARENT && (
+          <Link
+            className="w-[200px]"
+            to={`/classroom-requests/create?tutorId=${classRoomDetail?.tutorId}&classId=${classRoomDetail?.classId}&requestType=${CLASS_REQUEST_TYPE.JOIN}`}
+          >
+            <SecondaryBtn>Join</SecondaryBtn>
+          </Link>
+        )}
+        {roleKey === ROLE_NAME.PARENT && (
+          <Link className="max-w-[200px]" to={`/assessments?id=${id}`}>
+            <SecondaryBtn>List Assessments</SecondaryBtn>
+          </Link>
+        )}
       </div>
       <div className="mt-5">
-        <SmallTitle>Schedule</SmallTitle>
-        <div className="flex flex-col gap-2 max-h-[200px] overflow-auto mt-5">
+        <SmallTitle>Schedule:</SmallTitle>
+        <div className="flex flex-col gap-2 max-h-[240px] overflow-auto mt-5">
           {classRoomDetail?.schedules?.map((item, index) => (
-            <div className="grid gap-3 grid-cols-2020202020" key={index}>
+            <div
+              className="grid items-center gap-3 pb-1 border-b grid-cols-20202040 border-b-gray"
+              key={index}
+            >
               <div>
                 From: <span>{slideFromEnd(item?.sessionStart, -3)}</span>
               </div>
@@ -90,11 +97,22 @@ function TutorClassroomDetail() {
                 On {getValueFromKey(item?.dayOfWeek, DAYS_OF_WEEK)}{" "}
                 {item?.date ? format(new Date(item?.date), "dd-MM-yyyy") : ""}
               </div>
-              <Link
-                to={`/classrooms/attendant/${item?.id}?classId=${id}&date=${item?.date}&start=${item?.sessionStart}&end=${item?.sessionEnd}`}
-              >
-                <div className="underline text-blue">Take Attendance</div>
-              </Link>
+              <div>
+                {item?.scheduleStudentInformationDto &&
+                  item?.scheduleStudentInformationDto?.map((item, index) => (
+                    <div key={index}>
+                      {item?.fullName} -{" "}
+                      <span
+                        className={`${
+                          item?.attentdent === 1 && "text-successBtn"
+                        } ${item?.attentdent === 2 && "text-denied"}`}
+                      >
+                        {getValueFromId(item?.attentdent, LIST_ATTEND_STATUS) ||
+                          "Not Yet"}
+                      </span>
+                    </div>
+                  ))}
+              </div>
             </div>
           ))}
         </div>
@@ -103,4 +121,4 @@ function TutorClassroomDetail() {
   );
 }
 
-export default TutorClassroomDetail;
+export default ParentClassroomDetail;

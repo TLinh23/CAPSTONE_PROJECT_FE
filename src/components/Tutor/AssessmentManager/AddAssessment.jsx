@@ -16,7 +16,6 @@ import {
 import ClassNameFilterDropdown from "src/components/common/ClassNameFilterDropdown";
 import { toast } from "react-toastify";
 import { format } from "date-fns";
-import HeaderDetail from "src/components/common/HeaderDetail";
 import ProfileHeader from "src/components/Profile/ProfileHeader";
 import { useNavigate } from "react-router-dom";
 

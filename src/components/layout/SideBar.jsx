@@ -12,7 +12,8 @@ import { useSideBarContext } from "src/context/SideBarContext";
 import { useAuthContext } from "src/context/AuthContext";
 import { useQueries } from "react-query";
 import ClassroomSideBarItem from "./ClassroomSideBarItem";
-import { getClassByTutor } from "src/apis/class-module";
+import { getClassByParent, getClassByTutor } from "src/apis/class-module";
+import ParentSideBarItem from "./ParentSideBarItem";
 
 function SideBar() {
   const variants = {
@@ -37,8 +38,23 @@ function SideBar() {
           queryObj["PagingRequest.PageSize"] = 5;
           queryObj["TutorId"] = userId;
           queryObj["Status"] = "ACTIVE";
-          // change your api request
           const response = await getClassByTutor(queryObj);
+          setListClassroom(response?.data?.data);
+          return response?.data;
+        }
+      },
+      enabled: !!userId,
+    },
+    {
+      queryKey: ["getListParentClass"],
+      queryFn: async () => {
+        if (roleKey === ROLE_NAME.PARENT) {
+          const queryObj = {};
+          queryObj["PagingRequest.CurrentPage"] = 1;
+          queryObj["PagingRequest.PageSize"] = 5;
+          queryObj["ParentId"] = userId;
+          queryObj["Status"] = "ACTIVE";
+          const response = await getClassByParent(queryObj);
           setListClassroom(response?.data?.data);
           return response?.data;
         }
@@ -69,6 +85,7 @@ function SideBar() {
           )}
           {roleKey === ROLE_NAME.PARENT && (
             <>
+              <ParentSideBarItem listClassroom={listClassroom} />
               {PARENT_MENU.map((i) => (
                 <SideBarItem
                   key={`tutor-menu-${i?.id}`}

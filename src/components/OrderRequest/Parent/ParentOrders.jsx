@@ -140,7 +140,7 @@ const columns = [
       },
       {
         Header: "Parent Phone",
-        accessor: (data) => <p>{data?.parentPhone || "---"}</p>,
+        accessor: (data) => <p>{data?.phone || "---"}</p>,
       },
       {
         Header: "Student Name",
