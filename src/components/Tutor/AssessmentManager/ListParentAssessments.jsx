@@ -108,7 +108,15 @@ function ListParentAssessments() {
             name: item.studentName,
           };
         }
-        formattedData[item.studentId][item.date || "-"] = item;
+        if (!formattedData[item.studentId][item.date || "-"]) {
+          formattedData[item.studentId][item.date || "-"] = item;
+        } else {
+          const existingRecord =
+            formattedData[item.studentId][item.date || "-"];
+          if (item.evaluationId > existingRecord.evaluationId) {
+            formattedData[item.studentId][item.date || "-"] = item;
+          }
+        }
       });
       setListFormattedData(formattedData);
     }
@@ -177,7 +185,7 @@ function ListParentAssessments() {
                   {listHeader &&
                     listHeader?.map((item, index) => (
                       <td key={index} className="text-center whitespace-nowrap">
-                        {item ? format(new Date(item), "dd/MM") : "---"}
+                        {item ? format(new Date(item), "dd/MM/yyyy") : "---"}
                       </td>
                     ))}
                 </tr>
@@ -210,7 +218,7 @@ const TableSection = ({ item, listHeader }) => {
   return (
     <>
       <tr>
-        <td className="">{item?.name || "---"}</td>
+        <td className="whitespace-nowrap">{item?.name || "---"}</td>
         {listHeader.map((date, index) => {
           const dataForDate = item[date];
           return (
@@ -239,7 +247,7 @@ const TableSection = ({ item, listHeader }) => {
         setShowDialog={setShowDialog}
         showDialog={showDialog}
       >
-        <div className="grid grid-cols-37 max-w-[1000px] mt-5 gap-x-5 gap-y-3 items-center">
+        <div className="grid grid-cols-37 max-w-[768px] xl:max-w-[968px] 2xl:max-w-[1280px] mt-5 gap-x-5 gap-y-3 items-center">
           <div>Student</div>
           <PrimaryInput value={showingData?.studentName || ""} readOnly />
           <div>Class</div>

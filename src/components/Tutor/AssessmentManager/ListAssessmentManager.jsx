@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from "react";
-import Table from "../../common/Table";
 import Title from "../../common/Title";
 import PrimaryBtn from "src/components/common/PrimaryBtn";
-import RenderStatus from "src/components/common/RenderStatus";
 import { Link, useLocation } from "react-router-dom";
-import ShowPasswordIcon from "src/components/icons/ShowPasswordIcon";
 import PopupTemplate from "src/components/common/PopupTemplate";
 import PrimaryInput from "src/components/common/PrimaryInput";
 import PrimaryTextArea from "src/components/common/PrimaryTextArea";
@@ -80,7 +77,15 @@ function ListAssessmentManager() {
             name: item.studentName,
           };
         }
-        formattedData[item.studentId][item.date || "-"] = item;
+        if (!formattedData[item.studentId][item.date || "-"]) {
+          formattedData[item.studentId][item.date || "-"] = item;
+        } else {
+          const existingRecord =
+            formattedData[item.studentId][item.date || "-"];
+          if (item.evaluationId > existingRecord.evaluationId) {
+            formattedData[item.studentId][item.date || "-"] = item;
+          }
+        }
       });
       setListFormattedData(formattedData);
     }
@@ -121,7 +126,7 @@ function ListAssessmentManager() {
 
       <div className="flex items-center justify-center mt-5 bg-white block-border">
         {listHeader && listFormattedData ? (
-          <div className="table-referral-style max-w-[968px] xl:max-w-[1060px] 2xl:max-w-[1280px] overflow-auto">
+          <div className="table-referral-style max-w-[768px] xl:max-w-[968px] 2xl:max-w-[1280px] overflow-auto">
             <table>
               <thead>
                 <tr />
@@ -130,7 +135,7 @@ function ListAssessmentManager() {
                   {listHeader &&
                     listHeader?.map((item, index) => (
                       <td key={index} className="text-center whitespace-nowrap">
-                        {item ? format(new Date(item), "dd/MM") : "---"}
+                        {item ? format(new Date(item), "dd/MM/yyyy") : "---"}
                       </td>
                     ))}
                 </tr>
@@ -163,7 +168,7 @@ const TableSection = ({ item, listHeader }) => {
   return (
     <>
       <tr>
-        <td className="">{item?.name || "---"}</td>
+        <td className="whitespace-nowrap">{item?.name || "---"}</td>
         {listHeader.map((date, index) => {
           const dataForDate = item[date];
           return (
