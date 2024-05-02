@@ -14,6 +14,10 @@ import { format } from "date-fns";
 import { LIST_TRACSACTION_STATUS } from "src/constants/enumConstant";
 import { useAuthContext } from "src/context/AuthContext";
 import DeniedBtn from "src/components/common/DeniedBtn";
+import PrimaryBtn from "src/components/common/PrimaryBtn";
+import PopupTemplate from "src/components/common/PopupTemplate";
+import PrimaryTextArea from "src/components/common/PrimaryTextArea";
+import SmallTitle from "src/components/common/SmallTitle";
 
 function ListTutorTransaction() {
   const [listAllTransactions, setListAllTransactions] = useState(undefined);
@@ -173,11 +177,44 @@ const columns = [
 ];
 
 const RenderAction = ({ data }) => {
+  const [isOpenQrCode, setIsOpenQrCode] = useState(false);
   return (
     <div className="flex items-center gap-4">
+      <PrimaryBtn
+        onClick={() => {
+          setIsOpenQrCode(true);
+        }}
+        className="italic bg-gradient-to-r from-cyan-400 to-blue-700 !w-fit"
+      >
+        Pay now
+      </PrimaryBtn>
       <Link to={`/transactions/${data.paymentId}`}>
         <ShowDetail />
       </Link>
+      <PopupTemplate
+        title="Please pay the current fee"
+        setShowDialog={setIsOpenQrCode}
+        showDialog={isOpenQrCode}
+      >
+        <div className="flex gap-3">
+          <div className="flex flex-col items-center justify-center w-full gap-3">
+            <img src="/images/fake-qr.png" alt="qr-pay" className="h-[200px]" />
+            <div>Amount: {data?.paymentAmount}</div>
+            <div>Bank: Vietinbank</div>
+            <div>Name: ClassNTutor</div>
+          </div>
+          <div className="w-full">
+            <SmallTitle>Receipt</SmallTitle>
+            <PrimaryTextArea
+              title="Description"
+              placeholder="Write your banking account and number receipt"
+              rows={2}
+              className="mt-3"
+            />
+            <PrimaryBtn className="mt-8">Send</PrimaryBtn>
+          </div>
+        </div>
+      </PopupTemplate>
     </div>
   );
 };

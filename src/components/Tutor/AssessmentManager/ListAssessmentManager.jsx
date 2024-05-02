@@ -95,7 +95,7 @@ function ListAssessmentManager() {
     <div className="p-4 mx-auto">
       <div className="flex items-center justify-between gap-3">
         <Title>Class Assessment</Title>
-        <Link to={`/assessesments/create`}>
+        <Link to={`/assessesments/create?id=${classId}`}>
           <PrimaryBtn className="!w-[220px]">Create Assessment</PrimaryBtn>
         </Link>
       </div>

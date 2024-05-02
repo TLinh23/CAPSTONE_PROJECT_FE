@@ -13,47 +13,60 @@ import {
   getClassByTutor,
   getClassDetailData,
 } from "src/apis/class-module";
-import ClassNameFilterDropdown from "src/components/common/ClassNameFilterDropdown";
 import { toast } from "react-toastify";
 import { format } from "date-fns";
 import ProfileHeader from "src/components/Profile/ProfileHeader";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { slideFromEnd } from "src/libs";
 
 function AddAssessment() {
-  const { roleKey, userId } = useAuthContext();
   const [newTransactionDetail, setNewTransactionDetail] = useState(undefined);
-  const [listClassroom, setListClassroom] = useState(undefined);
-  const [classRoomSelected, setClassRoomSelected] = useState(undefined);
   const [listStudent, setListStudent] = useState(undefined);
   const [studentSelected, setStudentSelected] = useState(undefined);
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const classId = params.get("id");
+  const [classDetail, setClassDetail] = useState(undefined);
+  const [listScheduleDate, setListScheduleDate] = useState(undefined);
+  const [scheduleSelected, setScheduleSelected] = useState(undefined);
 
   useQueries([
     {
-      queryKey: ["getListClassRooms"],
+      queryKey: ["getClassDetail", classId],
       queryFn: async () => {
-        if (roleKey === ROLE_NAME.TUTOR) {
-          const queryObj = {};
-          queryObj["PagingRequest.CurrentPage"] = 1;
-          queryObj["PagingRequest.PageSize"] = 99;
-          queryObj["TutorId"] = userId;
-          queryObj["Status"] = "ACTIVE";
-          const response = await getClassByTutor(queryObj);
-          setListClassroom(response?.data?.data);
-          return response?.data;
+        const response = await getClassDetailData(classId);
+        setClassDetail(response?.data?.data);
+        if (response?.data?.data?.schedules?.length > 0) {
+          const formattedSchedules = response?.data?.data?.schedules?.map(
+            (schedule) => {
+              return {
+                date: schedule.date,
+                value: `${schedule.dayOfWeek} ${format(
+                  new Date(schedule?.date),
+                  "dd/MM/yyyy"
+                )} - ${slideFromEnd(
+                  schedule.sessionStart,
+                  -3
+                )} to ${slideFromEnd(schedule.sessionEnd, -3)}`,
+              };
+            }
+          );
+          setListScheduleDate(formattedSchedules);
         }
+        return response?.data;
       },
-      enabled: !!userId,
+      enabled: !!classId,
     },
     {
-      queryKey: ["getListStudents", classRoomSelected],
+      queryKey: ["getListStudents", classId],
       queryFn: async () => {
-        if (classRoomSelected) {
-          const response = await getClassDetailData(classRoomSelected?.classId);
+        if (classId) {
+          const response = await getClassDetailData(classId);
           setListStudent(response?.data?.data?.studentInformationDto);
           return response?.data;
         }
       },
-      enabled: !!classRoomSelected,
+      enabled: !!classId,
     },
   ]);
 
@@ -89,8 +102,9 @@ function AddAssessment() {
 
   const handleClickCreateAssessment = () => {
     const queryObj = {
-      ClassId: classRoomSelected?.classId,
+      ClassId: Number(classId),
       StudentId: studentSelected?.studentId,
+      Date: new Date(scheduleSelected?.date).toDateString(),
       ...newTransactionDetail,
     };
     console.log("queryObj: ", queryObj);
@@ -102,6 +116,7 @@ function AddAssessment() {
     // @ts-ignore
     addEvaluationMutation.mutate(formData);
   };
+
   return (
     <Layout>
       <div className="bg-white block-border">
@@ -110,12 +125,7 @@ function AddAssessment() {
           <div>
             Class <span className="text-red-500">*</span>
           </div>
-          <ClassNameFilterDropdown
-            listDropdown={listClassroom?.items}
-            showing={classRoomSelected}
-            setShowing={setClassRoomSelected}
-            textDefault="Select Class"
-          />
+          <PrimaryInput readOnly value={classDetail?.className || ""} />
           <div>
             Student <span className="text-red-500">*</span>
           </div>
@@ -123,9 +133,7 @@ function AddAssessment() {
             listDropdown={listStudent}
             showing={studentSelected}
             setShowing={setStudentSelected}
-            textDefault={
-              classRoomSelected ? "Select Student" : "Select class first"
-            }
+            textDefault={"Select Student"}
           />
           <div>
             Score <span className="text-red-500">*</span>
@@ -142,21 +150,11 @@ function AddAssessment() {
             value={newTransactionDetail?.Score || ""}
           />
           <div>Date</div>
-          <PrimaryInput
-            placeholder="Enter score rate"
-            type="date"
-            value={
-              newTransactionDetail?.Date
-                ? format(new Date(newTransactionDetail?.Date), "yyyy-MM-dd")
-                : ""
-            }
-            onChange={(e) => {
-              const selectedDate = e.target.value;
-              setNewTransactionDetail({
-                ...newTransactionDetail,
-                Date: selectedDate,
-              });
-            }}
+          <FilterDropDown
+            listDropdown={listScheduleDate || []}
+            showing={scheduleSelected}
+            setShowing={setScheduleSelected}
+            textDefault={"Select date"}
           />
           <div>Comment</div>
           <PrimaryTextArea
@@ -174,9 +172,9 @@ function AddAssessment() {
         <div className="max-w-[1000px] flex justify-center items-center mt-10">
           <PrimaryBtn
             disabled={
-              !classRoomSelected ||
               !studentSelected ||
-              !newTransactionDetail?.Score
+              !newTransactionDetail?.Score ||
+              !scheduleSelected
             }
             onClick={handleClickCreateAssessment}
             className="!w-[200px]"

@@ -7,6 +7,7 @@ const STATUS = {
   REMOVE: "REMOVE",
   PENDING: "PENDING",
   PAID: "PAID",
+  COMPLETED: "COMPLETED",
 };
 
 function RenderStatus({ className = "", children, status = "" }) {
@@ -17,7 +18,8 @@ function RenderStatus({ className = "", children, status = "" }) {
         status === STATUS.CREATED ||
         status === STATUS.ACCEPTED ||
         status === STATUS.ACTIVE ||
-        status === STATUS.PAID
+        status === STATUS.PAID ||
+        status === STATUS.COMPLETED
           ? "border-approved text-approved"
           : status === "pending" || status === STATUS.PENDING
           ? "border-pending text-pending"
