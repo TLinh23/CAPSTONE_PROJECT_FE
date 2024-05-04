@@ -112,6 +112,8 @@ export const getPaymentDetailUrl = `${baseUrl}api/Payment/get-payment-by-id`;
 
 export const updatePaymentUrl = `${baseUrl}api/Payment/update-payment`;
 
+export const updatePaymentDescUrl = `${baseUrl}api/Payment/update-payment-description`;
+
 export const suspendAccountUrl = `${baseUrl}api/Account/suspend-account`;
 
 export const getAttendStudentsUrl = `${baseUrl}api/Attendent/get-attend-students`;

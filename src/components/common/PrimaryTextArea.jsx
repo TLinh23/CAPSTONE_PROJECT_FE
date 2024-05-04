@@ -1,7 +1,7 @@
 import React from "react";
 
 function PrimaryTextArea({
-  title = "",
+  title = null,
   note = null,
   className = "",
   classNameTextArea = "",

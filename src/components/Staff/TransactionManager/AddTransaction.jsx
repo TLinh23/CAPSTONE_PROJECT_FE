@@ -162,22 +162,6 @@ function AddTransaction() {
               className="inline-block text-sm font-bold text-gray-700"
               htmlFor="description"
             >
-              Transaction Description:
-            </label>
-            <PrimaryInput
-              className="!w-2/3"
-              onChange={(e) => {
-                setNewTransactionDetail({
-                  ...newTransactionDetail,
-                  paymentDesc: e.target.value,
-                });
-              }}
-              value={newTransactionDetail?.paymentDesc || ""}
-            />
-            <label
-              className="inline-block text-sm font-bold text-gray-700"
-              htmlFor="description"
-            >
               Request Date: <span className="text-red-500">*</span>
             </label>
             <PrimaryInput

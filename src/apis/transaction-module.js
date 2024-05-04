@@ -2,6 +2,7 @@ import {
   createPaymentUrl,
   getPaymentDetailUrl,
   searchFilterPaymentsUrl,
+  updatePaymentDescUrl,
   updatePaymentUrl,
 } from "src/constants/APIConfig";
 import {
@@ -28,6 +29,13 @@ export const getTransactionDetail = (id) => {
 export const updateTransactionDetail = (id, newData) => {
   return putJsonAPI({
     url: `${updatePaymentUrl}/${id}`,
+    data: newData,
+  });
+};
+
+export const updatePaymentDescription = (id, newData) => {
+  return putJsonAPI({
+    url: `${updatePaymentDescUrl}/${id}`,
     data: newData,
   });
 };

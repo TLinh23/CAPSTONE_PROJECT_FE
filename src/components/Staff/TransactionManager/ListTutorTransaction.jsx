@@ -8,8 +8,11 @@ import Title from "../../common/Title";
 import useDebounce from "src/hooks/useDebounce";
 import ShowDetail from "src/components/common/ShowDetail";
 import { Link } from "react-router-dom";
-import { getListTransactions } from "src/apis/transaction-module";
-import { useQueries } from "react-query";
+import {
+  getListTransactions,
+  updatePaymentDescription,
+} from "src/apis/transaction-module";
+import { useMutation, useQueries, useQueryClient } from "react-query";
 import { format } from "date-fns";
 import { LIST_TRACSACTION_STATUS } from "src/constants/enumConstant";
 import { useAuthContext } from "src/context/AuthContext";
@@ -18,6 +21,7 @@ import PrimaryBtn from "src/components/common/PrimaryBtn";
 import PopupTemplate from "src/components/common/PopupTemplate";
 import PrimaryTextArea from "src/components/common/PrimaryTextArea";
 import SmallTitle from "src/components/common/SmallTitle";
+import { toast } from "react-toastify";
 
 function ListTutorTransaction() {
   const [listAllTransactions, setListAllTransactions] = useState(undefined);
@@ -161,7 +165,9 @@ const columns = [
             className={`border w-fit px-2 py-1 rounded-md capitalize ${
               data?.status === "PAID"
                 ? "border-approved text-approved"
-                : "border-pending text-pending"
+                : data?.status === "UNPAID" || data?.status === "SENT"
+                ? "border-pending text-pending"
+                : "border-denied text-denied"
             }`}
           >
             {data?.status}
@@ -177,17 +183,56 @@ const columns = [
 ];
 
 const RenderAction = ({ data }) => {
+  const queryClient = useQueryClient();
   const [isOpenQrCode, setIsOpenQrCode] = useState(false);
+  const [descriptionTransaction, setDescriptionTransaction] = useState("");
+
+  const updateTransactionMutation = useMutation(
+    async (newData) => {
+      console.log("newData: ", newData);
+      return await updatePaymentDescription(data?.paymentId, newData);
+    },
+    {
+      onSuccess: (data) => {
+        console.log("Data: ", data);
+        if (data?.status >= 200 && data?.status < 300) {
+          toast.success("Send transaction successfully");
+          setIsOpenQrCode(false);
+          queryClient.invalidateQueries("getListTransactions");
+        } else {
+          toast.error(
+            data?.message ||
+              data?.response?.data?.message ||
+              data?.response?.data ||
+              "Oops! Something went wrong..."
+          );
+        }
+      },
+      onError: (err) => {
+        toast.error(
+          // @ts-ignore
+          err?.response?.data?.message || err?.message || "Update error"
+        );
+      },
+    }
+  );
+  const handleUpdateTransaction = () => {
+    // @ts-ignore
+    updateTransactionMutation.mutate(descriptionTransaction);
+  };
+
   return (
-    <div className="flex items-center gap-4">
-      <PrimaryBtn
-        onClick={() => {
-          setIsOpenQrCode(true);
-        }}
-        className="italic bg-gradient-to-r from-cyan-400 to-blue-700 !w-fit"
-      >
-        Pay now
-      </PrimaryBtn>
+    <div className="flex items-center justify-end gap-4">
+      {data?.status === "UNPAID" && (
+        <PrimaryBtn
+          onClick={() => {
+            setIsOpenQrCode(true);
+          }}
+          className="italic bg-gradient-to-r from-cyan-400 to-blue-700 !w-fit"
+        >
+          Pay now
+        </PrimaryBtn>
+      )}
       <Link to={`/transactions/${data.paymentId}`}>
         <ShowDetail />
       </Link>
@@ -206,12 +251,26 @@ const RenderAction = ({ data }) => {
           <div className="w-full">
             <SmallTitle>Receipt</SmallTitle>
             <PrimaryTextArea
-              title="Description"
+              title={
+                <div>
+                  Description <span className="text-dangerous">*</span>
+                </div>
+              }
               placeholder="Write your banking account and number receipt"
               rows={2}
               className="mt-3"
+              onChange={(e) => {
+                setDescriptionTransaction(e.target.value);
+              }}
+              value={descriptionTransaction || ""}
             />
-            <PrimaryBtn className="mt-8">Send</PrimaryBtn>
+            <PrimaryBtn
+              disabled={!descriptionTransaction}
+              onClick={handleUpdateTransaction}
+              className="mt-8"
+            >
+              Send
+            </PrimaryBtn>
           </div>
         </div>
       </PopupTemplate>

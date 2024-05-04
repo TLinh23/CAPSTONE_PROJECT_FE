@@ -163,7 +163,9 @@ const columns = [
             className={`border w-fit px-2 py-1 rounded-md capitalize ${
               data?.status === "PAID"
                 ? "border-approved text-approved"
-                : "border-pending text-pending"
+                : data?.status === "UNPAID" || data?.status === "SENT"
+                ? "border-pending text-pending"
+                : "border-denied text-denied"
             }`}
           >
             {data?.status}
@@ -241,7 +243,7 @@ const RenderAction = ({ data }) => {
             listDropdown={LIST_TRACSACTION_STATUS}
             showing={statusTransactionSelected}
             setShowing={setStatusTransactionSelected}
-            classNameDropdown="!max-h-[140px]"
+            classNameDropdown="!max-h-[160px]"
             textDefault={data?.status}
             required="*"
           />

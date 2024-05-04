@@ -39,8 +39,10 @@ export const VALUE_DAYS_OF_WEEK = [
 ];
 
 export const LIST_TRACSACTION_STATUS = [
+  { id: 1, key: "SENT", value: "Sent" },
   { id: 2, key: "UNPAID", value: "Unpaid" },
   { id: 3, key: "PAID", value: "Paid" },
+  { id: 4, key: "DELETED", value: "Deleted" },
 ];
 
 export const LIST_ATTEND_STATUS = [
