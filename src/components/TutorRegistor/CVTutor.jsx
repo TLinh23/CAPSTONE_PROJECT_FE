@@ -65,15 +65,23 @@ function CVTutor({
           }
           messageError={formilk.errors.GraduationYear}
         />
-        <div>Upload CV</div>
+        <div>
+          Upload CV <span className="text-red-500">*</span>
+        </div>
         <input
           type="file"
           onChange={(e) => {
-            setOtherInformation({
-              ...otherInformation,
-              Cv: e.target.files[0],
-            });
+            const selectedFile = e.target.files[0];
+            if (selectedFile && selectedFile?.type === "application/pdf") {
+              setOtherInformation({
+                ...otherInformation,
+                Cv: selectedFile,
+              });
+            } else {
+              alert("Please select a PDF file.");
+            }
           }}
+          accept=".pdf"
         />
       </div>
       <div className="flex items-center gap-5 mt-5">
@@ -102,7 +110,12 @@ function CVTutor({
         <PrimaryBtn
           type="submit"
           className="!w-[160px]"
-          disabled={!isConfirmCreate}
+          disabled={
+            !isConfirmCreate ||
+            !otherInformation?.BackCmnd ||
+            !otherInformation?.FrontCmnd ||
+            !otherInformation?.Cv
+          }
         >
           Create
         </PrimaryBtn>

@@ -11,6 +11,7 @@ import { getAllAccountsForStaff } from "src/apis/staff-module";
 import { toast } from "react-toastify";
 import { createNewTransaction } from "src/apis/transaction-module";
 import { useNavigate } from "react-router-dom";
+import { combineStrings } from "src/libs";
 
 function AddTransaction() {
   const [newTransactionDetail, setNewTransactionDetail] = useState(undefined);
@@ -61,9 +62,12 @@ function AddTransaction() {
           navigate(-1);
         } else {
           toast.error(
-            data?.message ||
-              data?.response?.data?.message ||
-              data?.response?.data ||
+            // @ts-ignore
+            combineStrings(data?.response?.data?.errors) ||
+              // @ts-ignore
+              combineStrings(data?.response?.data?.message) ||
+              // @ts-ignore
+              combineStrings(data?.message) ||
               "Oops! Something went wrong..."
           );
         }

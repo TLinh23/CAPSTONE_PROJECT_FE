@@ -58,7 +58,7 @@ function TransactionDetail() {
           </div>
 
           <div className="flex justify-between">
-            <RequestTitle>Transaction Description:</RequestTitle>
+            <RequestTitle>Transaction Code:</RequestTitle>
             <RequestDescription>
               {transactionDetail?.paymentDesc}
             </RequestDescription>

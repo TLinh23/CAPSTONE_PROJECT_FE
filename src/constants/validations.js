@@ -18,6 +18,10 @@ export const requileValidation = Yup.string().required(
   "Please fill this input!"
 );
 
+// export const requileFileValidation = Yup.required(
+//   "Please fill this input!"
+// );
+
 export const identityValidation = Yup.string()
   .min(12, "Invalid identify number ")
   .required("Identify number is required");

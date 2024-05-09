@@ -22,6 +22,7 @@ import { useAuthContext } from "src/context/AuthContext";
 import useUploadImage from "src/hooks/useUploadImage";
 import * as Yup from "yup";
 import ProfileHeader from "../ProfileHeader";
+import { combineStrings } from "src/libs";
 
 function TutorEditProfile(props) {
   const { profileData } = props;
@@ -55,9 +56,12 @@ function TutorEditProfile(props) {
           queryClient.invalidateQueries("getProfile");
         } else {
           toast.error(
-            data?.message ||
-              data?.response?.data?.message ||
-              data?.response?.data ||
+            // @ts-ignore
+            combineStrings(data?.response?.data?.errors) ||
+              // @ts-ignore
+              combineStrings(data?.response?.data?.message) ||
+              // @ts-ignore
+              combineStrings(data?.message) ||
               "Oops! Something went wrong..."
           );
         }
@@ -362,9 +366,12 @@ function ChangePasswordSection({ staffAccountObject }) {
           toast.success("Change password successfully");
         } else {
           toast.error(
-            data?.message ||
-              data?.response?.data?.message ||
-              data?.response?.data ||
+            // @ts-ignore
+            combineStrings(data?.response?.data?.errors) ||
+              // @ts-ignore
+              combineStrings(data?.response?.data?.message) ||
+              // @ts-ignore
+              combineStrings(data?.message) ||
               "Oops! Something went wrong..."
           );
         }

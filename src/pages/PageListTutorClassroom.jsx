@@ -21,6 +21,7 @@ import Layout from "src/components/layout/Layout";
 import { LIST_CLASS_FILTER, ROLE_NAME } from "src/constants/constants";
 import { useAuthContext } from "src/context/AuthContext";
 import useDebounce from "src/hooks/useDebounce";
+import { combineStrings } from "src/libs";
 
 function PageListTutorClassroom() {
   const { roleKey, userId } = useAuthContext();
@@ -171,13 +172,17 @@ const RenderActionClassroom = ({ data }) => {
       onSuccess: (data) => {
         console.log("Data: ", data);
         if (data?.status >= 200 && data?.status < 300) {
-          toast.success("Delete classroom successfully");
+          toast.success("Update successfully");
           queryClient.invalidateQueries("getListClass");
+          setIsShowPopupDeleteClassroom(false);
         } else {
           toast.error(
-            data?.message ||
-              data?.response?.data?.message ||
-              data?.response?.data ||
+            // @ts-ignore
+            combineStrings(data?.response?.data?.errors) ||
+              // @ts-ignore
+              combineStrings(data?.response?.data?.message) ||
+              // @ts-ignore
+              combineStrings(data?.message) ||
               "Oops! Something went wrong..."
           );
         }
@@ -197,27 +202,53 @@ const RenderActionClassroom = ({ data }) => {
   };
 
   return (
-    <div className="flex items-center gap-4">
-      <Link to={`/tutor-classrooms/${data?.classId}/edit`}>
-        <EditIcon />
-      </Link>
+    <div className="flex items-center justify-end gap-4">
+      {data?.status?.toUpperCase() === "ACTIVE" && (
+        <Link to={`/tutor-classrooms/${data?.classId}/edit`}>
+          <EditIcon />
+        </Link>
+      )}
       <Link to={`/tutor-classrooms/${data?.classId}`}>
         <ShowDetail />
       </Link>
-      <GarbageIcon
-        className="cursor-pointer"
-        onClick={() => {
-          setIsShowPopupDeleteClassroom(true);
-        }}
-      />
+      {data?.status?.toUpperCase() === "ACTIVE" &&
+        data?.classDesc?.toUpperCase() !== "SUSPEND" && (
+          <DeniedBtn
+            onClick={() => {
+              setIsShowPopupDeleteClassroom(true);
+            }}
+            className="!w-[100px]"
+          >
+            Suspend
+          </DeniedBtn>
+        )}
+      {data?.status?.toUpperCase() === "SUSPEND" &&
+        data?.classDesc?.toUpperCase() !== "SUSPEND" && (
+          <PrimaryBtn
+            onClick={() => {
+              setIsShowPopupDeleteClassroom(true);
+            }}
+            className="!w-[100px]"
+          >
+            Active
+          </PrimaryBtn>
+        )}
 
       <PopupTemplate
         setShowDialog={setIsShowPopupDeleteClassroom}
         showDialog={isShowPopupDeleteClassroom}
-        title="Delete classroom"
+        title={
+          data?.status?.toUpperCase() === "ACTIVE"
+            ? "Suspend classroom"
+            : "Active classroom"
+        }
         classNameWrapper="md:!min-w-[486px]"
       >
-        <div>Do you want to suspend this classroom {data?.className}</div>
+        <div>
+          Do you want to{" "}
+          {data?.status?.toUpperCase() === "ACTIVE" ? "suspend" : "active"} this
+          classroom {data?.className}
+        </div>
         <div className="flex items-center gap-5 mt-5">
           <SecondaryBtn
             onClick={() => {
@@ -226,7 +257,11 @@ const RenderActionClassroom = ({ data }) => {
           >
             Cancel
           </SecondaryBtn>
-          <DeniedBtn onClick={handleDeleteClassroom}>Delete</DeniedBtn>
+          {data?.status?.toUpperCase() === "ACTIVE" ? (
+            <DeniedBtn onClick={handleDeleteClassroom}>Suspend</DeniedBtn>
+          ) : (
+            <PrimaryBtn onClick={handleDeleteClassroom}>Active</PrimaryBtn>
+          )}
         </div>
       </PopupTemplate>
     </div>

@@ -21,6 +21,7 @@ import PrimaryBtn from "../common/PrimaryBtn";
 import EditIcon from "../icons/EditIcon";
 import SecondaryBtn from "../common/SecondaryBtn";
 import { toast } from "react-toastify";
+import { combineStrings } from "src/libs";
 
 function AllSubjects() {
   const queryClient = useQueryClient();
@@ -76,9 +77,12 @@ function AllSubjects() {
           queryClient.invalidateQueries("getListSubjects");
         } else {
           toast.error(
-            data?.message ||
-              data?.response?.data?.message ||
-              data?.response?.data ||
+            // @ts-ignore
+            combineStrings(data?.response?.data?.errors) ||
+              // @ts-ignore
+              combineStrings(data?.response?.data?.message) ||
+              // @ts-ignore
+              combineStrings(data?.message) ||
               "Oops! Something went wrong..."
           );
         }
@@ -255,9 +259,12 @@ const RenderAction = ({ data }) => {
           queryClient.invalidateQueries("getListSubjects");
         } else {
           toast.error(
-            data?.message ||
-              data?.response?.data?.message ||
-              data?.response?.data ||
+            // @ts-ignore
+            combineStrings(data?.response?.data?.errors) ||
+              // @ts-ignore
+              combineStrings(data?.response?.data?.message) ||
+              // @ts-ignore
+              combineStrings(data?.message) ||
               "Oops! Something went wrong..."
           );
         }

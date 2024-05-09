@@ -8,6 +8,7 @@ import PrimaryInputCheckbox from "src/components/common/PrimaryInputCheckbox";
 import PrimaryTextArea from "src/components/common/PrimaryTextArea";
 import SmallTitle from "src/components/common/SmallTitle";
 import { useAuthContext } from "src/context/AuthContext";
+import { combineStrings } from "src/libs";
 
 const TOAST_CREATE_CLASSROOM = "toast-create-classroom-id";
 
@@ -34,9 +35,12 @@ function TutorCreateClassroomConfirm(props) {
           toast.dismiss(TOAST_CREATE_CLASSROOM);
         } else {
           toast.error(
-            data?.message ||
-              data?.response?.data?.message ||
-              data?.response?.data ||
+            // @ts-ignore
+            combineStrings(data?.response?.data?.errors) ||
+              // @ts-ignore
+              combineStrings(data?.response?.data?.message) ||
+              // @ts-ignore
+              combineStrings(data?.message) ||
               "Oops! Something went wrong..."
           );
           toast.dismiss(TOAST_CREATE_CLASSROOM);

@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { deleteSubjectTutor } from "src/apis/tutor-module";
 import DeniedBtn from "src/components/common/DeniedBtn";
 import { useAuthContext } from "src/context/AuthContext";
+import { combineStrings } from "src/libs";
 
 function DeleteSubjectPopup({ item, setIsShowPopupDeleteStudent }) {
   const { userId } = useAuthContext();
@@ -22,9 +23,12 @@ function DeleteSubjectPopup({ item, setIsShowPopupDeleteStudent }) {
           queryClient.invalidateQueries("getProfile");
         } else {
           toast.error(
-            data?.message ||
-              data?.response?.data?.message ||
-              data?.response?.data ||
+            // @ts-ignore
+            combineStrings(data?.response?.data?.errors) ||
+              // @ts-ignore
+              combineStrings(data?.response?.data?.message) ||
+              // @ts-ignore
+              combineStrings(data?.message) ||
               "Oops! Something went wrong..."
           );
         }

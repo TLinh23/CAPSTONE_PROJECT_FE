@@ -20,6 +20,7 @@ import { format } from "date-fns";
 import { LIST_TRACSACTION_STATUS } from "src/constants/enumConstant";
 import { toast } from "react-toastify";
 import DeniedBtn from "src/components/common/DeniedBtn";
+import { combineStrings } from "src/libs";
 
 function ListTransactionManager() {
   const [listAllTransactions, setListAllTransactions] = useState(undefined);
@@ -200,9 +201,12 @@ const RenderAction = ({ data }) => {
           queryClient.invalidateQueries("getListTransactions");
         } else {
           toast.error(
-            data?.message ||
-              data?.response?.data?.message ||
-              data?.response?.data ||
+            // @ts-ignore
+            combineStrings(data?.response?.data?.errors) ||
+              // @ts-ignore
+              combineStrings(data?.response?.data?.message) ||
+              // @ts-ignore
+              combineStrings(data?.message) ||
               "Oops! Something went wrong..."
           );
         }

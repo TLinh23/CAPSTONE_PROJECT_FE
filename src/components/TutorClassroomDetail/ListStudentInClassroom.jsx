@@ -16,6 +16,7 @@ import SecondaryBtn from "../common/SecondaryBtn";
 import { toast } from "react-toastify";
 import { STUDENT_STATUS } from "src/constants/constants";
 import RenderStatus from "../common/RenderStatus";
+import { combineStrings } from "src/libs";
 
 function ListStudentInClassroom() {
   const [classRoomDetail, setClassRoomDetail] = useState(undefined);
@@ -112,9 +113,12 @@ const RenderAction = ({ data }) => {
           queryClient.invalidateQueries("getListStudents");
         } else {
           toast.error(
-            data?.message ||
-              data?.response?.data?.message ||
-              data?.response?.data ||
+            // @ts-ignore
+            combineStrings(data?.response?.data?.errors) ||
+              // @ts-ignore
+              combineStrings(data?.response?.data?.message) ||
+              // @ts-ignore
+              combineStrings(data?.message) ||
               "Oops! Something went wrong..."
           );
         }

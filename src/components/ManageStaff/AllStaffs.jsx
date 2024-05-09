@@ -19,6 +19,7 @@ import CreateNewStaff from "./CreateNewStaff";
 import { format } from "date-fns";
 import GarbageIcon from "../icons/GarbageIcon";
 import StaffDetail from "./StaffDetail";
+import { combineStrings } from "src/libs";
 
 function AllStaffs() {
   const queryClient = useQueryClient();
@@ -183,9 +184,12 @@ const RenderAction = ({ data }) => {
           queryClient.invalidateQueries("getListStaffs");
         } else {
           toast.error(
-            data?.message ||
-              data?.response?.data?.message ||
-              data?.response?.data ||
+            // @ts-ignore
+            combineStrings(data?.response?.data?.errors) ||
+              // @ts-ignore
+              combineStrings(data?.response?.data?.message) ||
+              // @ts-ignore
+              combineStrings(data?.message) ||
               "Oops! Something went wrong..."
           );
         }
@@ -230,19 +234,30 @@ const RenderAction = ({ data }) => {
         className="cursor-pointer"
       />
       <PopupTemplate
-        title="Delete Staff"
+        title={
+          data?.status?.toUpperCase() === "ACTIVE"
+            ? "Suspend Staff"
+            : "Active Staff"
+        }
         setShowDialog={setShowDialogEdit}
         showDialog={showDialogEdit}
         classNameWrapper="w-[300px]"
       >
         <div className="flex flex-col items-center gap-4">
-          Do you want to delete this staff {data?.fullName} - Email:{" "}
-          {data?.email}
+          Do you want to{" "}
+          {data?.status?.toUpperCase() === "ACTIVE" ? "suspend" : "active"} this
+          staff {data?.fullName} - Email: {data?.email}
         </div>
         <div className="flex items-center justify-end gap-5 mt-5">
-          <DeniedBtn onClick={handleDeleteStaff} className="w-[120px]">
-            Delete
-          </DeniedBtn>
+          {data?.status?.toUpperCase() === "ACTIVE" ? (
+            <DeniedBtn onClick={handleDeleteStaff} className="w-[120px]">
+              Suspend
+            </DeniedBtn>
+          ) : (
+            <PrimaryBtn onClick={handleDeleteStaff} className="w-[120px]">
+              Active
+            </PrimaryBtn>
+          )}
           <SecondaryBtn
             onClick={() => {
               setShowDialogEdit(false);
@@ -253,12 +268,26 @@ const RenderAction = ({ data }) => {
           </SecondaryBtn>
         </div>
       </PopupTemplate>
-      <GarbageIcon
-        onClick={() => {
-          setShowDialogEdit(true);
-        }}
-        className="cursor-pointer"
-      />
+
+      {data?.status?.toUpperCase() === "ACTIVE" ? (
+        <DeniedBtn
+          className="cursor-pointer !w-fit"
+          onClick={() => {
+            setShowDialogEdit(true);
+          }}
+        >
+          Suspend
+        </DeniedBtn>
+      ) : (
+        <SecondaryBtn
+          className="cursor-pointer !w-fit"
+          onClick={() => {
+            setShowDialogEdit(true);
+          }}
+        >
+          Active
+        </SecondaryBtn>
+      )}
     </div>
   );
 };

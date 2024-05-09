@@ -22,6 +22,7 @@ import PopupTemplate from "src/components/common/PopupTemplate";
 import PrimaryTextArea from "src/components/common/PrimaryTextArea";
 import SmallTitle from "src/components/common/SmallTitle";
 import { toast } from "react-toastify";
+import { combineStrings } from "src/libs";
 
 function ListTutorTransaction() {
   const [listAllTransactions, setListAllTransactions] = useState(undefined);
@@ -201,9 +202,12 @@ const RenderAction = ({ data }) => {
           queryClient.invalidateQueries("getListTransactions");
         } else {
           toast.error(
-            data?.message ||
-              data?.response?.data?.message ||
-              data?.response?.data ||
+            // @ts-ignore
+            combineStrings(data?.response?.data?.errors) ||
+              // @ts-ignore
+              combineStrings(data?.response?.data?.message) ||
+              // @ts-ignore
+              combineStrings(data?.message) ||
               "Oops! Something went wrong..."
           );
         }

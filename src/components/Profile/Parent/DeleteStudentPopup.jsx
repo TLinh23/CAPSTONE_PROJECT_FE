@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { deleteStudentDetail } from "src/apis/student-module";
 import DeniedBtn from "src/components/common/DeniedBtn";
 import SecondaryBtn from "src/components/common/SecondaryBtn";
+import { combineStrings } from "src/libs";
 
 function DeleteStudentPopup(props) {
   const { item, setShowPopup } = props;
@@ -22,9 +23,12 @@ function DeleteStudentPopup(props) {
           setShowPopup(false);
         } else {
           toast.error(
-            data?.message ||
-              data?.response?.data?.message ||
-              data?.response?.data ||
+            // @ts-ignore
+            combineStrings(data?.response?.data?.errors) ||
+              // @ts-ignore
+              combineStrings(data?.response?.data?.message) ||
+              // @ts-ignore
+              combineStrings(data?.message) ||
               "Oops! Something went wrong..."
           );
         }

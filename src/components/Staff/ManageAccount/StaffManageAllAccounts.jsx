@@ -20,6 +20,7 @@ import Table from "src/components/common/Table";
 import Title from "src/components/common/Title";
 import { LIST_CLASS_FILTER } from "src/constants/constants";
 import useDebounce from "src/hooks/useDebounce";
+import { combineStrings } from "src/libs";
 
 function StaffManageAllAccounts() {
   const [listAllStaffs, setListAllStaffs] = useState(undefined);
@@ -163,11 +164,15 @@ const RenderAction = ({ data }) => {
         if (data?.status >= 200 && data?.status < 300) {
           toast.success("Update successfully");
           queryClient.invalidateQueries("getListAccounts");
+          setIsShowPopupSuspendAccount(false);
         } else {
           toast.error(
-            data?.message ||
-              data?.response?.data?.message ||
-              data?.response?.data ||
+            // @ts-ignore
+            combineStrings(data?.response?.data?.errors) ||
+              // @ts-ignore
+              combineStrings(data?.response?.data?.message) ||
+              // @ts-ignore
+              combineStrings(data?.message) ||
               "Oops! Something went wrong..."
           );
         }
@@ -189,22 +194,41 @@ const RenderAction = ({ data }) => {
       <Link to={`/accounts/${data?.personId}`}>
         <ShowDetail />
       </Link>
-      <DeniedBtn
-        className="cursor-pointer"
-        onClick={() => {
-          setIsShowPopupSuspendAccount(true);
-        }}
-      >
-        Suspend
-      </DeniedBtn>
+      {data?.status?.toUpperCase() === "ACTIVE" ? (
+        <DeniedBtn
+          className="cursor-pointer"
+          onClick={() => {
+            setIsShowPopupSuspendAccount(true);
+          }}
+        >
+          Suspend
+        </DeniedBtn>
+      ) : (
+        <SecondaryBtn
+          className="cursor-pointer"
+          onClick={() => {
+            setIsShowPopupSuspendAccount(true);
+          }}
+        >
+          Active
+        </SecondaryBtn>
+      )}
 
       <PopupTemplate
         setShowDialog={setIsShowPopupSuspendAccount}
         showDialog={isShowPopupSuspendAccount}
-        title="Suspend classroom"
+        title={
+          data?.status?.toUpperCase() === "ACTIVE"
+            ? "Suspend account"
+            : "Active account"
+        }
         classNameWrapper="md:!min-w-[486px]"
       >
-        <div>Do you want to suspend this account {data?.fullName}</div>
+        <div>
+          Do you want to{" "}
+          {data?.status?.toUpperCase() === "ACTIVE" ? "suspend" : "active"} this
+          account {data?.fullName}
+        </div>
         <div className="flex items-center gap-5 mt-5">
           <SecondaryBtn
             onClick={() => {
@@ -213,7 +237,11 @@ const RenderAction = ({ data }) => {
           >
             Cancel
           </SecondaryBtn>
-          <DeniedBtn onClick={handleSuspendAccount}>Suspend</DeniedBtn>
+          {data?.status?.toUpperCase() === "ACTIVE" ? (
+            <DeniedBtn onClick={handleSuspendAccount}>Suspend</DeniedBtn>
+          ) : (
+            <PrimaryBtn onClick={handleSuspendAccount}>Active</PrimaryBtn>
+          )}
         </div>
       </PopupTemplate>
     </div>

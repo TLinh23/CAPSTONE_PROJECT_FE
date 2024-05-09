@@ -11,6 +11,7 @@ import {
   getListStudentInClass,
 } from "src/apis/class-module";
 import { toast } from "react-toastify";
+import { combineStrings } from "src/libs";
 
 function CreateNewStudentInClass() {
   const [listStudents, setListStudents] = useState(undefined);
@@ -51,9 +52,12 @@ function CreateNewStudentInClass() {
           navigate(-1);
         } else {
           toast.error(
-            data?.message ||
-              data?.response?.data?.message ||
-              data?.response?.data ||
+            // @ts-ignore
+            combineStrings(data?.response?.data?.errors) ||
+              // @ts-ignore
+              combineStrings(data?.response?.data?.message) ||
+              // @ts-ignore
+              combineStrings(data?.message) ||
               "Oops! Something went wrong..."
           );
         }

@@ -14,6 +14,7 @@ import { getProfileByIdDetail, getProfileDetail } from "src/apis/tutor-module";
 import { getListSubjects, getSubjectForTutor } from "src/apis/subject-module";
 import { CLASS_REQUEST_TYPE, STUDENT_LEVEL } from "src/constants/enumConstant";
 import { useAuthContext } from "src/context/AuthContext";
+import { combineStrings } from "src/libs";
 
 const TOAST_CREATE_ORDER_REQUEST = "toast-create-order-request-id";
 
@@ -91,9 +92,12 @@ function CreateOrderRequest() {
           toast.dismiss(TOAST_CREATE_ORDER_REQUEST);
         } else {
           toast.error(
-            data?.message ||
-              data?.response?.data?.message ||
-              data?.response?.data ||
+            // @ts-ignore
+            combineStrings(data?.response?.data?.errors) ||
+              // @ts-ignore
+              combineStrings(data?.response?.data?.message) ||
+              // @ts-ignore
+              combineStrings(data?.message) ||
               "Oops! Something went wrong..."
           );
           toast.dismiss(TOAST_CREATE_ORDER_REQUEST);

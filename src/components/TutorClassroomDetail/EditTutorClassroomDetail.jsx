@@ -17,7 +17,7 @@ import SecondaryBtn from "../common/SecondaryBtn";
 import AddPlusIcon from "../icons/AddPlusIcon";
 import GarbageIcon from "../icons/GarbageIcon";
 import { toast } from "react-toastify";
-import { getValueFromKey } from "src/libs";
+import { combineStrings, getValueFromKey } from "src/libs";
 import PrimaryBtn from "../common/PrimaryBtn";
 import { useAuthContext } from "src/context/AuthContext";
 import { format } from "date-fns";
@@ -98,9 +98,12 @@ function EditTutorClassroomDetail() {
           toast.dismiss(TOAST_EDIT_CLASSROOM);
         } else {
           toast.error(
-            data?.message ||
-              data?.response?.data?.message ||
-              data?.response?.data ||
+            // @ts-ignore
+            combineStrings(data?.response?.data?.errors) ||
+              // @ts-ignore
+              combineStrings(data?.response?.data?.message) ||
+              // @ts-ignore
+              combineStrings(data?.message) ||
               "Oops! Something went wrong..."
           );
           toast.dismiss(TOAST_EDIT_CLASSROOM);

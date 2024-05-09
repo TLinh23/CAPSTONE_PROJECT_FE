@@ -10,7 +10,7 @@ import {
   updateAttendStudents,
 } from "src/apis/class-module";
 import { format } from "date-fns";
-import { slideFromEnd } from "src/libs";
+import { combineStrings, slideFromEnd } from "src/libs";
 import PrimaryInputCheckbox from "../common/PrimaryInputCheckbox";
 import { toast } from "react-toastify";
 
@@ -61,9 +61,12 @@ function AttendantDetail() {
           toast.dismiss(TOAST_UPDATE_ATTENTDANT);
         } else {
           toast.error(
-            data?.message ||
-              data?.response?.data?.message ||
-              data?.response?.data ||
+            // @ts-ignore
+            combineStrings(data?.response?.data?.errors) ||
+              // @ts-ignore
+              combineStrings(data?.response?.data?.message) ||
+              // @ts-ignore
+              combineStrings(data?.message) ||
               "Oops! Something went wrong..."
           );
           toast.dismiss(TOAST_UPDATE_ATTENTDANT);

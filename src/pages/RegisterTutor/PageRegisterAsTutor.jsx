@@ -19,6 +19,7 @@ import {
   identityValidation,
 } from "src/constants/validations";
 import useUploadImage from "src/hooks/useUploadImage";
+import { combineStrings } from "src/libs";
 import * as Yup from "yup";
 
 const listSubMenu = [
@@ -33,6 +34,9 @@ const validationSchema = Yup.object({
   FullName: requileValidation,
   Phone: phoneValidation,
   Cmnd: identityValidation,
+  EducationLevel: requileValidation,
+  GraduationYear: requileValidation,
+  School: requileValidation,
 });
 
 const EXCLUDED_KEY = ["RePassword"];
@@ -56,9 +60,17 @@ function PageRegisterAsTutor() {
           navigate("/login");
         }, 100);
       },
-      onError: (err) => {
-        console.log("Login failed", err);
-        toast.error("Register failed, try again!");
+      onError: (data) => {
+        console.log("Login failed", data);
+        toast.error(
+          // @ts-ignore
+          combineStrings(data?.response?.data?.errors) ||
+            // @ts-ignore
+            combineStrings(data?.response?.data?.message) ||
+            // @ts-ignore
+            combineStrings(data?.message) ||
+            "Register failed, try again!"
+        );
       },
     }
   );

@@ -22,6 +22,7 @@ import {
   acceptRequestForTutor,
   declineRequestForTutor,
 } from "src/apis/order-module";
+import { combineStrings } from "src/libs";
 
 function TutorOrders() {
   const [listOrderRequest, setListOrderRequest] = useState(undefined);
@@ -195,9 +196,12 @@ const RenderRequestAction = ({ data }) => {
           queryClient.invalidateQueries("getListRequestForTutor");
         } else {
           toast.error(
-            data?.message ||
-              data?.response?.data?.message ||
-              data?.response?.data ||
+            // @ts-ignore
+            combineStrings(data?.response?.data?.errors) ||
+              // @ts-ignore
+              combineStrings(data?.response?.data?.message) ||
+              // @ts-ignore
+              combineStrings(data?.message) ||
               "Oops! Something went wrong..."
           );
         }
@@ -230,9 +234,12 @@ const RenderRequestAction = ({ data }) => {
           queryClient.invalidateQueries("getListRequestForTutor");
         } else {
           toast.error(
-            data?.message ||
-              data?.response?.data?.message ||
-              data?.response?.data ||
+            // @ts-ignore
+            combineStrings(data?.response?.data?.errors) ||
+              // @ts-ignore
+              combineStrings(data?.response?.data?.message) ||
+              // @ts-ignore
+              combineStrings(data?.message) ||
               "Oops! Something went wrong..."
           );
         }

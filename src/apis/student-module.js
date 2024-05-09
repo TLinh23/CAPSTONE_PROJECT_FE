@@ -3,7 +3,7 @@ import {
   deleteStudentInParentUrl,
   updateStudentUrl,
 } from "src/constants/APIConfig";
-import { deleteAPI, postAPI, putAPI } from "src/libs/api";
+import { postAPI, putAPI } from "src/libs/api";
 
 export const createStudentInParentDetail = (queryObj) => {
   return postAPI({
@@ -20,7 +20,7 @@ export const editStudentDetailInParent = (queryObj) => {
 };
 
 export const deleteStudentDetail = (id) => {
-  return deleteAPI({
+  return putAPI({
     url: `${deleteStudentInParentUrl}/${id}?id=${id}`,
   });
 };

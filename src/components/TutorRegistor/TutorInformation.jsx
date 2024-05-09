@@ -16,7 +16,7 @@ function TutorInformation({
   otherInformation,
   setOtherInformation,
 }) {
-  const [gender, setGender] = useState();
+  const [gender, setGender] = useState(undefined);
 
   useEffect(() => {
     if (gender) {
@@ -64,6 +64,7 @@ function TutorInformation({
               showing={gender}
               setShowing={setGender}
               textDefault={otherInformation?.Gender || "Select gender"}
+              required={"*"}
             />
             <div>
               <div className="mb-2 text-sm font-bold text-gray">
@@ -156,7 +157,7 @@ function TutorInformation({
           <div className="grid grid-cols-2 gap-3">
             <div>
               <div className="mb-2 text-sm font-bold text-gray">
-                Image Front ID Number
+                Image Front ID Number <span className="text-red-500">*</span>
               </div>
               <input
                 type="file"
@@ -167,10 +168,15 @@ function TutorInformation({
                   });
                 }}
               />
+              {!otherInformation?.FrontCmnd && (
+                <div className="mt-2 text-sm text-red-500">
+                  Image Front ID is required
+                </div>
+              )}
             </div>
             <div>
               <div className="mb-2 text-sm font-bold text-gray">
-                Image Back ID Number
+                Image Back ID Number <span className="text-red-500">*</span>
               </div>
               <input
                 type="file"
@@ -181,6 +187,11 @@ function TutorInformation({
                   });
                 }}
               />
+              {!otherInformation?.BackCmnd && (
+                <div className="mt-2 text-sm text-red-500">
+                  Image Back ID is required
+                </div>
+              )}
             </div>
           </div>
         </div>

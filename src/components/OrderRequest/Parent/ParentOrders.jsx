@@ -18,6 +18,7 @@ import { toast } from "react-toastify";
 import { cancelRequestForParent } from "src/apis/order-module";
 import PopupTemplate from "src/components/common/PopupTemplate";
 import SecondaryBtn from "src/components/common/SecondaryBtn";
+import { combineStrings } from "src/libs";
 
 function ParentOrders() {
   const [listOrderRequest, setListOrderRequest] = useState(undefined);
@@ -194,9 +195,12 @@ const RenderRequestAction = ({ data }) => {
           queryClient.invalidateQueries("getListRequestForParent");
         } else {
           toast.error(
-            data?.message ||
-              data?.response?.data?.message ||
-              data?.response?.data ||
+            // @ts-ignore
+            combineStrings(data?.response?.data?.errors) ||
+              // @ts-ignore
+              combineStrings(data?.response?.data?.message) ||
+              // @ts-ignore
+              combineStrings(data?.message) ||
               "Oops! Something went wrong..."
           );
         }

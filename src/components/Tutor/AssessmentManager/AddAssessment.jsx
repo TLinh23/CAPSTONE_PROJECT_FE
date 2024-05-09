@@ -17,7 +17,7 @@ import { toast } from "react-toastify";
 import { format } from "date-fns";
 import ProfileHeader from "src/components/Profile/ProfileHeader";
 import { useLocation, useNavigate } from "react-router-dom";
-import { slideFromEnd } from "src/libs";
+import { combineStrings, slideFromEnd } from "src/libs";
 
 function AddAssessment() {
   const [newTransactionDetail, setNewTransactionDetail] = useState(undefined);
@@ -84,9 +84,12 @@ function AddAssessment() {
           navigate(-1);
         } else {
           toast.error(
-            data?.message ||
-              data?.response?.data?.message ||
-              data?.response?.data ||
+            // @ts-ignore
+            combineStrings(data?.response?.data?.errors) ||
+              // @ts-ignore
+              combineStrings(data?.response?.data?.message) ||
+              // @ts-ignore
+              combineStrings(data?.message) ||
               "Oops! Something went wrong..."
           );
         }

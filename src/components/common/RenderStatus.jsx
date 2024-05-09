@@ -14,14 +14,15 @@ function RenderStatus({ className = "", children, status = "" }) {
   return (
     <div
       className={`border w-fit px-2 py-1 rounded-md capitalize ${
-        status === "approved" ||
-        status === STATUS.CREATED ||
-        status === STATUS.ACCEPTED ||
-        status === STATUS.ACTIVE ||
-        status === STATUS.PAID ||
-        status === STATUS.COMPLETED
+        status.toUpperCase() === "approved" ||
+        status.toUpperCase() === STATUS.CREATED ||
+        status.toUpperCase() === STATUS.ACCEPTED ||
+        status.toUpperCase() === STATUS.ACTIVE ||
+        status.toUpperCase() === STATUS.PAID ||
+        status.toUpperCase() === STATUS.COMPLETED
           ? "border-approved text-approved"
-          : status === "pending" || status === STATUS.PENDING
+          : status.toLowerCase() === "pending" ||
+            status.toUpperCase() === STATUS.PENDING
           ? "border-pending text-pending"
           : " border-denied text-denied"
       } ${className}`}

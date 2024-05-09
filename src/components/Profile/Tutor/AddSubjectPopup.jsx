@@ -7,6 +7,7 @@ import FilterDropDown from "src/components/common/FilterDropDown";
 import PrimaryBtn from "src/components/common/PrimaryBtn";
 import { LIST_CLASS_LEVEL_DEFAULT } from "src/constants/constants";
 import { useAuthContext } from "src/context/AuthContext";
+import { combineStrings } from "src/libs";
 
 function AddSubjectPopup({ setIsShowPopupAddStudent }) {
   const [subjectSelected, setSubjectSelected] = useState(undefined);
@@ -45,9 +46,12 @@ function AddSubjectPopup({ setIsShowPopupAddStudent }) {
           queryClient.invalidateQueries("getProfile");
         } else {
           toast.error(
-            data?.message ||
-              data?.response?.data?.message ||
-              data?.response?.data ||
+            // @ts-ignore
+            combineStrings(data?.response?.data?.errors) ||
+              // @ts-ignore
+              combineStrings(data?.response?.data?.message) ||
+              // @ts-ignore
+              combineStrings(data?.message) ||
               "Oops! Something went wrong..."
           );
         }

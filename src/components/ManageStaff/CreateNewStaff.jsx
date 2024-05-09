@@ -19,6 +19,7 @@ import { useFormik } from "formik";
 import { useMutation, useQueryClient } from "react-query";
 import { registerNewStaff } from "src/apis/staff-module";
 import { toast } from "react-toastify";
+import { combineStrings } from "src/libs";
 
 const validationSchema = Yup.object({
   Email: emailValidation,
@@ -50,9 +51,12 @@ function CreateNewStaff(props) {
           queryClient.invalidateQueries("getListStaffs");
         } else {
           toast.error(
-            data?.message ||
-              data?.response?.data?.message ||
-              data?.response?.data ||
+            // @ts-ignore
+            combineStrings(data?.response?.data?.errors) ||
+              // @ts-ignore
+              combineStrings(data?.response?.data?.message) ||
+              // @ts-ignore
+              combineStrings(data?.message) ||
               "Oops! Something went wrong..."
           );
         }
